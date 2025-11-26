@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Manifesto PWA -->
+<link rel="manifest" href="manifest.webmanifest">
+
+<!-- Cor da barra do navegador / app -->
+<meta name="theme-color" content="#004aad">
+
+<!-- Ajustes básicos para iOS (Safari / Tela de Início) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/visa-192.png">
+
     <title>Gerência de Vigilância Sanitária - Página Institucional</title>
 
     <style>
@@ -154,6 +165,23 @@
         }
     </style>
 </head>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(function (registration) {
+          console.log('Service Worker registrado com sucesso:', registration.scope);
+        })
+        .catch(function (error) {
+          console.error('Falha ao registrar o Service Worker:', error);
+        });
+    });
+  }
+</script>
+
+    
 <body>
 
 <!-- BLOQUEIO DE SENHA -->
@@ -245,6 +273,7 @@
 
 </body>
 </html>
+
 
 
 
