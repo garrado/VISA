@@ -1,0 +1,21 @@
+{
+  "name": "Vigilância Sanitária - Anápolis",
+  "short_name": "VISA Anápolis",
+  "start_url": "/VISA/",
+  "scope": "/VISA/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#004aad",
+  "icons": [
+    {
+      "src": "icons/visa-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/visa-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
