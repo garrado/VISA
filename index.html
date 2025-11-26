@@ -22,6 +22,62 @@
             line-height: 1.6;
         }
 
+        /* BLOQUEIO COM SENHA */
+        #senha-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(3px);
+        }
+
+        #senha-box {
+            background: #fff;
+            padding: 30px;
+            width: 90%;
+            max-width: 380px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+
+        #senha-box h2 {
+            margin-bottom: 15px;
+            color: var(--azul1);
+        }
+
+        #senha-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            margin-top: 10px;
+        }
+
+        #senha-btn {
+            width: 100%;
+            margin-top: 15px;
+            background: var(--azul1);
+            color: white;
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #senha-btn:hover {
+            background: var(--azul2);
+        }
+
+        #conteudo {
+            display: none;
+        }
+
         header {
             background: linear-gradient(135deg, var(--azul1), var(--azul2));
             color: white;
@@ -100,6 +156,24 @@
 </head>
 <body>
 
+<!-- BLOQUEIO DE SENHA -->
+<div id="senha-overlay">
+    <div id="senha-box">
+        <h2>Acesso Restrito</h2>
+        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
+
+        <input type="password" id="senha-input" placeholder="Digite a senha...">
+        <button id="senha-btn">Entrar</button>
+
+        <p id="erro" style="color: red; margin-top: 10px; display: none;">
+            Senha incorreta!
+        </p>
+    </div>
+</div>
+
+<!-- CONTEÚDO REAL DO SITE -->
+<div id="conteudo">
+
 <header>
     <h1>Gerência de Vigilância Sanitária</h1>
     <h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
@@ -152,5 +226,23 @@
     © 2025
 </div>
 
+</div>
+
+<script>
+    const senhaCorreta = "visainterna2025";
+
+    document.getElementById("senha-btn").onclick = function () {
+        const senha = document.getElementById("senha-input").value;
+
+        if (senha === senhaCorreta) {
+            document.getElementById("senha-overlay").style.display = "none";
+            document.getElementById("conteudo").style.display = "block";
+        } else {
+            document.getElementById("erro").style.display = "block";
+        }
+    };
+</script>
+
 </body>
 </html>
+
