@@ -270,9 +270,130 @@
         }
     };
 </script>
+<button id="helpButton" onclick="showHelp()" style="
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  background:#004aad;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  font-size:14px;
+  cursor:pointer;
+  z-index: 10001;
+">
+  Ajuda
+</button>
 
+<div id="pwaBalloon" style="
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  max-width: 250px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 10000;
+">
+  <strong>Você sabia?</strong><br>
+  Você pode instalar esta página como aplicativo.<br><br>
+
+  <a href="javascript:void(0)" onclick="showHelp()" style="color:#004aad; font-weight:bold;">
+    Ver como fazer
+  </a>
+
+  <span onclick="document.getElementById('pwaBalloon').style.display='none'"
+        style="float:right; cursor:pointer; font-weight:bold;">✖</span>
+</div>
+
+<div id="helpModal" style="
+  display:none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 10002;
+">
+  <div style="
+    background: white;
+    max-width: 360px;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+  ">
+    <h3>Como usar esta página no celular</h3>
+
+    <p>
+      Você pode colocar esta página como um “aplicativo” na tela do celular.
+      É opcional e não muda nada no uso pelo computador.
+    </p>
+
+    <hr>
+
+    <strong>📱 No Android</strong><br><br>
+
+    <b>Passo 1:</b> Abra esta página no navegador do celular (de preferência o <b>Google Chrome</b>).<br><br>
+
+    <b>Passo 2:</b> Toque nos <b>três pontinhos (⋮)</b> no canto superior direito.<br><br>
+
+    <b>Passo 3:</b> Toque em <b>“Instalar app”</b> ou <b>“Adicionar à tela inicial”</b>.<br><br>
+
+    <b>Passo 4:</b> Confirme. Um ícone será criado na tela do celular.
+
+    <hr>
+
+    <strong>🍎 No iPhone</strong><br><br>
+
+    <b>Passo 1:</b> Abra esta página no <b>Safari</b>.<br><br>
+
+    <b>Passo 2:</b> Toque no botão <b>Compartilhar</b> (quadrado com seta para cima).<br><br>
+
+    <b>Passo 3:</b> Toque em <b>“Adicionar à Tela de Início”</b>.<br><br>
+
+    <b>Passo 4:</b> Toque em <b>“Adicionar”</b>.
+
+    <hr>
+
+    <small>
+      ✔ Isso é opcional.<br>
+      ✔ O uso pelo computador continua igual.
+    </small><br><br>
+
+    <button onclick="closeHelp()" style="
+      background:#004aad;
+      color:white;
+      border:none;
+      padding:8px 14px;
+      border-radius:5px;
+      cursor:pointer;
+    ">
+      Fechar
+    </button>
+  </div>
+</div>
+
+<script>
+function showHelp(){
+  document.getElementById('helpModal').style.display = 'block';
+}
+
+function closeHelp(){
+  document.getElementById('helpModal').style.display = 'none';
+}
+</script>
+
+    
 </body>
 </html>
+
 
 
 
