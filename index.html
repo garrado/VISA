@@ -63,6 +63,38 @@ header {
     padding-left: 10px;
 }
 
+            .avisos {
+            background: #fff7dd;
+            border-left: 6px solid #d1a000;
+        }
+
+        .links-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .links-section li {
+            margin: 12px 0;
+        }
+
+        .links-section a {
+            text-decoration: none;
+            color: var(--azul1);
+            font-weight: bold;
+            border-bottom: 1px dashed var(--azul1);
+        }
+
+        .links-section a:hover {
+            color: var(--azul2);
+        }
+.aviso-importante {
+    color: #b30000;
+    font-weight: bold;
+    background: #fff0f0;
+    padding: 6px;
+    border-left: 5px solid red;
+}
+    
 .footer {
     text-align: center;
     padding: 25px;
@@ -92,10 +124,30 @@ header {
 
 <div class="container">
 
-<div class="card">
-<h3>Avisos</h3>
-<p>Comunicados internos publicados aqui.</p>
-</div>
+    <!-- AVISOS -->
+    <div class="card avisos">
+        <h3>Avisos da Gerência</h3>
+        <p><strong>•</strong> Comunicados oficiais serão publicados aqui.</p>
+        <p class="aviso-importante"><strong>•</strong> Reunião com a fiscalização agendada para dia 4/12, nos dois períodos 8:30 às 12:00 e 13:30 às 17:00.</p>
+    </div>
+
+    <!-- MENSAGENS INSTITUCIONAIS -->
+    <div class="card">
+        <h3>Mensagens Institucionais</h3>
+        <p>
+            Bem-vindos à página interna da Gerência de Vigilância Sanitária.
+            Aqui reunimos informações, links e comunicados destinados aos
+            servidores responsáveis pela proteção da saúde da população
+            de Anápolis. 
+        </p>
+
+        <p>
+            Nosso compromisso diário é garantir segurança sanitária,
+            qualidade dos serviços fiscalizados e integridade técnica da atuação
+            da vigilância. Esta página foi criada para facilitar o acesso
+            a dados operacionais e melhorar o fluxo de comunicação interna.
+        </p>
+    </div>
 
 <div class="card">
 <h3>Acessos rápidos</h3>
@@ -166,3 +218,4 @@ window.logout = function(){
 
 </body>
 </html>
+
