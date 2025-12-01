@@ -198,21 +198,62 @@
     
 <body>
 
-<!-- BLOQUEIO DE SENHA -->
-<div id="senha-overlay">
-    <div id="senha-box">
-        <h2>Acesso Restrito</h2>
-        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
+//<!-- BLOQUEIO DE SENHA -->
+//<div id="senha-overlay">
+//    <div id="senha-box">
+//        <h2>Acesso Restrito</h2>
+//        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
 
-        <input type="password" id="senha-input" placeholder="Digite a senha...">
-        <button id="senha-btn">Entrar</button>
+//        <input type="password" id="senha-input" placeholder="Digite a senha...">
+//        <button id="senha-btn">Entrar</button>
 
-        <p id="erro" style="color: red; margin-top: 10px; display: none;">
-            Senha incorreta!
-        </p>
-    </div>
-</div>
+//        <p id="erro" style="color: red; margin-top: 10px; display: none;">
+//            Senha incorreta!
+//        </p>
+//    </div>
+//</div>
 
+<button onclick="loginGoogle()">Entrar com Google</button>
+
+<script type="module">
+
+// 1. IMPORTA O FIREBASE
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// 2. COLE AQUI O BLOCO DO PASSO 4
+const firebaseConfig = {
+  apiKey: "SUA_API",
+  authDomain: "SEU_DOMINIO.firebaseapp.com",
+  projectId: "SEU_ID",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
+};
+
+// 3. INICIALIZA
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// 4. FUNÇÃO DE LOGIN
+window.loginGoogle = function() {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      alert("Logado: " + result.user.email);
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("Erro no login");
+    });
+};
+
+</script>
+
+</body>
+
+
+    
 <!-- CONTEÚDO REAL DO SITE -->
 <div id="conteudo">
 
@@ -421,6 +462,7 @@ function closeHelp(){
     
 </body>
 </html>
+
 
 
 
