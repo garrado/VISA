@@ -197,21 +197,23 @@
 
     
 <body>
+<!--
+<!-- BLOQUEIO DE SENHA -->
+<div id="senha-overlay">
+    <div id="senha-box">
+        <h2>Acesso Restrito</h2>
+        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
 
-//<!-- BLOQUEIO DE SENHA -->
-//<div id="senha-overlay">
-//    <div id="senha-box">
-//        <h2>Acesso Restrito</h2>
-//        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
+        <input type="password" id="senha-input" placeholder="Digite a senha...">
+        <button id="senha-btn">Entrar</button>
 
-//        <input type="password" id="senha-input" placeholder="Digite a senha...">
-//        <button id="senha-btn">Entrar</button>
-
-//        <p id="erro" style="color: red; margin-top: 10px; display: none;">
-//            Senha incorreta!
-//        </p>
-//    </div>
+        <p id="erro" style="color: red; margin-top: 10px; display: none;">
+            Senha incorreta!
+        </p>
+    </div>
 //</div>
+
+    -->
 
 <button onclick="loginGoogle()">Entrar com Google</button>
 
@@ -249,8 +251,6 @@ window.loginGoogle = function() {
 };
 
 </script>
-
-</body>
 
 
     
@@ -462,6 +462,7 @@ function closeHelp(){
     
 </body>
 </html>
+
 
 
 
