@@ -18,6 +18,7 @@
     --azul2: #3d6bb3;
     --cinza1: #f2f4f8;
     --texto: #333;
+   
 }
 
 body {
@@ -25,6 +26,7 @@ body {
     font-family: Arial, sans-serif;
     background: var(--cinza1);
     color: var(--texto);
+     line-height: 1.6;
 }
 
 #conteudo {
@@ -41,8 +43,23 @@ header {
     color: white;
     padding: 35px 20px;
     text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
+            header h1 {
+            margin: 0;
+            font-size: 2.3rem;
+            font-weight: bold;
+        }
 
+        header h2 {
+            margin-top: 8px;
+            font-size: 1.2rem;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+
+    
 .container {
     max-width: 1100px;
     margin: 30px auto;
@@ -149,15 +166,17 @@ header {
         </p>
     </div>
 
-<div class="card">
-<h3>Acessos rápidos</h3>
-<ul>
-<li><a href="Escala Dezembro v11.html">Escala</a></li>
-<li><a href="Totalização v11.html">Totalização</a></li>
-<li><a href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html">Veículos</a></li>
-<li><a href="Alvaras_FINAL_COMPLETO_LIMPO_AVANCADO_v13_5.html">Alvarás</a></li>
-</ul>
-</div>
+    <!-- LINKS PRINCIPAIS -->
+    <div class="card links-section">
+        <h3>Acessos Rápidos</h3>
+        <ul>
+            <li><a href="Escala Dezembro v11.html">➡ Escala de Plantão</a></li>
+            <li><a href="Totalização v11.html">➡ Totalização dos Plantões</a></li>
+            <li><a href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html">➡ Uso de Veículos</a></li>
+            <li><a href="Alvaras_FINAL_COMPLETO_LIMPO_AVANCADO_v13_5.html">➡ Regulados/Validade do Alvará</a></li>
+            <li><a href="cadastro_economico_por_equipe_colorido.html">➡ CNAEs por Equipe</a></li></a></li>
+        </ul>
+    </div>
 
 <button onclick="logout()" style="padding:10px;margin-top:20px">Sair</button>
 
@@ -218,4 +237,5 @@ window.logout = function(){
 
 </body>
 </html>
+
 
