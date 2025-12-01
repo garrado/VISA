@@ -1,467 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Manifesto PWA -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="manifest" href="manifest.webmanifest">
-
-<!-- Cor da barra do navegador / app -->
 <meta name="theme-color" content="#004aad">
-
-<!-- Ajustes básicos para iOS (Safari / Tela de Início) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icons/visa-192.png">
 
-    <title>Gerência de Vigilância Sanitária - Página Institucional</title>
+<title>Gerência de Vigilância Sanitária</title>
 
-    <style>
-        :root {
-            --azul1: #2c5aa0;
-            --azul2: #3d6bb3;
-            --cinza1: #f2f4f8;
-            --cinza2: #e8eef5;
-            --texto: #333;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: var(--cinza1);
-            color: var(--texto);
-            line-height: 1.6;
-        }
-
-        /* BLOQUEIO COM SENHA */
-        #senha-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.75);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(3px);
-        }
-
-        #senha-box {
-            background: #fff;
-            padding: 30px;
-            width: 90%;
-            max-width: 380px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-        }
-
-        #senha-box h2 {
-            margin-bottom: 15px;
-            color: var(--azul1);
-        }
-
-        #senha-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: 1px solid #aaa;
-            margin-top: 10px;
-        }
-
-        #senha-btn {
-            width: 100%;
-            margin-top: 15px;
-            background: var(--azul1);
-            color: white;
-            padding: 12px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        #senha-btn:hover {
-            background: var(--azul2);
-        }
-
-        #conteudo {
-            display: none;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--azul1), var(--azul2));
-            color: white;
-            padding: 35px 20px;
-            text-align: center;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.3rem;
-            font-weight: bold;
-        }
-
-        header h2 {
-            margin-top: 8px;
-            font-size: 1.2rem;
-            font-weight: normal;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.07);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--azul1);
-            font-size: 1.5rem;
-            border-left: 6px solid var(--azul1);
-            padding-left: 10px;
-        }
-
-        .avisos {
-            background: #fff7dd;
-            border-left: 6px solid #d1a000;
-        }
-
-        .links-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .links-section li {
-            margin: 12px 0;
-        }
-
-        .links-section a {
-            text-decoration: none;
-            color: var(--azul1);
-            font-weight: bold;
-            border-bottom: 1px dashed var(--azul1);
-        }
-
-        .links-section a:hover {
-            color: var(--azul2);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 25px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-.aviso-importante {
-    color: #b30000;
-    font-weight: bold;
-    background: #fff0f0;
-    padding: 6px;
-    border-left: 5px solid red;
+<style>
+:root {
+    --azul1: #2c5aa0;
+    --azul2: #3d6bb3;
+    --cinza1: #f2f4f8;
+    --texto: #333;
 }
 
-#helpButton:hover {
-    opacity: 0.85;
-    transform: scale(0.97);
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--cinza1);
+    color: var(--texto);
 }
-        
-    </style>
+
+#conteudo {
+    display: none;
+}
+
+#login {
+    text-align: center;
+    margin-top: 80px;
+}
+
+header {
+    background: linear-gradient(135deg, var(--azul1), var(--azul2));
+    color: white;
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+}
+
+.card h3 {
+    color: var(--azul1);
+    border-left: 6px solid var(--azul1);
+    padding-left: 10px;
+}
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    color: #666;
+}
+</style>
 </head>
 
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(function (registration) {
-          console.log('Service Worker registrado com sucesso:', registration.scope);
-        })
-        .catch(function (error) {
-          console.error('Falha ao registrar o Service Worker:', error);
-        });
-    });
-  }
-</script>
-
-    
 <body>
 
-<!-- BLOQUEIO DE SENHA -->
-<!--
-    <div id="senha-overlay">
-    <div id="senha-box">
-        <h2>Acesso Restrito</h2>
-        <p>Digite a senha para acessar a página interna da VISA Municipal:</p>
+<!-- LOGIN -->
+<div id="login">
+    <h2>Área Restrita</h2>
+    <p>Entre com sua conta Google Institucional</p>
+    <button onclick="loginGoogle()" style="padding:12px 20px;font-size:16px;">
+        Entrar com Google
+    </button>
+</div>
 
-        <input type="password" id="senha-input" placeholder="Digite a senha...">
-        <button id="senha-btn">Entrar</button>
-
-        <p id="erro" style="color: red; margin-top: 10px; display: none;">
-            Senha incorreta!
-        </p>
-    </div>
-//</div>
-
-    -->
-
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDo473puJesZ9rr3IBoX5AWczCIMuKBTrg",
-  authDomain: "visam-3a30b.firebaseapp.com",
-  projectId: "visam-3a30b",
-  storageBucket: "visam-3a30b.firebasestorage.app",
-  messagingSenderId: "308899251430",
-  appId: "1:308899251430:web:0053cdbd0bed7f0de76727",
-  measurementId: "G-J52H2F63GR"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-    
-<!-- CONTEÚDO REAL DO SITE -->
+<!-- CONTEÚDO PROTEGIDO -->
 <div id="conteudo">
 
 <header>
-    <h1>Gerência de Vigilância Sanitária</h1>
-    <h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
+<h1>Gerência de Vigilância Sanitária</h1>
+<h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
 </header>
 
 <div class="container">
 
-    <!-- AVISOS -->
-    <div class="card avisos">
-        <h3>Avisos da Gerência</h3>
-        <p><strong>•</strong> Comunicados oficiais serão publicados aqui.</p>
-        <p class="aviso-importante"><strong>•</strong> Reunião com a fiscalização agendada para dia 4/12, nos dois períodos 8:30 às 12:00 e 13:30 às 17:00.</p>
-    </div>
+<div class="card">
+<h3>Avisos</h3>
+<p>Comunicados internos publicados aqui.</p>
+</div>
 
-    <!-- MENSAGENS INSTITUCIONAIS -->
-    <div class="card">
-        <h3>Mensagens Institucionais</h3>
-        <p>
-            Bem-vindos à página interna da Gerência de Vigilância Sanitária.
-            Aqui reunimos informações, links e comunicados destinados aos
-            servidores responsáveis pela proteção da saúde da população
-            de Anápolis. 
-        </p>
+<div class="card">
+<h3>Acessos rápidos</h3>
+<ul>
+<li><a href="Escala Dezembro v11.html">Escala</a></li>
+<li><a href="Totalização v11.html">Totalização</a></li>
+<li><a href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html">Veículos</a></li>
+<li><a href="Alvaras_FINAL_COMPLETO_LIMPO_AVANCADO_v13_5.html">Alvarás</a></li>
+</ul>
+</div>
 
-        <p>
-            Nosso compromisso diário é garantir segurança sanitária,
-            qualidade dos serviços fiscalizados e integridade técnica da atuação
-            da vigilância. Esta página foi criada para facilitar o acesso
-            a dados operacionais e melhorar o fluxo de comunicação interna.
-        </p>
-    </div>
-
-    <!-- LINKS PRINCIPAIS -->
-    <div class="card links-section">
-        <h3>Acessos Rápidos</h3>
-        <ul>
-            <li><a href="Escala Dezembro v11.html">➡ Escala de Plantão</a></li>
-            <li><a href="Totalização v11.html">➡ Totalização dos Plantões</a></li>
-            <li><a href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html">➡ Uso de Veículos</a></li>
-            <li><a href="Alvaras_FINAL_COMPLETO_LIMPO_AVANCADO_v13_5.html">➡ Regulados/Validade do Alvará</a></li>
-            <li><a href="cadastro_economico_por_equipe_colorido.html">➡ CNAEs por Equipe</a></li></a></li>
-        </ul>
-    </div>
+<button onclick="logout()" style="padding:10px;margin-top:20px">Sair</button>
 
 </div>
 
 <div class="footer">
-    Gerência de Vigilância Sanitária – Diretoria de Vigilância em Saúde<br>
-    Município de Anápolis – GO<br>
-    © 2025
+Gerência de Vigilância Sanitária – Diretoria de Vigilância em Saúde<br>
+Município de Anápolis – GO<br>
+© 2025
 </div>
 
 </div>
 
-<script>
-    const senhaCorreta = "visainterna2025";
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    document.getElementById("senha-btn").onclick = function () {
-        const senha = document.getElementById("senha-input").value;
+const firebaseConfig = {
+  apiKey: "AIzaSyDo473puJesZ9rr3IBoX5AWczCIMuKBTrg",
+  authDomain: "visam-3a30b.firebaseapp.com",
+  projectId: "visam-3a30b",
+  messagingSenderId: "308899251430",
+  appId: "1:308899251430:web:0053cdbd0bed7f0de76727"
+};
 
-        if (senha === senhaCorreta) {
-            document.getElementById("senha-overlay").style.display = "none";
-            document.getElementById("conteudo").style.display = "block";
-        } else {
-            document.getElementById("erro").style.display = "block";
-        }
-    };
-</script>
-<button id="helpButton" onclick="showHelp()" style="
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  background: #f39c12;
-  color:white;
-  border:none;
-  padding:8px 12px;
-  border-radius:6px;
-  font-size:14px;
-  cursor:pointer;
-  z-index: 10001;
-">
-  Ajuda
-</button>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-<div id="pwaBalloon" style="
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
-  background: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 14px;
-  max-width: 250px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  z-index: 10000;
-">
-  <strong>Você sabia?</strong><br>
-  Você pode instalar esta página como aplicativo.<br><br>
+// LOGIN
+window.loginGoogle = function() {
+  signInWithPopup(auth, provider).catch(console.error);
+};
 
-  <a href="javascript:void(0)" onclick="showHelp()" style="color:#004aad; font-weight:bold;">
-    Ver como fazer
-  </a>
+// CONTROLE DE SESSÃO
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("conteudo").style.display = "block";
+  } else {
+    document.getElementById("login").style.display = "block";
+    document.getElementById("conteudo").style.display = "none";
+  }
+});
 
-  <span onclick="document.getElementById('pwaBalloon').style.display='none'"
-        style="float:right; cursor:pointer; font-weight:bold;">✖</span>
-</div>
-
-<div id="helpModal" style="
-  display:none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 10002;
-">
-  <div style="
-    background: white;
-    max-width: 360px;
-    max-height: 80vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 6% auto;
-    padding: 20px;
-    border-radius: 10px;
-    font-size: 15px;
-    color: #333;
-  ">
-
-    <!-- Título + X -->
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="margin:0;">Como usar esta página no celular</h3>
-      <span onclick="closeHelp()" style="
-        cursor:pointer;
-        font-size:20px;
-        font-weight:bold;
-        color:#888;
-      ">✖</span>
-    </div>
-
-    <p>
-      Você pode colocar esta página como um “aplicativo” na tela do celular.
-      É opcional e não muda nada no uso pelo computador.
-    </p>
-
-    <hr>
-
-    <strong>📱 No Android</strong><br><br>
-
-    <b>Passo 1:</b> Abra esta página no navegador do celular (de preferência o <b>Google Chrome</b>).<br><br>
-
-    <b>Passo 2:</b> Toque nos <b>três pontinhos (⋮)</b> no canto superior direito.<br><br>
-
-    <b>Passo 3:</b> Toque em <b>“Instalar app”</b> ou <b>“Adicionar à tela inicial”</b>.<br><br>
-
-    <b>Passo 4:</b> Confirme. Um ícone será criado na tela do celular.
-
-    <hr>
-
-    <strong>🍎 No iPhone</strong><br><br>
-
-    <b>Passo 1:</b> Abra esta página no <b>Safari</b>.<br><br>
-
-    <b>Passo 2:</b> Toque no botão <b>Compartilhar</b> (quadrado com seta para cima).<br><br>
-
-    <b>Passo 3:</b> Toque em <b>“Adicionar à Tela de Início”</b>.<br><br>
-
-    <b>Passo 4:</b> Toque em <b>“Adicionar”</b>.
-
-    <hr>
-
-    <small>
-      ✔ Isso é opcional.<br>
-      ✔ O uso pelo computador continua igual.
-    </small><br><br>
-
-    <button onclick="closeHelp()" style="
-      background:#004aad;
-      color:white;
-      border:none;
-      padding:8px 14px;
-      border-radius:5px;
-      cursor:pointer;
-    ">
-      Fechar
-    </button>
-
-  </div>
-</div>
-
-<script>
-function showHelp(){
-  document.getElementById('helpModal').style.display = 'block';
-}
-
-function closeHelp(){
-  document.getElementById('helpModal').style.display = 'none';
-}
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+};
 </script>
 
-    
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
