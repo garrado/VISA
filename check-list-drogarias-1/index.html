@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Checklist DROGARIAS 1</title>
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --card: #12141a;
+      --text: #e9edf1;
+      --muted: #a6b0bb;
+      --border: rgba(255,255,255,.10);
+      --link: #8ab4f8;
+      --maxw: 980px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #4b5563;
+        --border: rgba(0,0,0,.10);
+        --link: #1d4ed8;
+      }
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+      padding: calc(12px + env(safe-area-inset-top)) 16px 12px 16px;
+    }
+    .topbar .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .title {
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .title h1 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .actions {
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 90%, transparent);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    main {
+      max-width: var(--maxw);
+      margin: 18px auto;
+      padding: 0 12px calc(24px + env(safe-area-inset-bottom)) 12px;
+    }
+    .hint {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      margin-bottom: 14px;
+    }
+    .page {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      margin: 0 0 16px 0;
+      overflow: hidden;
+    }
+    .page img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      background: #fff;
+    }
+    figcaption {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+    footer {
+      max-width: var(--maxw);
+      margin: 10px auto 0;
+      padding: 0 12px 18px 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="title">
+        <h1>Checklist DROGARIAS 1</h1>
+        <small>Compatível com Android e iOS • Arquivo original: original.pdf</small>
+      </div>
+      <div class="actions">
+        <a class="btn" href="../index.html">⬅️ Lista</a>
+        <a class="btn" href="original.pdf" download>⬇️ PDF</a>
+        <a class="btn" href="#topo">⬆️ Topo</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="topo">
+    <div class="hint">
+      Dica: no celular, use o gesto de <b>pinça</b> (zoom) para ler detalhes. Para imprimir, use a opção “Compartilhar/Imprimir” do navegador.
+    </div>
+    
+      <figure class="page">
+        <img src="assets/page-01.jpg" alt="Checklist DROGARIAS 1 - Página 1" loading="lazy">
+        <figcaption>Página 1</figcaption>
+      </figure>
+
+      <figure class="page">
+        <img src="assets/page-02.jpg" alt="Checklist DROGARIAS 1 - Página 2" loading="lazy">
+        <figcaption>Página 2</figcaption>
+      </figure>
+
+      <figure class="page">
+        <img src="assets/page-03.jpg" alt="Checklist DROGARIAS 1 - Página 3" loading="lazy">
+        <figcaption>Página 3</figcaption>
+      </figure>
+
+      <figure class="page">
+        <img src="assets/page-04.jpg" alt="Checklist DROGARIAS 1 - Página 4" loading="lazy">
+        <figcaption>Página 4</figcaption>
+      </figure>
+
+      <figure class="page">
+        <img src="assets/page-05.jpg" alt="Checklist DROGARIAS 1 - Página 5" loading="lazy">
+        <figcaption>Página 5</figcaption>
+      </figure>
+
+      <figure class="page">
+        <img src="assets/page-06.jpg" alt="Checklist DROGARIAS 1 - Página 6" loading="lazy">
+        <figcaption>Página 6</figcaption>
+      </figure>
+  </main>
+
+  <footer>
+    Gerado em 12/12/2025 12:14 (Horário de Brasília – UTC−3).
+  </footer>
+</body>
+</html>
