@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulta de Regulados</title>
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="stylesheet" href="./css/regulados.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">Consulta de Regulados</div>
+        <div class="brand__subtitle">Vigilância Sanitária • CVS</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="./index.html">Voltar ao início</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel__row">
+        <label class="label" for="q">Pesquisar</label>
+        <input id="q" class="input" type="search"
+               placeholder="Razão social, Fantasia, CNPJ/CPF, logradouro, CEP..."
+               autocomplete="off" />
+        <button id="btnClear" class="btn btn--ghost" type="button">Limpar</button>
+      </div>
+
+      <div class="panel__meta">
+        <div id="status" class="status">Carregando índice...</div>
+        <div class="small" id="hint">Dica: digite ao menos 3 caracteres.</div>
+      </div>
+
+      <div id="results" class="results" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="detailPanel" hidden>
+      <div class="panel__head">
+        <div>
+          <div class="h1" id="dTitle">—</div>
+          <div class="small" id="dSub">—</div>
+        </div>
+        <div class="panel__headActions">
+          <button id="btnCloseDetail" class="btn btn--ghost" type="button">Fechar</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card__title">Cadastro</div>
+          <div class="kv">
+            <div class="kv__k">Código</div><div class="kv__v" id="dCodigo">—</div>
+            <div class="kv__k">CNPJ/CPF</div><div class="kv__v" id="dDoc">—</div>
+            <div class="kv__k">Endereço</div><div class="kv__v" id="dEnd">—</div>
+            <div class="kv__k">Bairro</div><div class="kv__v" id="dBairro">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__title">Último alvará válido</div>
+          <div class="kv">
+            <div class="kv__k">Número</div><div class="kv__v" id="dAlvNum">—</div>
+            <div class="kv__k">Emissão</div><div class="kv__v" id="dAlvEmi">—</div>
+            <div class="kv__k">Validade</div><div class="kv__v" id="dAlvVal">—</div>
+            <div class="kv__k">Status</div><div class="kv__v" id="dAlvSta">—</div>
+          </div>
+        </div>
+
+        <div class="card card--full">
+          <div class="card__title">Atividades econômicas</div>
+          <div id="dAtividades" class="list">—</div>
+        </div>
+
+        <div class="card card--full">
+          <div class="card__title">Inspeções</div>
+          <div class="card__tools">
+            <span class="small">Clique em uma inspeção para abrir o histórico (memo).</span>
+          </div>
+          <div id="dInspecoes" class="list">—</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de histórico -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal__backdrop" id="modalBackdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+      <div class="modal__head">
+        <div>
+          <div class="h2" id="mTitle">Histórico</div>
+          <div class="small" id="mSub">—</div>
+        </div>
+        <button class="btn btn--ghost" id="btnModalClose" type="button">Fechar</button>
+      </div>
+      <div class="modal__body">
+        <pre class="memo" id="mBody">Carregando...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/regulados.js"></script>
+</body>
+</html>
