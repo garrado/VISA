@@ -240,8 +240,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-<!--
+
 // LISTA BRANCA (e-mails autorizados)
+
+<!--
 const EMAILS_AUTORIZADOS = [
   "geraldoedsonrosa@gmail.com",
   "patycdmes@gmail.com",
@@ -293,7 +295,6 @@ const EMAILS_AUTORIZADOS = [
 
 const MSG_ACESSO_NEGADO =
   "Acesso restrito. Esta página é destinada a usuários previamente autorizados pela Vigilância Sanitária.";
-
 -->
     
 // LOGIN
@@ -320,6 +321,7 @@ window.logout = function(){
 
 </body>
 </html>
+
 
 
 
