@@ -240,62 +240,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
-// LISTA BRANCA (e-mails autorizados)
-
-<!--
-const EMAILS_AUTORIZADOS = [
-  "geraldoedsonrosa@gmail.com",
-  "patycdmes@gmail.com",
-  "ariannefvieira@hotmail.com",
-  "marinaperillo@hotmail.com",
-  "visa@anapolis.go.gov.br",
-  "mariaedwiges@anapolis.go.gov.br",
-  "tathnut@hotmail.com",
-  "simonegrossi@anapolis.go.gov.br",
-  "kamillarolim@gmail.com",
-  "lulucieneepais@gmail.com",
-  "adrianepereira@anapolis.go.gov.br",
-  "claudio@anapolis.go.gov.br",
-  "silviamarques@anapolis.go.gov.br",
-  "mhg.rodovalho@gmail.com",
-  "medwiges@gmail.com",
-  "lindaenila@gmail.com",
-  "wanessab412@gmail.com",
-  "juliocteles@anapolis.go.gov.br",
-  "fabiolappmarques@gmail.com",
-  "lidianesimoes@anapolis.go.gov.br",
-  "educacao.esportes@anapolis.go.gov.br",
-  "crbferreira81@gmail.com",
-  "profajulianakenia@gmail.com",
-  "dani.visaanapolis@gmail.com",
-  "medicamentos@anapolis.go.gov.br",
-  "cesio@anapolis.go.gov.br",
-  "gubio@anapolis.go.gov.br",
-  "marciorodovalho@anapolis.go.gov.br",
-  "edsonarantes@anapolis.go.gov.br",
-  "981217644pedro@gmail.com",
-  "julianafviturino@gmail.com",
-  "thaysasouza97@gmail.com",
-  "farm.castro78@gmail.com",
-  "viniciuscassiano@anapolis.go.gov.br",
-  "thiagogomesgobo@gmail.com",
-  "liviabr.visa@gmail.com",
-  "wanessa05@gmail.com",
-  "santosrat@gmail.com",
-  "vivianemiyada@gmail.com",
-  "angelavet2@gmail.com",
-  "diasbrito1515@gmail.com",
-  "ademargatu86@gmail.com",
-  "cidalinacoelho@anapolis.go.gov.br",
-  "lauraeleuza@gmail.com",
-  "portaria344@anapolis.go.gov.br",
-  "mens.agitat.molem.cns@gmail.com"
-].map(e => e.trim().toLowerCase());
-
-const MSG_ACESSO_NEGADO =
-  "Acesso restrito. Esta página é destinada a usuários previamente autorizados pela Vigilância Sanitária.";
--->
     
 // LOGIN
 window.loginGoogle = function() {
@@ -321,6 +265,7 @@ window.logout = function(){
 
 </body>
 </html>
+
 
 
 
