@@ -300,25 +300,32 @@
   const loadIndex = async () => {
     try {
       setStatus("Carregando índice...");
-      const data = await fetchJson("./data/index_regulados.json");
+   const data = await fetchJson("./data/index_regulados.json");
 
-      const rows = Array.isArray(data?.dados) ? data.dados : [];
-      // pré-computa blob normalizado para busca rápida
-      state.index = rows.map((r) => {
-        const blob = [
-          r.codigo,
-          r.razao,
-          r.fantasia,
-          r.cnpj,
-          r.cpf,
-          r.logradouro,
-          r.bairro_codigo,
-        ].filter(Boolean).join(" ");
-        return {
-          ...r,
-          _blob: norm(blob),
-        };
-      });
+// agora o índice é array de arrays:
+// [codigo, razao, fantasia, documento]
+const rows = Array.isArray(data) ? data : [];
+
+// normaliza para o formato que o resto da página já espera
+state.index = rows.map((r) => {
+  const codigo = r[0];
+  const razao = r[1] || "";
+  const fantasia = r[2] || "";
+  const documento = r[3] || "";
+
+  const blob = [codigo, razao, fantasia, documento].join(" ");
+
+  return {
+    codigo,
+    razao,
+    fantasia,
+    documento,
+    _blob: norm(blob),
+  };
+});
+
+state.indexLoaded = true;
+setStatus(`Índice carregado. Regulados ativos: ${state.index.length}.`);
 
       state.indexLoaded = true;
       setStatus(`Índice carregado. Regulados ativos: ${state.index.length}.`);
@@ -354,4 +361,5 @@
   // init
   loadIndex();
 })();
+
 
