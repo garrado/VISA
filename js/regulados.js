@@ -259,11 +259,15 @@
       els.mBody.textContent = (h && typeof h.decr === "string" && h.decr.trim() !== "")
         ? h.decr
         : "(Sem conteúdo no histórico / DECR vazio)";
-    } catch (e) {
-      console.error(e);
-      els.mSub.textContent = "Falha ao carregar.";
-      els.mBody.textContent = `Erro: ${e.message}`;
-    }
+} catch (e) {
+  console.warn("Histórico não disponível:", e);
+
+  els.mSub.textContent = "Histórico indisponível";
+  els.mBody.textContent =
+    "O conteúdo detalhado desta inspeção não está disponível nesta versão pública do sistema.\n\n" +
+    "Essas informações são de uso institucional e podem ser liberadas futuramente, conforme autorização.";
+}
+
   };
 
   const closeModal = () => {
@@ -350,3 +354,4 @@
   // init
   loadIndex();
 })();
+
