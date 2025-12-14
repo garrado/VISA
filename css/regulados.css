@@ -159,3 +159,10 @@ body{
   line-height:1.45;
   color:var(--text);
 }
+.modalBackdrop[hidden],
+.modal[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
