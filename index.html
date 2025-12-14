@@ -240,7 +240,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
+<!--
 // LISTA BRANCA (e-mails autorizados)
 const EMAILS_AUTORIZADOS = [
   "geraldoedsonrosa@gmail.com",
@@ -254,6 +254,7 @@ const EMAILS_AUTORIZADOS = [
   "kamillarolim@gmail.com",
   "lulucieneepais@gmail.com",
   "adrianepereira@anapolis.go.gov.br",
+  "claudio@anapolis.go.gov.br",
   "silviamarques@anapolis.go.gov.br",
   "mhg.rodovalho@gmail.com",
   "medwiges@gmail.com",
@@ -293,7 +294,7 @@ const EMAILS_AUTORIZADOS = [
 const MSG_ACESSO_NEGADO =
   "Acesso restrito. Esta página é destinada a usuários previamente autorizados pela Vigilância Sanitária.";
 
-
+-->
     
 // LOGIN
 window.loginGoogle = function() {
@@ -319,6 +320,7 @@ window.logout = function(){
 
 </body>
 </html>
+
 
 
 
