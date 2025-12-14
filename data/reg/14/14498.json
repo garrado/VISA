@@ -1,1 +1,1 @@
-{"codigo":14498,"razao":"MARINITA MARQUES PEREIRA","fantasia":"AGRO BELGA","cnpj":"00.857.004/0001-90","cpf":"008.570.040-00","endereco":{"logradouro":"AV. SEBASTIAO PEDRO JUNQUEIRA, 2495","complemento":null,"cep":null},"bairro":{"codigo":0,"nome":null},"atividades":[{"cae_codigo":"14498","subclasse":"4789-0/99","classe":"4789099","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":14498, "razao":"MARINITA MARQUES PEREIRA", "fantasia":"AGRO BELGA", "inspecoes":[] }

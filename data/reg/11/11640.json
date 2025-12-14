@@ -1,1 +1,1 @@
-{"codigo":11640,"razao":"MARIA DE LOURDES DO PRADO","fantasia":"BANCA DE ALIMENTOS","cnpj":null,"cpf":"165.647.661-49","endereco":{"logradouro":"RUA RA 01","complemento":"QD 02 LT 05","cep":null},"bairro":{"codigo":255,"nome":"FEIRA LIVRE"},"atividades":[{"cae_codigo":"11640","subclasse":"5611-2/03","classe":"5611203","tipo":"PRINCIPAL","atividade":"Lanchonetes, casas de cha, de sucos e similares","equipe":"AG","complexidade":"BAIXA"}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":11640, "razao":"MARIA DE LOURDES DO PRADO", "fantasia":"BANCA DE ALIMENTOS", "inspecoes":[] }

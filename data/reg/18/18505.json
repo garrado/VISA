@@ -1,1 +1,1 @@
-{"codigo":18505,"razao":"TANIA SOARES DIAS","fantasia":"","cnpj":"14.795.515/0001-30","cpf":null,"endereco":{"logradouro":"AVENIDA DOM EMANUEL","complemento":"Q50 L 12 CASA 01","cep":"75-040-440"},"bairro":{"codigo":31,"nome":"BAIRRO MARACANA"},"atividades":[{"cae_codigo":"18505","subclasse":"5611-2/01","classe":"5611201","tipo":"PRINCIPAL","atividade":"Restaurantes e similares","equipe":"AG","complexidade":"MÉDIA"}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":18505, "razao":"TANIA SOARES DIAS", "fantasia":"", "inspecoes":[] }

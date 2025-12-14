@@ -1,1 +1,1 @@
-{"codigo":19026,"razao":"SIMONE SILVEIRA DE PAIVA","fantasia":"","cnpj":null,"cpf":"269.341.911-53","endereco":{"logradouro":"RUA GENI RIBEIRO GUIMARAES","complemento":"S/N QD.46 LT.14","cep":null},"bairro":{"codigo":31,"nome":"BAIRRO MARACANA"},"atividades":[{"cae_codigo":"19026","subclasse":"5611-2/03","classe":"5611203","tipo":"PRINCIPAL","atividade":"Lanchonetes, casas de cha, de sucos e similares","equipe":"AG","complexidade":"BAIXA"}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":19026, "razao":"SIMONE SILVEIRA DE PAIVA", "fantasia":"", "inspecoes":[] }

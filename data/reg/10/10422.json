@@ -1,1 +1,1 @@
-{"codigo":10422,"razao":"MANOEL RODRIGUES SALES","fantasia":"BAR ELDORADO","cnpj":null,"cpf":"031.750.901-25","endereco":{"logradouro":"AV. SEBASTIAO PEDRO JUNQUEIRA","complemento":"1580","cep":null},"bairro":{"codigo":20,"nome":"BAIRRO ELDORADO"},"atividades":[{"cae_codigo":"10422","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":10422, "razao":"MANOEL RODRIGUES SALES", "fantasia":"BAR ELDORADO", "inspecoes":[] }

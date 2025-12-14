@@ -1,1 +1,1 @@
-{"codigo":19073,"razao":"FABIANA JOSE DE MORAES TOLEDO","fantasia":"","cnpj":"15.096.169/0001-64","cpf":null,"endereco":{"logradouro":"RUA TONICO DE PINA ,415","complemento":"SALA 01","cep":"75-020-110"},"bairro":{"codigo":49,"nome":"CENTRO"},"atividades":[{"cae_codigo":"19073","subclasse":"5611-2/01","classe":"5611201","tipo":"PRINCIPAL","atividade":"Restaurantes e similares","equipe":"AG","complexidade":"MÉDIA"}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":19073, "razao":"FABIANA JOSE DE MORAES TOLEDO", "fantasia":"", "inspecoes":[] }

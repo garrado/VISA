@@ -1,1 +1,1 @@
-{"codigo":19115,"razao":"MARCOS AURELIO SOUZA","fantasia":"","cnpj":null,"cpf":"247.778.851-51","endereco":{"logradouro":"RUA B","complemento":"71","cep":null},"bairro":{"codigo":216,"nome":"VILA FORMOSA"},"atividades":[],"alvara_ultimo":null,"inspecoes":[{"controle":27598,"ndoc":17203,"dt_visita":"2012-09-18"}]}
+{ "codigo":19115, "razao":"MARCOS AURELIO SOUZA", "fantasia":"", "inspecoes":[{"controle":27598,"ndoc":17203,"dt_visita":"2012-09-18","documento_emitido":"TERMO DE INTIMAÇÃO","numero_documento":"20388","prazo_retorno":"0","descricao_path":"his\\03\\17203.json"}] }

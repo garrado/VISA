@@ -1,1 +1,1 @@
-{"codigo":12338,"razao":"ANTONIO VIEIRA DE SOUZA","fantasia":"BAR SOUZA","cnpj":null,"cpf":"355.179.211-91","endereco":{"logradouro":"RUA SENADOR PARANHOS","complemento":"QD 08 LT 03","cep":null},"bairro":{"codigo":93,"nome":"JARDIM GUANABARA"},"atividades":[{"cae_codigo":"12338","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":12338, "razao":"ANTONIO VIEIRA DE SOUZA", "fantasia":"BAR SOUZA", "inspecoes":[] }

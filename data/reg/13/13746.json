@@ -1,1 +1,1 @@
-{"codigo":13746,"razao":"MARIA DE FATIMA MOURA SOUZA","fantasia":"DOCUMENTO SOLTO","cnpj":null,"cpf":"234.606.951-53","endereco":{"logradouro":"RUA ILDA PEREIRA BRAGA","complemento":"QD 34 LT 04","cep":null},"bairro":{"codigo":197,"nome":"SETOR VIVIAN PARQUE"},"atividades":[{"cae_codigo":"13746","subclasse":"4781-4/00","classe":"4781400","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":13746, "razao":"MARIA DE FATIMA MOURA SOUZA", "fantasia":"DOCUMENTO SOLTO", "inspecoes":[] }

@@ -1,1 +1,1 @@
-{"codigo":12369,"razao":"CARLOS PEREIRA DA SILVA","fantasia":"BAR DO LOURIM","cnpj":null,"cpf":"846.467.481-34","endereco":{"logradouro":"RUA 13","complemento":"QD 08 LT 18","cep":"75-136-070"},"bairro":{"codigo":254,"nome":"VILA UNIAO"},"atividades":[{"cae_codigo":"12369","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":12369, "razao":"CARLOS PEREIRA DA SILVA", "fantasia":"BAR DO LOURIM", "inspecoes":[] }

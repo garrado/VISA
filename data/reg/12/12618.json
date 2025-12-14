@@ -1,1 +1,1 @@
-{"codigo":12618,"razao":"MARINHO RODRIGUES DE OLIVEIRA","fantasia":"BAR","cnpj":null,"cpf":"011.523.271-00","endereco":{"logradouro":"RUA 12","complemento":"QD.13 LT.56","cep":null},"bairro":{"codigo":184,"nome":"SETOR INDUSTRIAL MUNIR CALIXTO"},"atividades":[{"cae_codigo":"12618","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":12618, "razao":"MARINHO RODRIGUES DE OLIVEIRA", "fantasia":"BAR", "inspecoes":[] }

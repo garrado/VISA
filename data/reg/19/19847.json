@@ -1,1 +1,1 @@
-{"codigo":19847,"razao":"ELIANE OLIVEIRA DE CASTRO","fantasia":"","cnpj":"15.785.733/0001-56","cpf":null,"endereco":{"logradouro":"RUA DR. ALMEIDA JUNIOR S/N","complemento":"QD.19 LT.01","cep":"75-140-290"},"bairro":{"codigo":45,"nome":"BAIRRO SAO JOSE"},"atividades":[{"cae_codigo":"19847","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":19847, "razao":"ELIANE OLIVEIRA DE CASTRO", "fantasia":"", "inspecoes":[] }

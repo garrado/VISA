@@ -1,1 +1,1 @@
-{"codigo":21803,"razao":"RUI ABDALA","fantasia":"","cnpj":null,"cpf":"003.497.471-72","endereco":{"logradouro":"RUA 14 DE JULHO","complemento":"839","cep":null},"bairro":{"codigo":49,"nome":"CENTRO"},"atividades":[],"alvara_ultimo":null,"inspecoes":[{"controle":38050,"ndoc":28849,"dt_visita":"2013-02-15"}]}
+{ "codigo":21803, "razao":"RUI ABDALA", "fantasia":"", "inspecoes":[{"controle":38050,"ndoc":28849,"dt_visita":"2013-02-15","documento_emitido":"TERMO DE INTIMAÇÃO","numero_documento":"23488","prazo_retorno":"1","descricao_path":"his\\49\\28849.json"}] }

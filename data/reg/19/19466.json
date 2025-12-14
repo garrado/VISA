@@ -1,1 +1,1 @@
-{"codigo":19466,"razao":"ADANIL VICENTE TEIXEIRA","fantasia":"","cnpj":"15.268.433/0001-08","cpf":null,"endereco":{"logradouro":"RUA JOAO CONSTANTE S/N","complemento":"Q12  L.18","cep":"75-144-430"},"bairro":{"codigo":206,"nome":"VILA CALIXTO ABRAO"},"atividades":[{"cae_codigo":"19466","subclasse":"1095-3/00","classe":"1095300","tipo":"PRINCIPAL","atividade":"Fabricacao de especiarias, molhos, temperos e condimentos","equipe":"IA","complexidade":"ALTA"}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":19466, "razao":"ADANIL VICENTE TEIXEIRA", "fantasia":"", "inspecoes":[] }

@@ -1,1 +1,1 @@
-{"codigo":12184,"razao":"JOSE CARLOS DA SILVA","fantasia":"JC BAR","cnpj":null,"cpf":"234.068.361-00","endereco":{"logradouro":"RUA P 34","complemento":"QD 22 LT 10","cep":null},"bairro":{"codigo":102,"nome":"JARDIM PROGRESSO"},"atividades":[{"cae_codigo":"12184","subclasse":"5611-2/02","classe":"5611202","tipo":"PRINCIPAL","atividade":null,"equipe":null,"complexidade":null}],"alvara_ultimo":null,"inspecoes":[]}
+{ "codigo":12184, "razao":"JOSE CARLOS DA SILVA", "fantasia":"JC BAR", "inspecoes":[] }

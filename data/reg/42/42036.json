@@ -1,1 +1,1 @@
-{"codigo":42036,"razao":"SEBASTIAO LOPES DA SILVA","fantasia":"MARIA ROSA DE JESUS","cnpj":null,"cpf":"036.427.631-20","endereco":{"logradouro":"AVENIDA TIRADENTES","complemento":"num 1830","cep":"75-000-000"},"bairro":{"codigo":49,"nome":"CENTRO"},"atividades":[],"alvara_ultimo":{"numero":202501349,"status":"","dt_emite":"2025-07-02","dt_validade":"2026-07-01"},"inspecoes":[]}
+{ "codigo":42036, "razao":"SEBASTIAO LOPES DA SILVA", "fantasia":"MARIA ROSA DE JESUS", "inspecoes":[] }
