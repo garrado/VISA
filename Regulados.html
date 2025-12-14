@@ -21,70 +21,41 @@
   </header>
 
   <main class="wrap">
-    <section class="panel">
-      <div class="panel__row">
-        <label class="label" for="q">Pesquisar</label>
-        <input id="q" class="input" type="search"
-               placeholder="Razão social, Fantasia, CNPJ/CPF, logradouro, CEP..."
-               autocomplete="off" />
-        <button id="btnClear" class="btn btn--ghost" type="button">Limpar</button>
+  <section class="panel">
+    <div class="row">
+      <input id="q" type="search" placeholder="Pesquisar por razão social, fantasia, documento ou código..." autocomplete="off" />
+      <button id="btnClear" type="button">Limpar</button>
+    </div>
+
+    <div id="status" class="status">Carregando índice...</div>
+    <div id="results" class="results"></div>
+  </section>
+
+  <aside id="detailPanel" class="detail" hidden>
+    <div class="detailTop">
+      <div>
+        <div id="dTitle" class="dTitle">—</div>
+        <div id="dSub" class="dSub">—</div>
       </div>
+      <button id="btnCloseDetail" type="button">Fechar</button>
+    </div>
 
-      <div class="panel__meta">
-        <div id="status" class="status">Carregando índice...</div>
-        <div class="small" id="hint">Dica: digite ao menos 3 caracteres.</div>
-      </div>
+    <div class="detailGrid">
+      <div><b>Código:</b> <span id="dCodigo">—</span></div>
+      <div><b>Documento:</b> <span id="dDoc">—</span></div>
+      <div><b>Endereço:</b> <span id="dEnd">—</span></div>
+      <div><b>Bairro:</b> <span id="dBairro">—</span></div>
+      <div><b>Alvará nº:</b> <span id="dAlvNum">—</span></div>
+      <div><b>Emissão:</b> <span id="dAlvEmi">—</span></div>
+      <div><b>Validade:</b> <span id="dAlvVal">—</span></div>
+    </div>
 
-      <div id="results" class="results" aria-live="polite"></div>
-    </section>
-
-    <section class="panel" id="detailPanel" hidden>
-      <div class="panel__head">
-        <div>
-          <div class="h1" id="dTitle">—</div>
-          <div class="small" id="dSub">—</div>
-        </div>
-        <div class="panel__headActions">
-          <button id="btnCloseDetail" class="btn btn--ghost" type="button">Fechar</button>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <div class="card__title">Cadastro</div>
-          <div class="kv">
-            <div class="kv__k">Código</div><div class="kv__v" id="dCodigo">—</div>
-            <div class="kv__k">CNPJ/CPF</div><div class="kv__v" id="dDoc">—</div>
-            <div class="kv__k">Endereço</div><div class="kv__v" id="dEnd">—</div>
-            <div class="kv__k">Bairro</div><div class="kv__v" id="dBairro">—</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card__title">Último alvará válido</div>
-          <div class="kv">
-            <div class="kv__k">Número</div><div class="kv__v" id="dAlvNum">—</div>
-            <div class="kv__k">Emissão</div><div class="kv__v" id="dAlvEmi">—</div>
-            <div class="kv__k">Validade</div><div class="kv__v" id="dAlvVal">—</div>
-            <div class="kv__k">Status</div><div class="kv__v" id="dAlvSta">—</div>
-          </div>
-        </div>
-
-        <div class="card card--full">
-          <div class="card__title">Atividades econômicas</div>
-          <div id="dAtividades" class="list">—</div>
-        </div>
-
-        <div class="card card--full">
-          <div class="card__title">Inspeções</div>
-          <div class="card__tools">
-            <span class="small">Clique em uma inspeção para abrir o histórico (memo).</span>
-          </div>
-          <div id="dInspecoes" class="list">—</div>
-        </div>
-      </div>
-    </section>
-  </main>
+    <div class="detailBtns">
+      <button id="btnAtividades" type="button">Atividades</button>
+      <button id="btnInspecoes" type="button">Inspeções</button>
+    </div>
+  </aside>
+</main>
 
   <!-- Modal de histórico -->
   <div id="modal" class="modal" hidden>
