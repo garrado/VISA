@@ -185,6 +185,9 @@ a, a:visited, a:hover, a:active {
 .result__title, .card__title, .item__title {
   color: #fff !important;
 }
+.result{ color: var(--text); }
+.result *{ color: inherit; }
+
 
 
 
