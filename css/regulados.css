@@ -188,6 +188,10 @@ a, a:visited, a:hover, a:active {
 .result{ color: var(--text); }
 .result *{ color: inherit; }
 
+.result{ color: var(--text); text-align:left; }
+.result *{ color: inherit; }
+.result__sub{ color: var(--muted) !important; }
+
 
 
 
