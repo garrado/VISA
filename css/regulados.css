@@ -247,6 +247,42 @@ a, a:visited, a:hover, a:active {
 .modal[hidden], .modalBackdrop[hidden]{ display:none !important; }
 
 
+.heroBtn{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  white-space:nowrap;
+  background: linear-gradient(135deg, rgba(44,90,160,.12), rgba(61,107,179,.10));
+  border: none;
+  color: #fff;
+  transition: background 0.3s ease-in-out;
+}
+
+.heroBtn:hover{
+  background: linear-gradient(135deg, rgba(61,107,179,.3), rgba(44,90,160,.25));
+}
+
+.heroBtn span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 18px;
+}
+
+
+
+
 
 
 
