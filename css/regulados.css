@@ -165,4 +165,27 @@ body{
   pointer-events: none !important;
 }
 
+/* força texto legível nos cards e remove "azul de link" */
+.result,
+.result * ,
+.card,
+.card * ,
+.item,
+.item * {
+  color: var(--text) !important;
+}
+
+/* links não podem ficar azuis/roxos */
+a, a:visited, a:hover, a:active {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+/* se algum título estiver ficando escuro */
+.result__title, .card__title, .item__title {
+  color: #fff !important;
+}
+
+
+
 
