@@ -40,16 +40,29 @@
       <button id="btnCloseDetail" type="button">Fechar</button>
     </div>
 
-    <div class="detailGrid">
+  <div class="detailGrid">
   <div><b>Código:</b> <span id="dCodigo">—</span></div>
   <div><b>Documento:</b> <span id="dDoc">—</span></div>
   <div><b>Endereço:</b> <span id="dEnd">—</span></div>
   <div><b>Bairro:</b> <span id="dBairro">—</span></div>
-
   <div><b>Alvará (exercício):</b> <span id="dAlvEx">—</span></div>
   <div><b>Validade:</b> <span id="dAlvVal">—</span></div>
 </div>
 
+     <div class="grid" style="margin-top:12px">
+    <div class="card card--full">
+      <div class="card__title">Atividades (CNAE)</div>
+      <div id="atividadesList" class="list"></div>
+    </div>
+
+    <div class="card card--full">
+      <div class="card__title">Inspeções</div>
+      <div id="inspecoesList" class="list"></div>
+    </div>
+  </div>
+
+
+    
     <div class="detailBtns">
       <button id="btnAtividades" type="button">Atividades</button>
       <button id="btnInspecoes" type="button">Inspeções</button>
@@ -64,14 +77,17 @@
   <div class="modalBox">
     <div class="modalTop">
       <div>
-        <div id="mTitle" class="mTitle">—</div>
-        <div id="mSub" class="mSub">—</div>
+        <div id="modalTitle" class="mTitle">—</div>
+        <div id="modalSub" class="mSub">—</div>
       </div>
-      <button id="btnModalClose" type="button">Fechar</button>
+      <button id="btnCloseModal" type="button">Fechar</button>
     </div>
-    <pre id="mBody" class="mBody"></pre>
+
+    <!-- troque pre por div (pra permitir botões no futuro, se quiser) -->
+    <div id="modalMemo" class="mBody"></div>
   </div>
 </div>
+
 
   <script src="./js/regulados.js?v=7" defer></script>
 </body>
