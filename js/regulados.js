@@ -1,401 +1,401 @@
-/* =========================
-   Regulados • CVS (GitHub Pages)
-   Compatível com Regulados.html atual (Opção A)
-   VERSÃO CORRIGIDA - com verificações de null
-========================= */
-
 (() => {
-  const DATA_BASE = "./data";
+  "use strict";
 
-  // --- refs do HTML (IDs do seu Regulados.html) - COM VERIFICAÇÃO
-  const elQ = document.getElementById("q");
-  const elClear = document.getElementById("btnClear");
-  const elStatus = document.getElementById("status");
-  const elResults = document.getElementById("results");
+  // --------- helpers ----------
+  const $ = (sel) => document.querySelector(sel);
+  const byId = (id) => document.getElementById(id);
 
-  const elDetail = document.getElementById("detailPanel");
-  const elDTitle = document.getElementById("dTitle");
-  const elDSub = document.getElementById("dSub");
-  const elCloseDetail = document.getElementById("btnCloseDetail");
+  const pad5 = (n) => String(n ?? "").padStart(5, "0");
+  const regPrefix = (codigo) => pad5(codigo).slice(0, 2);
+  const hisBucket = (ndoc) => String((Number(ndoc) || 0) % 100).padStart(2, "0");
 
-  const elDCodigo = document.getElementById("dCodigo");
-  const elDDoc = document.getElementById("dDoc");
-  const elDEnd = document.getElementById("dEnd");
-  const elDBairro = document.getElementById("dBairro");
-
-  const elDAlvNum = document.getElementById("dAlvNum");
-  const elDAlvEmi = document.getElementById("dAlvEmi");
-  const elDAlvVal = document.getElementById("dAlvVal");
-
-  const elBtnAtv = document.getElementById("btnAtividades");
-  const elBtnInsp = document.getElementById("btnInspecoes");
-
-  const elBackdrop = document.getElementById("modalBackdrop");
-  const elModal = document.getElementById("modal");
-  const elMTitle = document.getElementById("mTitle");
-  const elMSub = document.getElementById("mSub");
-  const elMBody = document.getElementById("mBody");
-  const elCloseModal = document.getElementById("btnModalClose");
-
-  // VERIFICAÇÃO: Se elementos críticos não existirem, mostrar erro
-  if (!elQ || !elResults || !elStatus) {
-    console.error("ERRO: Elementos HTML essenciais não encontrados. Verifique os IDs no HTML.");
-    return;
+  function safeText(el, v) {
+    if (!el) return;
+    el.textContent = (v === null || v === undefined || v === "") ? "—" : String(v);
   }
 
-  // --- estado
-  let INDEX = [];
-  let CURRENT = null;
-
-  // --- utils
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  function norm(s) {
-    return (s || "")
-      .toString()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .trim();
+  function onlyDigits(s) {
+    return String(s || "").replace(/\D+/g, "");
   }
 
-  function pad2(n) {
-    return String(n).padStart(2, "0");
+  function normalize(s) {
+    return String(s || "").toLowerCase().trim();
   }
 
-  function pad5(n) {
-    return String(n).padStart(5, "0");
+  async function fetchJson(url) {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) {
+      const txt = await r.text().catch(() => "");
+      throw new Error(`HTTP ${r.status} em ${url}${txt ? `\n${txt.slice(0, 200)}` : ""}`);
+    }
+    return r.json();
   }
 
-  function bucketFromNdoc(ndoc) {
-    return pad2(Number(ndoc) % 100);
+  // --------- elements ----------
+  const els = {
+    q: byId("q"),
+    btnClear: byId("btnClear"),
+    status: byId("status"),
+    results: byId("results"),
+
+    detailPanel: byId("detailPanel"),
+    btnCloseDetail: byId("btnCloseDetail"),
+
+    // detalhes
+    dTitle: byId("dTitle"),
+    dSub: byId("dSub"),
+    dCodigo: byId("dCodigo"),
+    dDoc: byId("dDoc"),
+    dEnd: byId("dEnd"),
+    dBairro: byId("dBairro"),
+
+    dAlvNum: byId("dAlvNum"),
+    dAlvEmi: byId("dAlvEmi"),
+    dAlvVal: byId("dAlvVal"),
+
+    // listas
+    btnAtividades: byId("btnAtividades"),
+    btnInspecoes: byId("btnInspecoes"),
+    atividadesList: byId("atividadesList"),
+    inspecoesList: byId("inspecoesList"),
+
+    // modal histórico
+    modalBackdrop: byId("modalBackdrop"),
+    modal: byId("modal"),
+    modalTitle: byId("modalTitle"),
+    modalMemo: byId("modalMemo"),
+    btnCloseModal: byId("btnCloseModal"),
+  };
+
+  // --------- state ----------
+  let indexItems = [];
+  let filtered = [];
+
+  function showStatus(msg) {
+    safeText(els.status, msg || "");
   }
 
-  function setStatus(msg) {
-    if (elStatus) elStatus.textContent = msg;
+  function hideDetail() {
+    if (els.detailPanel) els.detailPanel.hidden = true;
   }
 
-  function showDetail(show) {
-    if (elDetail) elDetail.hidden = !show;
-  }
-
-  function openModal(title, sub, html) {
-    if (elMTitle) elMTitle.textContent = title || "—";
-    if (elMSub) elMSub.textContent = sub || "—";
-    if (elMBody) elMBody.innerHTML = html || "";
-    if (elBackdrop) elBackdrop.hidden = false;
+  function showDetail() {
+    if (els.detailPanel) els.detailPanel.hidden = false;
   }
 
   function closeModal() {
-    if (elBackdrop) elBackdrop.hidden = true;
-    if (elMBody) elMBody.innerHTML = "";
+    if (els.modalBackdrop) els.modalBackdrop.hidden = true;
+    if (els.modal) els.modal.hidden = true;
+    safeText(els.modalTitle, "");
+    safeText(els.modalMemo, "");
   }
 
-  // --- fetch com anti-cache (iOS / GH Pages)
-  async function fetchJson(path) {
-    const url = `${path}?v=${Date.now()}`;
-    const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error(`HTTP ${r.status} em ${path}`);
-    return await r.json();
+  function openModal(title, memo) {
+    safeText(els.modalTitle, title || "Histórico");
+    safeText(els.modalMemo, memo || "");
+    if (els.modalBackdrop) els.modalBackdrop.hidden = false;
+    if (els.modal) els.modal.hidden = false;
   }
 
-  // --- carrega índice
-  async function loadIndex() {
-    setStatus("Carregando índice...");
-    const j = await fetchJson(`${DATA_BASE}/index_regulados.json`);
-    INDEX = Array.isArray(j?.dados) ? j.dados : [];
-    setStatus(`Índice carregado: ${INDEX.length.toLocaleString("pt-BR")} regulados.`);
-  }
-
-  // --- render lista de resultados
+  // --------- render results ----------
   function renderResults(list) {
-    if (!elResults) return;
-    elResults.innerHTML = "";
+    if (!els.results) return;
+    els.results.innerHTML = "";
 
-    if (!list.length) {
-      elResults.innerHTML = `<div class="empty">Nenhum resultado.</div>`;
+    if (!list || list.length === 0) {
+      const div = document.createElement("div");
+      div.className = "small";
+      div.textContent = "Nenhum regulado encontrado.";
+      els.results.appendChild(div);
       return;
     }
 
-    for (const r of list) {
-      const div = document.createElement("button");
-      div.type = "button";
-      div.className = "card";
-      div.innerHTML = `
-        <div class="card__title">${escapeHtml(r.razao || "—")}</div>
-        <div class="card__sub">${escapeHtml(r.fantasia || "")}</div>
-        <div class="card__meta">
-          <span>#${escapeHtml(String(r.codigo))}</span>
-          <span>${escapeHtml(r.documento || "")}</span>
-        </div>
-      `;
-      div.addEventListener("click", () => loadRegulado(r.codigo));
-      elResults.appendChild(div);
+    const frag = document.createDocumentFragment();
+    for (const it of list.slice(0, 80)) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "result";
+      btn.dataset.codigo = String(it.codigo);
+
+      const top = document.createElement("div");
+      top.className = "result__top";
+
+      const left = document.createElement("div");
+
+      const title = document.createElement("div");
+      title.className = "result__title";
+      title.textContent = it.razao || "—";
+
+      const sub = document.createElement("div");
+      sub.className = "result__sub";
+      const fant = it.fantasia ? `Fantasia: ${it.fantasia}` : "Fantasia: —";
+      const doc = it.documento ? `Documento: ${it.documento}` : "Documento: —";
+      sub.textContent = `${fant} · ${doc}`;
+
+      left.appendChild(title);
+      left.appendChild(sub);
+
+      const tag = document.createElement("div");
+      tag.className = "tag";
+      tag.textContent = `#${it.codigo}`;
+
+      top.appendChild(left);
+      top.appendChild(tag);
+
+      btn.appendChild(top);
+
+      btn.addEventListener("click", () => loadRegulado(it.codigo));
+      frag.appendChild(btn);
     }
+
+    els.results.appendChild(frag);
   }
 
-  // --- busca no índice
-  function searchIndex(term) {
-    const t = norm(term);
-    if (t.length < 2) return [];
+  // --------- render detail ----------
+  function renderDetail(reg) {
+    // guard contra HTML “diferente”
+    if (!els.dTitle || !els.dCodigo) {
+      throw new Error("HTML não contém os IDs de detalhe esperados (dTitle/dCodigo...).");
+    }
 
-    return INDEX.filter((r) => {
-      const codigo = String(r.codigo || "");
-      return (
-        norm(r.razao).includes(t) ||
-        norm(r.fantasia).includes(t) ||
-        norm(r.documento).includes(t) ||
-        codigo.includes(t)
-      );
-    }).slice(0, 200); // evita render infinito
-  }
+    safeText(els.dTitle, reg.razao || "—");
+    safeText(els.dSub, reg.fantasia || "—");
+    safeText(els.dCodigo, reg.codigo);
 
-  // --- carrega regulado (com fallback p/ nome antigo sem padding)
-  async function loadRegulado(codigo) {
-    setStatus(`Carregando regulado #${codigo}...`);
-    showDetail(false);
+    const doc = reg.cnpj || reg.cpf || "—";
+    safeText(els.dDoc, doc);
 
-    const cod = Number(codigo);
-    const pfx = pad5(cod).slice(0, 2);
-    const fileNew = `${DATA_BASE}/reg/${pfx}/${pad5(cod)}.json`;
-    const fileOld = `${DATA_BASE}/reg/${pfx}/${cod}.json`; // fallback se ainda existir
+    const e = reg.endereco || {};
+    const endParts = [];
+    if (e.logradouro) endParts.push(e.logradouro);
+    if (e.complemento) endParts.push(e.complemento);
+    const fones = [];
+    if (e.fone) fones.push(`Fone: ${e.fone}`);
+    if (e.celular) fones.push(`Celular: ${e.celular}`);
+    const endTxt = [
+      endParts.length ? endParts.join(" · ") : "—",
+      fones.length ? fones.join(" · ") : ""
+    ].filter(Boolean).join(" · ");
+    safeText(els.dEnd, endTxt || "—");
 
-    try {
-      CURRENT = await fetchJson(fileNew);
-    } catch (e1) {
-      // fallback (estrutura antiga)
-      try {
-        CURRENT = await fetchJson(fileOld);
-      } catch (e2) {
-        setStatus(`Falha ao carregar o regulado #${codigo}.`);
-        console.error(e1, e2);
-        return;
+    const b = reg.bairro || {};
+    safeText(els.dBairro, b.nome || "—");
+
+    // Alvará (JSON novo: { dt_validade, exercicio } ou null)
+    const alv = reg.alvara_ultimo;
+    if (alv && typeof alv === "object") {
+      // mapeamento visual (seu HTML tem 3 linhas)
+      safeText(els.dAlvNum, alv.exercicio ?? "—"); // aqui fica o "Exercício"
+      safeText(els.dAlvEmi, "—");                  // não usamos emissão
+      safeText(els.dAlvVal, alv.dt_validade ?? "—");
+    } else {
+      safeText(els.dAlvNum, "—");
+      safeText(els.dAlvEmi, "—");
+      safeText(els.dAlvVal, "—");
+    }
+
+    // Atividades
+    const atvs = Array.isArray(reg.atividades) ? reg.atividades : [];
+    if (els.atividadesList) {
+      els.atividadesList.innerHTML = "";
+      if (atvs.length === 0) {
+        const div = document.createElement("div");
+        div.className = "small";
+        div.textContent = "Nenhuma atividade encontrada.";
+        els.atividadesList.appendChild(div);
+      } else {
+        for (const a of atvs) {
+          const item = document.createElement("div");
+          item.className = "item";
+
+          const top = document.createElement("div");
+          top.className = "item__top";
+
+          const t = document.createElement("div");
+          t.className = "item__title";
+          t.textContent = a.subclasse ? `${a.subclasse}` : "—";
+
+          const badge = document.createElement("div");
+          badge.className = "tag";
+          badge.textContent = a.tipo || "—";
+
+          top.appendChild(t);
+          top.appendChild(badge);
+
+          const sub = document.createElement("div");
+          sub.className = "item__sub";
+          const linha = [
+            a.atividade ? a.atividade : null,
+            a.equipe ? `Equipe: ${a.equipe}` : null,
+            a.complexidade ? `Complexidade: ${a.complexidade}` : null
+          ].filter(Boolean).join(" · ");
+          sub.textContent = linha || "—";
+
+          item.appendChild(top);
+          item.appendChild(sub);
+          els.atividadesList.appendChild(item);
+        }
       }
     }
 
-    renderDetail();
-    setStatus(`Regulado #${codigo} carregado.`);
-  }
+    // Inspeções
+    const insps = Array.isArray(reg.inspecoes) ? reg.inspecoes : [];
+    if (els.inspecoesList) {
+      els.inspecoesList.innerHTML = "";
+      if (insps.length === 0) {
+        const div = document.createElement("div");
+        div.className = "small";
+        div.textContent = "Nenhuma inspeção encontrada.";
+        els.inspecoesList.appendChild(div);
+      } else {
+        for (const v of insps) {
+          const item = document.createElement("div");
+          item.className = "item";
 
-  // --- render painel detalhe - COM VERIFICAÇÕES DE NULL
-  function renderDetail() {
-    if (!CURRENT) return;
+          const top = document.createElement("div");
+          top.className = "item__top";
 
-    const c = CURRENT;
-    const doc = c.cnpj || c.cpf || "";
+          const title = document.createElement("div");
+          title.className = "item__title";
+          const dt = v.dt_visita || "—";
+          const tipo = v.tipo || "—";
+          const num = v.numer || "—";
+          title.textContent = `${tipo} ${num} · ${dt}`;
 
-    // PROTEÇÃO: verifica se elementos existem antes de modificar
-    if (elDTitle) elDTitle.textContent = c.razao || "—";
-    if (elDSub) elDSub.textContent = c.fantasia || "—";
+          const badge = document.createElement("div");
+          badge.className = "tag";
+          badge.textContent = (v.pz_retorno !== undefined && v.pz_retorno !== null)
+            ? `Prazo: ${v.pz_retorno} dia(s)`
+            : "Prazo: —";
 
-    if (elDCodigo) elDCodigo.textContent = String(c.codigo ?? "—");
-    if (elDDoc) elDDoc.textContent = doc || "—";
+          top.appendChild(title);
+          top.appendChild(badge);
 
-    // endereço: logradouro + complemento + fone/celular
-    const end = [];
-    const log = c?.endereco?.logradouro || "";
-    const comp = c?.endereco?.complemento || "";
-    const fone = c?.endereco?.fone || "";
-    const cel = c?.endereco?.celular || "";
+          const sub = document.createElement("div");
+          sub.className = "item__sub";
 
-    if (log) end.push(log);
-    if (comp) end.push(comp);
+          const ndoc = Number(v.ndoc || 0);
+          if (ndoc > 0) {
+            sub.innerHTML = `Histórico: <button type="button" class="btn btn--ghost" style="padding:6px 10px;border-radius:10px" data-ndoc="${ndoc}">Abrir (NDOC ${ndoc})</button>`;
+            const btn = sub.querySelector("button[data-ndoc]");
+            btn.addEventListener("click", async (ev) => {
+              ev.preventDefault();
+              ev.stopPropagation();
+              try {
+                await openHistorico(ndoc);
+              } catch (e) {
+                openModal("Erro ao abrir histórico", String(e.message || e));
+              }
+            });
+          } else {
+            sub.textContent = "Histórico: —";
+          }
 
-    const contatos = [];
-    if (fone) contatos.push(`Fone: ${fone}`);
-    if (cel) contatos.push(`Celular: ${cel}`);
-    if (contatos.length) end.push(contatos.join(" • "));
-
-    if (elDEnd) elDEnd.textContent = end.length ? end.join(" — ") : "—";
-    if (elDBairro) elDBairro.textContent = c?.bairro?.nome || "—";
-
-    // alvará (na sua unit final: dt_validade + exercicio)
-    const alv = c.alvara_ultimo;
-    if (alv && alv.dt_validade) {
-      if (elDAlvNum) elDAlvNum.textContent = (alv.exercicio != null && alv.exercicio !== 0) ? String(alv.exercicio) : "—";
-      if (elDAlvEmi) elDAlvEmi.textContent = "—";
-      if (elDAlvVal) elDAlvVal.textContent = alv.dt_validade;
-    } else {
-      if (elDAlvNum) elDAlvNum.textContent = "—";
-      if (elDAlvEmi) elDAlvEmi.textContent = "—";
-      if (elDAlvVal) elDAlvVal.textContent = "—";
-    }
-
-    // habilita botões conforme conteúdo
-    const atvCount = Array.isArray(c.atividades) ? c.atividades.length : 0;
-    const inspCount = Array.isArray(c.inspecoes) ? c.inspecoes.length : 0;
-
-    if (elBtnAtv) elBtnAtv.disabled = atvCount === 0;
-    if (elBtnInsp) elBtnInsp.disabled = inspCount === 0;
-
-    showDetail(true);
-  }
-
-  // --- modal: atividades
-  function showAtividades() {
-    if (!CURRENT) return;
-
-    const list = Array.isArray(CURRENT.atividades) ? CURRENT.atividades : [];
-    if (!list.length) {
-      openModal("Atividades", `Regulado #${CURRENT.codigo}`, "Nenhuma atividade encontrada.");
-      return;
-    }
-
-    const lines = list.map((a, idx) => {
-      const atividade = a.atividade || "—";
-      const subclasse = a.subclasse || "—";
-      const tipo = a.tipo || "—";
-      const equipe = a.equipe || "—";
-      const comp = a.complexidade || "—";
-      return `
-<div style="margin-bottom:10px;">
-  <b>${idx + 1}.</b> ${escapeHtml(atividade)}
-  <div style="opacity:.85;margin-top:2px;">
-    Subclasse: ${escapeHtml(subclasse)} • Tipo: ${escapeHtml(tipo)}<br>
-    Equipe: ${escapeHtml(equipe)} • Complexidade: ${escapeHtml(comp)}
-  </div>
-</div>`;
-    });
-
-    openModal("Atividades", `Regulado #${CURRENT.codigo}`, lines.join(""));
-  }
-
-  // --- modal: inspeções + botão "Histórico"
-  function showInspecoes() {
-    if (!CURRENT) return;
-
-    const list = Array.isArray(CURRENT.inspecoes) ? CURRENT.inspecoes : [];
-    if (!list.length) {
-      openModal("Inspeções", `Regulado #${CURRENT.codigo}`, "Nenhuma inspeção encontrada.");
-      return;
-    }
-
-    const lines = list.map((i, idx) => {
-      const dt = i.dt_visita || "—";
-      const tipo = i.tipo || "—";
-      const numer = i.numer || "—";
-      const pz = (i.pz_retorno != null) ? String(i.pz_retorno) : "—";
-      const ndoc = i.ndoc;
-
-      const btn = (ndoc && Number(ndoc) > 0)
-        ? `<button type="button" class="miniBtn" data-ndoc="${ndoc}">Abrir histórico</button>`
-        : `<span style="opacity:.7;">(sem NDOC)</span>`;
-
-      return `
-<div style="margin-bottom:12px;">
-  <div><b>${idx + 1}.</b> ${escapeHtml(tipo)} • Nº ${escapeHtml(numer)} • ${escapeHtml(dt)}</div>
-  <div style="opacity:.85;margin-top:2px;">Prazo retorno: ${escapeHtml(pz)} dia(s) • NDOC: ${escapeHtml(String(ndoc || "—"))}</div>
-  <div style="margin-top:6px;">${btn}</div>
-</div>`;
-    });
-
-    openModal("Inspeções", `Regulado #${CURRENT.codigo}`, lines.join(""));
-
-    // bind dos botões dentro do modal
-    if (elMBody) {
-      elMBody.querySelectorAll("button[data-ndoc]").forEach((b) => {
-        b.addEventListener("click", async () => {
-          const ndoc = Number(b.getAttribute("data-ndoc"));
-          await openHistorico(ndoc);
-        });
-      });
+          item.appendChild(top);
+          item.appendChild(sub);
+          els.inspecoesList.appendChild(item);
+        }
+      }
     }
   }
 
-  // --- abre histórico (his/bucket/ndoc.json)
+  // --------- load regulado ----------
+  async function loadRegulado(codigo) {
+    const c = Number(codigo);
+    const file = pad5(c);
+    const path = `./data/reg/${regPrefix(c)}/${file}.json`;
+
+    showStatus(`Carregando regulado #${c}...`);
+    hideDetail();
+
+    try {
+      const reg = await fetchJson(path);
+      renderDetail(reg);
+      showDetail();
+      showStatus(`Regulado ${c} carregado.`);
+      // rola para detalhes (bom no iOS)
+      els.detailPanel?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    } catch (e) {
+      showStatus(`Erro ao carregar regulado ${c}.`);
+      openModal("Erro", String(e.message || e));
+      throw e;
+    }
+  }
+
+  // --------- histórico (his) ----------
   async function openHistorico(ndoc) {
-    try {
-      const bucket = bucketFromNdoc(ndoc);
-      const j = await fetchJson(`${DATA_BASE}/his/${bucket}/${ndoc}.json`);
-      const memo = (j && (j.decr || j.descr)) ? (j.decr || j.descr) : "";
-
-      openModal(
-        `Histórico NDOC ${ndoc}`,
-        `his/${bucket}/${ndoc}.json`,
-        escapePre(memo || "(vazio)")
-      );
-    } catch (e) {
-      console.error(e);
-      openModal(
-        `Histórico NDOC ${ndoc}`,
-        "Erro ao carregar",
-        `Não foi possível abrir his/${bucketFromNdoc(ndoc)}/${ndoc}.json`
-      );
-    }
+    const b = hisBucket(ndoc);
+    const path = `./data/his/${b}/${ndoc}.json`;
+    const h = await fetchJson(path);
+    openModal(`Histórico NDOC ${ndoc}`, (h && (h.decr || h.descr)) ? (h.decr || h.descr) : "—");
   }
 
-  // --- escape helpers (evitar quebrar HTML)
-  function escapeHtml(s) {
-    return String(s ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  // para <pre> (mantém quebras, mas escapado)
-  function escapePre(s) {
-    return escapeHtml(s).replaceAll("\n", "<br>");
-  }
-
-  // --- limpar
-  function clearAll() {
-    if (elQ) elQ.value = "";
-    if (elResults) elResults.innerHTML = "";
-    setStatus(`Índice carregado: ${INDEX.length.toLocaleString("pt-BR")} regulados.`);
-    CURRENT = null;
-    showDetail(false);
-    if (elQ) elQ.focus();
-  }
-
-  // --- init
-  async function init() {
-    try {
-      await loadIndex();
-      showDetail(false);
-    } catch (e) {
-      console.error(e);
-      setStatus("Erro ao carregar o índice. Verifique o caminho ./data/index_regulados.json");
+  // --------- search/filter ----------
+  function applyFilter() {
+    const q = normalize(els.q?.value || "");
+    if (!q) {
+      filtered = indexItems.slice(0, 80);
+      renderResults(filtered);
+      showStatus(`Pronto. (${indexItems.length} no índice)`);
       return;
     }
 
-    let lastTerm = "";
-    if (elQ) {
-      elQ.addEventListener("input", () => {
-        const term = elQ.value || "";
-        if (term === lastTerm) return;
-        lastTerm = term;
-
-        const list = searchIndex(term);
-        renderResults(list);
-      });
-
-      elQ.addEventListener("keydown", (ev) => {
-        if (ev.key === "Escape") clearAll();
-      });
+    const qDigits = onlyDigits(q);
+    const out = [];
+    for (const it of indexItems) {
+      const hay = `${it.razao || ""} ${it.fantasia || ""} ${it.documento || ""} ${it.codigo || ""}`.toLowerCase();
+      if (hay.includes(q)) {
+        out.push(it);
+      } else if (qDigits && onlyDigits(it.documento || "").includes(qDigits)) {
+        out.push(it);
+      } else if (qDigits && String(it.codigo || "").includes(qDigits)) {
+        out.push(it);
+      }
+      if (out.length >= 80) break;
     }
 
-    if (elClear) elClear.addEventListener("click", clearAll);
-    if (elCloseDetail) {
-      elCloseDetail.addEventListener("click", () => {
-        CURRENT = null;
-        showDetail(false);
-      });
-    }
-
-    if (elBtnAtv) elBtnAtv.addEventListener("click", showAtividades);
-    if (elBtnInsp) elBtnInsp.addEventListener("click", showInspecoes);
-
-    if (elCloseModal) elCloseModal.addEventListener("click", closeModal);
-    if (elBackdrop) {
-      elBackdrop.addEventListener("click", (ev) => {
-        // fecha clicando fora da caixa
-        if (ev.target === elBackdrop) closeModal();
-      });
-    }
+    filtered = out;
+    renderResults(filtered);
+    showStatus(`${out.length} encontrado(s).`);
   }
 
-  // start
-  document.addEventListener("DOMContentLoaded", init);
+  async function init() {
+    closeModal();
+    hideDetail();
+    showStatus("Carregando índice...");
+
+    // cache-buster simples
+    const url = `./data/index_regulados.json?v=${Date.now()}`;
+    const root = await fetchJson(url);
+
+    // compatível com { meta, dados: [] }
+    indexItems = Array.isArray(root?.dados) ? root.dados : (Array.isArray(root) ? root : []);
+    showStatus(`Índice carregado (${indexItems.length}).`);
+
+    renderResults(indexItems.slice(0, 80));
+
+    els.q?.addEventListener("input", () => applyFilter());
+    els.btnClear?.addEventListener("click", () => {
+      if (els.q) els.q.value = "";
+      closeModal();
+      hideDetail();
+      applyFilter();
+      els.q?.focus?.();
+    });
+
+    els.btnCloseDetail?.addEventListener("click", () => hideDetail());
+
+    els.btnCloseModal?.addEventListener("click", () => closeModal());
+    els.modalBackdrop?.addEventListener("click", () => closeModal());
+
+    // botões de abas (atividades/inspeções) se você estiver usando hidden/tabs no HTML
+    els.btnAtividades?.addEventListener("click", () => {
+      if (els.atividadesList) els.atividadesList.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    els.btnInspecoes?.addEventListener("click", () => {
+      if (els.inspecoesList) els.inspecoesList.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", init);
 })();
