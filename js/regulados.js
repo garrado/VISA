@@ -1,7 +1,6 @@
 (() => {
   "use strict";
 
-  // --------- helpers ----------
   const byId = (id) => document.getElementById(id);
 
   const pad5 = (n) => String(n ?? "").padStart(5, "0");
@@ -30,7 +29,6 @@
     return r.json();
   }
 
-  // --------- elements ----------
   const els = {
     q: byId("q"),
     btnClear: byId("btnClear"),
@@ -46,27 +44,21 @@
     dDoc: byId("dDoc"),
     dEnd: byId("dEnd"),
     dBairro: byId("dBairro"),
-
-    // HTML novo (correto)
     dAlvEx: byId("dAlvEx"),
     dAlvVal: byId("dAlvVal"),
 
-    // listas (agora existem no HTML)
     btnAtividades: byId("btnAtividades"),
     btnInspecoes: byId("btnInspecoes"),
     atividadesList: byId("atividadesList"),
     inspecoesList: byId("inspecoesList"),
 
-    // modal (IDs alinhados com o HTML recomendado)
     modalBackdrop: byId("modalBackdrop"),
     modal: byId("modal"),
     modalTitle: byId("modalTitle"),
-    modalSub: byId("modalSub"),
     modalMemo: byId("modalMemo"),
     btnCloseModal: byId("btnCloseModal"),
   };
 
-  // --------- state ----------
   let indexItems = [];
 
   function showStatus(msg) {
@@ -85,19 +77,16 @@
     if (els.modalBackdrop) els.modalBackdrop.hidden = true;
     if (els.modal) els.modal.hidden = true;
     safeText(els.modalTitle, "");
-    safeText(els.modalSub, "");
-    if (els.modalMemo) els.modalMemo.textContent = "";
+    safeText(els.modalMemo, "");
   }
 
-  function openModal(title, sub, memo) {
-    safeText(els.modalTitle, title || "Mensagem");
-    safeText(els.modalSub, sub || "");
-    if (els.modalMemo) els.modalMemo.textContent = memo || "";
+  function openModal(title, memo) {
+    safeText(els.modalTitle, title || "Histórico");
+    safeText(els.modalMemo, memo || "");
     if (els.modalBackdrop) els.modalBackdrop.hidden = false;
     if (els.modal) els.modal.hidden = false;
   }
 
-  // --------- render results ----------
   function renderResults(list) {
     if (!els.results) return;
     els.results.innerHTML = "";
@@ -150,16 +139,6 @@
     els.results.appendChild(frag);
   }
 
-  // --------- histórico (his) ----------
-  async function openHistorico(ndoc) {
-    const b = hisBucket(ndoc);
-    const path = `./data/his/${b}/${ndoc}.json`;
-    const h = await fetchJson(path);
-    const memo = (h && (h.decr || h.descr)) ? (h.decr || h.descr) : "—";
-    openModal(`Histórico (NDOC ${ndoc})`, "", memo);
-  }
-
-  // --------- render detail ----------
   function renderDetail(reg) {
     safeText(els.dTitle, reg.razao || "—");
     safeText(els.dSub, reg.fantasia || "—");
@@ -187,18 +166,16 @@
     const b = reg.bairro || {};
     safeText(els.dBairro, b.nome || "—");
 
-    // Alvará (JSON: { dt_validade, exercicio } ou null)
-  const alv = reg.alvara_ultimo;
-if (alv && typeof alv === "object") {
-  safeText(els.dAlvEx, alv.exercicio ?? "—");
-  safeText(els.dAlvVal, alv.dt_validade ?? "—");
-} else {
-  safeText(els.dAlvEx, "—");
-  safeText(els.dAlvVal, "—");
-}
+    const alv = reg.alvara_ultimo;
+    if (alv && typeof alv === "object") {
+      safeText(els.dAlvEx, alv.exercicio ?? "—");
+      safeText(els.dAlvVal, alv.dt_validade ?? "—");
+    } else {
+      safeText(els.dAlvEx, "—");
+      safeText(els.dAlvVal, "—");
+    }
 
-
-    // --------- atividades ----------
+    // Atividades
     const atvs = Array.isArray(reg.atividades) ? reg.atividades : [];
     if (els.atividadesList) {
       els.atividadesList.innerHTML = "";
@@ -228,11 +205,12 @@ if (alv && typeof alv === "object") {
 
           const sub = document.createElement("div");
           sub.className = "item__sub";
-          sub.textContent = [
-            a.atividade || null,
+          const linha = [
+            a.atividade ? a.atividade : null,
             a.equipe ? `Equipe: ${a.equipe}` : null,
             a.complexidade ? `Complexidade: ${a.complexidade}` : null
-          ].filter(Boolean).join(" · ") || "—";
+          ].filter(Boolean).join(" · ");
+          sub.textContent = linha || "—";
 
           item.appendChild(top);
           item.appendChild(sub);
@@ -241,7 +219,7 @@ if (alv && typeof alv === "object") {
       }
     }
 
-    // --------- inspeções ----------
+    // Inspeções
     const insps = Array.isArray(reg.inspecoes) ? reg.inspecoes : [];
     if (els.inspecoesList) {
       els.inspecoesList.innerHTML = "";
@@ -281,19 +259,21 @@ if (alv && typeof alv === "object") {
           if (ndoc > 0) {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "btn btn--ghost";
-            btn.style.padding = "6px 10px";
-            btn.style.borderRadius = "10px";
+            btn.className = "btn";
+            btn.style.padding = "8px 10px";
             btn.textContent = `Abrir histórico (NDOC ${ndoc})`;
+
             btn.addEventListener("click", async (ev) => {
               ev.preventDefault();
               ev.stopPropagation();
               try {
                 await openHistorico(ndoc);
               } catch (e) {
-                openModal("Erro ao abrir histórico", "", String(e.message || e));
+                openModal("Erro ao abrir histórico", String(e.message || e));
               }
             });
+
+            sub.textContent = "Histórico: ";
             sub.appendChild(btn);
           } else {
             sub.textContent = "Histórico: —";
@@ -307,7 +287,6 @@ if (alv && typeof alv === "object") {
     }
   }
 
-  // --------- load regulado ----------
   async function loadRegulado(codigo) {
     const c = Number(codigo);
     const file = pad5(c);
@@ -316,20 +295,21 @@ if (alv && typeof alv === "object") {
     showStatus(`Carregando regulado #${c}...`);
     hideDetail();
 
-    try {
-      const reg = await fetchJson(path);
-      renderDetail(reg);
-      showDetail();
-      showStatus(`Regulado ${c} carregado.`);
-      els.detailPanel?.scrollIntoView?.({ behavior: "smooth", block: "start" });
-    } catch (e) {
-      showStatus(`Erro ao carregar regulado ${c}.`);
-      openModal("Erro", "", String(e.message || e));
-      throw e;
-    }
+    const reg = await fetchJson(path);
+    renderDetail(reg);
+    showDetail();
+    showStatus(`Regulado ${c} carregado.`);
+
+    els.detailPanel?.scrollIntoView?.({ behavior: "smooth", block: "start" });
   }
 
-  // --------- search/filter ----------
+  async function openHistorico(ndoc) {
+    const b = hisBucket(ndoc);
+    const path = `./data/his/${b}/${ndoc}.json`;
+    const h = await fetchJson(path);
+    openModal(`Histórico NDOC ${ndoc}`, (h && (h.decr || h.descr)) ? (h.decr || h.descr) : "—");
+  }
+
   function applyFilter() {
     const q = normalize(els.q?.value || "");
     if (!q) {
@@ -345,7 +325,6 @@ if (alv && typeof alv === "object") {
       if (hay.includes(q)) out.push(it);
       else if (qDigits && onlyDigits(it.documento || "").includes(qDigits)) out.push(it);
       else if (qDigits && String(it.codigo || "").includes(qDigits)) out.push(it);
-
       if (out.length >= 80) break;
     }
 
@@ -363,6 +342,7 @@ if (alv && typeof alv === "object") {
 
     indexItems = Array.isArray(root?.dados) ? root.dados : (Array.isArray(root) ? root : []);
     showStatus(`Índice carregado (${indexItems.length}).`);
+
     renderResults(indexItems.slice(0, 80));
 
     els.q?.addEventListener("input", applyFilter);
@@ -383,7 +363,6 @@ if (alv && typeof alv === "object") {
     els.btnAtividades?.addEventListener("click", () => {
       els.atividadesList?.scrollIntoView?.({ behavior: "smooth", block: "start" });
     });
-
     els.btnInspecoes?.addEventListener("click", () => {
       els.inspecoesList?.scrollIntoView?.({ behavior: "smooth", block: "start" });
     });
