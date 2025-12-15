@@ -234,6 +234,28 @@ header h2{
   justify-content:flex-end;
   margin-top: 10px;
 }
+
+/* iOS/telas pequenas: botão "ABRIR WebCVS" com toque melhor e largura total */
+@media (max-width: 640px), (pointer: coarse){
+  .heroBtn{
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 16px 16px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;   /* deixa quebrar linha se precisar */
+    text-align: center !important;
+  }
+  .heroBtn span{
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 12px !important;
+  }
+}
+
+
+
+  
 </style>
 </head>
 
@@ -400,3 +422,4 @@ window.logout = function(){
 
 </body>
 </html>
+
