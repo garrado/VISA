@@ -188,14 +188,15 @@
     safeText(els.dBairro, b.nome || "—");
 
     // Alvará (JSON: { dt_validade, exercicio } ou null)
-    const alv = reg.alvara_ultimo;
-    if (alv && typeof alv === "object") {
-      safeText(els.dAlvEx, (alv.exercicio ?? "—"));
-      safeText(els.dAlvVal, (alv.dt_validade ?? "—"));
-    } else {
-      safeText(els.dAlvEx, "—");
-      safeText(els.dAlvVal, "—");
-    }
+  const alv = reg.alvara_ultimo;
+if (alv && typeof alv === "object") {
+  safeText(els.dAlvEx, alv.exercicio ?? "—");
+  safeText(els.dAlvVal, alv.dt_validade ?? "—");
+} else {
+  safeText(els.dAlvEx, "—");
+  safeText(els.dAlvVal, "—");
+}
+
 
     // --------- atividades ----------
     const atvs = Array.isArray(reg.atividades) ? reg.atividades : [];
