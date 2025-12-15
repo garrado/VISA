@@ -261,7 +261,7 @@
             btn.type = "button";
             btn.className = "btn";
             btn.style.padding = "8px 10px";
-            btn.textContent = `Abrir histórico (NDOC ${ndoc})`;
+            btn.textContent = "📄 Abrir documento";
 
             btn.addEventListener("click", async (ev) => {
               ev.preventDefault();
