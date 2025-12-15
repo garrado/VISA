@@ -70,18 +70,22 @@
   </aside>
 </main>
 
-  <!-- Modal de histórico -->
+ <!-- Modal de histórico -->
 <div id="modalBackdrop" class="modalBackdrop" hidden></div>
 
 <div id="modal" class="modal" hidden>
-  <div class="modalBox">
+  <div class="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modalTop">
       <div>
         <div id="modalTitle" class="mTitle">—</div>
-        <div id="modalSub" class="mSub">—</div>
+        <div id="mSub" class="mSub">—</div>
       </div>
       <button id="btnCloseModal" type="button">Fechar</button>
     </div>
+    <pre id="modalMemo" class="mBody"></pre>
+  </div>
+</div>
+
 
     <!-- troque pre por div (pra permitir botões no futuro, se quiser) -->
     <div id="modalMemo" class="mBody"></div>
