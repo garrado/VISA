@@ -49,8 +49,7 @@
     dEnd: byId("dEnd"),
     dBairro: byId("dBairro"),
 
-    dAlvNum: byId("dAlvNum"),
-    dAlvEmi: byId("dAlvEmi"),
+    dAlvEx: byId("dAlvEx"),
     dAlvVal: byId("dAlvVal"),
 
     // listas
@@ -62,9 +61,10 @@
     // modal histórico
     modalBackdrop: byId("modalBackdrop"),
     modal: byId("modal"),
-    modalTitle: byId("modalTitle"),
-    modalMemo: byId("modalMemo"),
-    btnCloseModal: byId("btnCloseModal"),
+    modalTitle: byId("mTitle"),
+    modalSub: byId("mSub"),
+    modalMemo: byId("mBody"),
+    btnCloseModal: byId("btnModalClose"),
   };
 
   // --------- state ----------
