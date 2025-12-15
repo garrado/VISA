@@ -15,7 +15,7 @@
 <meta property="og:image:width" content="https://garrado.github.io/VISA/icons/visa-compartilhar.png">
 <meta property="og:image:height" content="https://garrado.github.io/VISA/icons/visa-compartilhar.png">
 <meta name="apple-touch-icon" content="icons/visa-compartilhar.png">
-    
+
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#004aad">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,109 +25,214 @@
 <title>Vigilância Sanitária</title>
 
 <style>
-:root {
-    --azul1: #2c5aa0;
-    --azul2: #3d6bb3;
-    --cinza1: #f2f4f8;
-    --texto: #333;
-   
+:root{
+  --brand1:#2c5aa0;
+  --brand2:#3d6bb3;
+  --bg:#f2f4f8;
+  --text:#1f2a3a;
+  --muted:#5b6b83;
+  --card:#ffffff;
+  --line:rgba(31,42,58,.10);
+  --shadow:0 10px 28px rgba(0,0,0,.08);
+  --shadow2:0 6px 16px rgba(0,0,0,.08);
+  --warnBg:#fff7dd;
+  --warnLine:#d1a000;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--cinza1);
-    color: var(--texto);
-     line-height: 1.6;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
 }
 
-#conteudo {
-    display: none;
+#conteudo{display:none}
+
+#login{
+  min-height: 70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 28px 18px;
+}
+.loginCard{
+  width:min(520px, 100%);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+  text-align:center;
+}
+.loginCard h2{margin:0 0 6px 0}
+.loginCard p{margin:0 0 14px 0;color:var(--muted)}
+.btn{
+  appearance:none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight:700;
+  transition: .15s transform, .15s box-shadow, .15s background;
+}
+.btn:hover{box-shadow: var(--shadow2); transform: translateY(-1px)}
+.btn:active{transform: translateY(0)}
+.btnPrimary{
+  border: none;
+  background: linear-gradient(135deg, var(--brand1), var(--brand2));
+  color:#fff;
 }
 
-#login {
-    text-align: center;
-    margin-top: 80px;
+header{
+  background: linear-gradient(135deg, var(--brand1), var(--brand2));
+  color:#fff;
+  padding: 28px 20px 26px;
+  text-align:center;
+  box-shadow: 0 3px 10px rgba(0,0,0,.16);
+}
+header h1{
+  margin:0;
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-weight: 900;
+  letter-spacing:.2px;
+}
+header h2{
+  margin: 8px 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 500;
+  opacity:.92;
 }
 
-header {
-    background: linear-gradient(135deg, var(--azul1), var(--azul2));
-    color: white;
-    padding: 35px 20px;
-    text-align: center;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-            header h1 {
-            margin: 0;
-            font-size: 2.3rem;
-            font-weight: bold;
-        }
-
-        header h2 {
-            margin-top: 8px;
-            font-size: 1.2rem;
-            font-weight: normal;
-            opacity: 0.9;
-        }
-
-
-    
-.container {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 0 20px;
+.container{
+  max-width: 1100px;
+  margin: 22px auto 30px;
+  padding: 0 16px;
 }
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+.card{
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px 18px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow2);
+}
+.card h3{
+  margin:0 0 10px 0;
+  color: var(--brand1);
+  padding-left: 10px;
+  border-left: 6px solid var(--brand1);
 }
 
-.card h3 {
-    color: var(--azul1);
-    border-left: 6px solid var(--azul1);
-    padding-left: 10px;
+.avisos{
+  background: var(--warnBg);
+  border-left: 6px solid var(--warnLine);
 }
 
-            .avisos {
-            background: #fff7dd;
-            border-left: 6px solid #d1a000;
-        }
+.muted{color:var(--muted)}
+.small{font-size:.92rem;color:var(--muted)}
 
-        .links-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .links-section li {
-            margin: 12px 0;
-        }
-
-        .links-section a {
-            text-decoration: none;
-            color: var(--azul1);
-            font-weight: bold;
-            border-bottom: 1px dashed var(--azul1);
-        }
-
-        .links-section a:hover {
-            color: var(--azul2);
-        }
-.aviso-importante {
-    color: #b30000;
-    font-weight: bold;
-    background: #fff7dd;
-    padding: 6px;
-    border-left: 5px solid red;
+.grid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:16px;
 }
-    
-.footer {
-    text-align: center;
-    padding: 25px;
-    color: #666;
+@media (max-width: 920px){
+  .grid{grid-template-columns:1fr}
+}
+
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(44,90,160,.12), rgba(61,107,179,.10));
+  border: 1px solid rgba(44,90,160,.18);
+}
+.heroLeft h3{
+  margin:0 0 6px 0;
+  border-left:none;
+  padding-left:0;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+.heroLeft p{margin:0;color:var(--muted)}
+.heroBtn{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+.heroBtn span{
+  display:inline-flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.22);
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.links-section ul{list-style:none;padding:0;margin:0}
+.links-section li{margin: 10px 0}
+.linkPill{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background:#fff;
+  text-decoration:none;
+  color: var(--text);
+  font-weight:800;
+}
+.linkPill:hover{box-shadow: var(--shadow2); transform: translateY(-1px)}
+.linkPill small{font-weight:600;color:var(--muted)}
+.linkPill .arrow{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(44,90,160,.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.aviso-importante{
+  color:#b30000;
+  font-weight: 900;
+  background: #fff7dd;
+  padding: 8px 10px;
+  border-left: 5px solid #d00000;
+  border-radius: 10px;
+}
+
+.footer{
+  text-align:center;
+  padding: 18px 16px 26px;
+  color: #66728a;
+}
+
+.actionsRow{
+  display:flex;
+  justify-content:flex-end;
+  margin-top: 10px;
 }
 </style>
 </head>
@@ -136,86 +241,114 @@ header {
 
 <!-- LOGIN -->
 <div id="login">
+  <div class="loginCard">
     <h2>Área Restrita</h2>
-    <p>Entre com sua conta Google</p>
-    <button onclick="loginGoogle()" style="padding:12px 20px;font-size:16px;">
-        Entrar com Google
+    <p>Entre com sua conta Google para acessar os conteúdos internos.</p>
+    <button class="btn btnPrimary" onclick="loginGoogle()">
+      Entrar com Google
     </button>
+  </div>
 </div>
 
 <!-- CONTEÚDO PROTEGIDO -->
 <div id="conteudo">
 
 <header>
-<h1>Vigilância Sanitária</h1>
-<h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
+  <h1>Vigilância Sanitária</h1>
+  <h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
 </header>
 
 <div class="container">
 
+  <!-- DESTAQUE: WebCVS -->
+  <div class="card">
+    <div class="hero">
+      <div class="heroLeft">
+        <h3>WebCVS</h3>
+        <p>Consulta rápida de regulados, atividades e inspeções pelo navegador.</p>
+      </div>
+      <a class="btn btnPrimary heroBtn" href="Regulados.html" aria-label="Abrir WebCVS">
+        <span>↗</span>
+        ABRIR WebCVS
+      </a>
+    </div>
+    <div class="small muted" style="margin-top:10px">
+      Dica: se você estiver no iOS/Android, pode “Adicionar à tela de início” para usar como app.
+    </div>
+  </div>
+
+  <div class="grid">
     <!-- AVISOS -->
     <div class="card avisos">
-        <h3>Avisos da Supervisão</h3>
-        <p>Prezados(as) Fiscais,
+      <h3>Avisos da Supervisão</h3>
+      <p>Prezados(as) Fiscais,</p>
 
-Conforme é de conhecimento geral, identificou-se uma demanda reprimida de abertura no Portal do Empreendedor de Goiano, acumulada por questões técnicas e de fluxo.
-Diante da urgência para regularizar a situação e dar andamento aos processos essenciais, foi necessária uma distribuição extraordinária e massiva das Ordens de Serviço (OS) na última semana. A orientação central foi realizar essa distribuição da forma mais equânime e equilibrada possível, considerando a disponibilidade e a carga de trabalho de cada fiscal.
-Para formalizar e garantir o cumprimento dessas diligências, foi expedido um Mandado de Cumprimento que abrange todas a OS distribuídas. É fundamental que cada uma receba a atenção e o trâmite adequados no prazo estabelecido.
-Importante para o seu dia a dia:
-Todas as Ordens de Serviço referentes a essa ação, assim como todas as demais, já estão devidamente lançadas no sistema e podem ser facilmente consultadas e filtradas através do nosso Aplicativo Oficial da Vigilância Sanitária.
-Recomendamos que utilizem os filtros disponíveis no aplicativo para organizar e priorizar suas atividades.
-Agradecemos a compreensão e o comprometimento de todos neste momento que exigiu uma ação ágil e coordenada. Contamos com o empenho da equipe para o cumprimento eficaz dessas determinações.</p>
-<!--
-        <p class="aviso-importante">Feliz Natal </p>
--->        
-    </div>
+      <p>
+        Conforme é de conhecimento geral, identificou-se uma demanda reprimida de abertura no Portal do Empreendedor de Goiano,
+        acumulada por questões técnicas e de fluxo. Diante da urgência para regularizar a situação e dar andamento aos processos
+        essenciais, foi necessária uma distribuição extraordinária e massiva das Ordens de Serviço (OS) na última semana.
+      </p>
 
-    <!-- MENSAGENS INSTITUCIONAIS -->
-    <div class="card">
-        <h3>Mensagens Institucionais</h3>
-        <p>
-            Bem-vindos à página interna da Gerência de Vigilância Sanitária.
-            Aqui reunimos informações, links e comunicados destinados aos
-            servidores responsáveis pela proteção da saúde da população
-            de Anápolis. 
-        </p>
+      <p>
+        A orientação central foi realizar essa distribuição da forma mais equânime e equilibrada possível, considerando a disponibilidade
+        e a carga de trabalho de cada fiscal. Para formalizar e garantir o cumprimento dessas diligências, foi expedido um Mandado de
+        Cumprimento que abrange todas a OS distribuídas. É fundamental que cada uma receba a atenção e o trâmite adequados no prazo estabelecido.
+      </p>
 
-        <p>
-            Nosso compromisso diário é garantir segurança sanitária,
-            qualidade dos serviços fiscalizados e integridade técnica da atuação
-            da vigilância. Esta página foi criada para facilitar o acesso
-            a dados operacionais e melhorar o fluxo de comunicação interna.
-        </p>
+      <p>
+        Importante para o seu dia a dia: todas as Ordens de Serviço referentes a essa ação, assim como todas as demais, já estão devidamente
+        lançadas no sistema e podem ser consultadas e filtradas através do nosso Aplicativo Oficial da Vigilância Sanitária.
+        Recomendamos que utilizem os filtros disponíveis no aplicativo para organizar e priorizar suas atividades.
+      </p>
+
+      <p>
+        Agradecemos a compreensão e o comprometimento de todos neste momento que exigiu uma ação ágil e coordenada.
+        Contamos com o empenho da equipe para o cumprimento eficaz dessas determinações.
+      </p>
+
+      <!-- <p class="aviso-importante">Feliz Natal</p> -->
     </div>
 
     <!-- LINKS PRINCIPAIS -->
     <div class="card links-section">
-        <h3>Acessos Rápidos</h3>
-        <ul>
-            <li><a href="check.html">➡ Check List Fiscalização </a></li>
-            <li><a href="MTS_GERAL_TODOS_FISCAIS.pdf">➡ Mandado de Tarefas Sanitárias - MTS</a></li>
-            <li><a href="redesim.html">➡ Ordens de Serviço RedeSim </a></li>
-            <li><a href="Escala Dezembro v11.html">➡ Escala de Plantão - dezembro</a></li>
-            <li><a href="Totalização v11.html">➡ Totalização dos Plantões - dezembro </a></li>
-            <li><a href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html">➡ Escala de Veículos - dezembro</a></li>
-     <!-- 
-            <li><a href="Alvaras_FINAL_COMPLETO_LIMPO_AVANCADO_v13_5.html">➡ Regulados/Validade do Alvará</a></li> 
-            -->
-            <li><a href="Regulados.html">➡ WebCVS </a></li>
-            <li><a href="cadastro_economico_por_equipe_colorido.html">➡ CNAEs por Equipe</a></li></a></li>
-            <li><a href="relatorio_plantao_fiscal.html">➡ Relatório Plantâo Fiscal.html</a></li></a></li> 
-            
-        </ul>
-    </div>
+      <h3>Acessos Rápidos</h3>
+      <ul>
+        <li><a class="linkPill" href="check.html"><div>Check List Fiscalização<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="MTS_GERAL_TODOS_FISCAIS.pdf"><div>Mandado de Tarefas Sanitárias (MTS)<br><small>Documento oficial</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="redesim.html"><div>Ordens de Serviço RedeSim<br><small>Consulta e acompanhamento</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="Escala Dezembro v11.html"><div>Escala de Plantão — dezembro<br><small>Organização mensal</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="Totalização v11.html"><div>Totalização dos Plantões — dezembro<br><small>Consolidado</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html"><div>Escala de Veículos — dezembro<br><small>Logística</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="Regulados.html"><div>WebCVS (Regulados)<br><small>Consulta de regulados</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs por Equipe<br><small>Distribuição por área</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Relatório Plantão Fiscal<br><small>Indicadores e relatório</small></div><div class="arrow">➡</div></a></li>
+      </ul>
 
-<button onclick="logout()" style="padding:10px;margin-top:20px">Sair</button>
+      <div class="actionsRow">
+        <button class="btn" onclick="logout()">Sair</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENSAGENS INSTITUCIONAIS -->
+  <div class="card">
+    <h3>Mensagens Institucionais</h3>
+    <p>
+      Bem-vindos à página interna da Gerência de Vigilância Sanitária.
+      Aqui reunimos informações, links e comunicados destinados aos servidores responsáveis pela proteção da saúde da população de Anápolis.
+    </p>
+    <p>
+      Nosso compromisso diário é garantir segurança sanitária, qualidade dos serviços fiscalizados e integridade técnica da atuação.
+      Esta página foi criada para facilitar o acesso a dados operacionais e melhorar o fluxo de comunicação interna.
+    </p>
+  </div>
 
 </div>
 
 <div class="footer">
-Vigilância Sanitária – Diretoria de Vigilância em Saúde<br>
-Município de Anápolis – GO<br>
-© 2025
+  Vigilância Sanitária – Diretoria de Vigilância em Saúde<br>
+  Município de Anápolis – GO<br>
+  © 2025
 </div>
 
 </div>
@@ -242,7 +375,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-    
+
 // LOGIN
 window.loginGoogle = function() {
   signInWithPopup(auth, provider).catch(console.error);
@@ -267,30 +400,3 @@ window.logout = function(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
