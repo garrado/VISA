@@ -494,33 +494,8 @@ function isAuthorized(user){
 }
 
 // ✅ CONTROLE DE SESSÃO (ESTAVA AUSENTE NO SEU ARQUIVO) :contentReference[oaicite:2]{index=2}
-onAuthStateChanged(auth, async (user) => {
-  if (!user){
-    showLogin();
-    return;
-  }
 
-  if (isAuthorized(user)){
-    showConteudo();
-    return;
-  }
-
-  // autenticou mas não está liberado
-  showLogin();
-  showUnauthorizedModal(user);
-
-  // encerra sessão e volta para a tela de autenticação
-  try { await signOut(auth); } catch (e) { console.error(e); }
-});
-
-/* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
-   REGRA:
-   - Cada e-mail fica imediatamente seguido do respectivo UID
-   - Para adicionar novo usuário: copie um bloco inteiro (email + uid)
-   - Pode liberar por e-mail E UID (mais seguro)
-*/
-
-const AUTHORIZED_USERS = [
+  const AUTHORIZED_USERS = [
   { email: "ps.visa@anapolis.go.gov.br", uid: "vQ24jNdSX2MmSQX3XTWLvZpde5w1" },
   { email: "jotadaguas@gmail.com", uid: "ATiLJpWykifv5eUtBTlADPbMldF3" },
   { email: "geraldoedsonrosa@gmail.com", uid: "4UgVP6laz6bRsFMZOPqhXDNNaWu2" },
@@ -571,6 +546,34 @@ const AUTHORIZED_USERS = [
   { email: "mens.agitat.molem.cns@gmail.com", uid: "RB9Vlm3cxuPHCuST4mcc0mxPh" }
 ];
 
+  
+  onAuthStateChanged(auth, async (user) => {
+  if (!user){
+    showLogin();
+    return;
+  }
+
+  if (isAuthorized(user)){
+    showConteudo();
+    return;
+  }
+
+  // autenticou mas não está liberado
+  showLogin();
+  showUnauthorizedModal(user);
+
+  // encerra sessão e volta para a tela de autenticação
+  try { await signOut(auth); } catch (e) { console.error(e); }
+});
+
+/* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
+   REGRA:
+   - Cada e-mail fica imediatamente seguido do respectivo UID
+   - Para adicionar novo usuário: copie um bloco inteiro (email + uid)
+   - Pode liberar por e-mail E UID (mais seguro)
+*/
+
+
 // LOGOUT
 window.logout = function(){
   signOut(auth);
@@ -596,6 +599,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
