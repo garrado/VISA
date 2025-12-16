@@ -1,140 +1,152 @@
-Segue uma **versão refeita e ajustada do README**, deixando **claro, de forma inequívoca**, que o site é destinado **exclusivamente à consulta institucional pelos servidores da Vigilância Sanitária Municipal**, sem caráter público geral:
+# Vigilância Sanitária Municipal – Consulta Institucional de Estabelecimentos Regulados
+
+Este repositório hospeda uma aplicação web de natureza **informativa e institucional**, disponibilizada por meio da plataforma **GitHub Pages**, destinada à **consulta interna por servidores da Vigilância Sanitária Municipal**, no exercício regular de suas atribuições legais e funcionais.
+
+A iniciativa integra ações de **modernização administrativa**, **controle interno**, **padronização de informações** e **apoio operacional**, não substituindo sistemas oficiais nem produzindo efeitos jurídicos, normativos ou decisórios.
 
 ---
 
-# Vigilância Sanitária Municipal
+## <span style="color:#2c5aa0;">I – Finalidade Administrativa</span>
 
-## Plataforma de Consulta Institucional
+A presente aplicação tem por finalidade **facilitar o acesso a informações administrativas consolidadas**, necessárias à execução das atividades de fiscalização sanitária, análise técnica e acompanhamento de estabelecimentos regulados, observando os princípios da **legalidade, eficiência, economicidade e publicidade administrativa**.
 
-Este repositório hospeda uma aplicação web de **uso institucional**, disponibilizada por meio do **GitHub Pages**, destinada **exclusivamente à consulta administrativa por servidores e colaboradores da Vigilância Sanitária Municipal**, no exercício de suas atribuições funcionais.
-
-O sistema **não se destina ao público externo**, **não possui finalidade comercial** e **não substitui os sistemas oficiais internos** da administração pública.
+O ambiente destina-se **exclusivamente à consulta institucional**, não sendo utilizado para prática de atos administrativos formais.
 
 ---
 
-## I – Finalidade da Plataforma
+## <span style="color:#2c5aa0;">II – Enquadramento Institucional</span>
 
-A aplicação tem como objetivo **facilitar o acesso rápido e centralizado a informações administrativas** necessárias às rotinas de fiscalização, análise e acompanhamento sanitário, promovendo maior eficiência operacional e padronização das consultas internas.
+O projeto está vinculado às atividades da **Vigilância Sanitária Municipal**, órgão integrante da estrutura administrativa da **Diretoria de Vigilância em Saúde**, observando:
 
-São disponibilizadas, para fins **exclusivamente institucionais**, informações como:
-
-* Identificação cadastral de estabelecimentos regulados
-* Razão social e nome fantasia
-* Endereço do estabelecimento
-* Classificação de atividades econômicas (CNAE)
-* Situação administrativa e vigência de alvarás sanitários
-* Registros objetivos de inspeções (datas e identificadores administrativos)
+* os princípios do art. 37 da Constituição Federal
+* as normas gerais de controle interno da administração pública
+* as orientações do **Tribunal de Contas dos Municípios do Estado de Goiás (TCM-GO)**
+* as boas práticas de governança pública
 
 ---
 
-## II – Público-Alvo e Restrição de Uso
+## <span style="color:#2c5aa0;">III – Público-Alvo e Uso Restrito</span>
 
-O acesso e a utilização desta plataforma são **restritos aos funcionários da Vigilância Sanitária Municipal**, incluindo:
+A utilização da aplicação é **restrita aos servidores da Vigilância Sanitária Municipal**, incluindo fiscais sanitários, chefias, equipes técnicas e servidores formalmente autorizados.
 
-* Fiscais sanitários
-* Chefias administrativas
-* Equipes técnicas e de apoio
-* Servidores autorizados no exercício de funções institucionais
-
-Qualquer uso por terceiros **não autorizados** ou fora do contexto institucional **não é permitido** e não gera qualquer responsabilidade para a administração pública.
+O acesso por terceiros ou a utilização fora do contexto institucional **não é autorizada** e **não gera efeitos administrativos nem responsabilidade institucional**.
 
 ---
 
-## III – Natureza das Informações
+## <span style="color:#2c5aa0;">IV – Conteúdo Disponibilizado</span>
 
-As informações apresentadas possuem caráter:
+São disponibilizadas, para fins exclusivamente informativos, informações administrativas tais como:
 
-* **Administrativo**
-* **Informativo**
-* **Não certificador**
-* **Não decisório**
+* identificação cadastral de estabelecimentos regulados
+* razão social e nome fantasia
+* endereço declarado
+* classificação de atividades econômicas (CNAE)
+* situação administrativa e vigência de alvarás sanitários
+* registros objetivos de inspeções (datas e identificadores administrativos)
 
-O conteúdo **não constitui certidão**, **não substitui documentos oficiais** e **não produz efeitos jurídicos externos**.
-
-Em caso de divergência, **prevalecem sempre os registros constantes nos sistemas oficiais internos da Vigilância Sanitária**.
-
----
-
-## IV – Informações Não Disponibilizadas
-
-Por razões legais, técnicas e administrativas, **não são disponibilizados nesta plataforma**:
-
-* Relatórios internos de fiscalização
-* Conteúdo descritivo ou analítico de inspeções
-* Autos de infração, termos, pareceres ou despachos
-* Dados pessoais sensíveis
-* Informações estratégicas ou de uso restrito da administração
-
-Esses dados permanecem protegidos nos sistemas institucionais apropriados.
+As informações refletem a base de dados **no momento da extração**, podendo sofrer alterações posteriores nos sistemas oficiais.
 
 ---
 
-## V – Proteção de Dados
+## <span style="color:#2c5aa0;">V – Natureza Jurídica das Informações</span>
 
-A plataforma observa os princípios da **Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 – LGPD)**, garantindo que:
+Os dados apresentados possuem caráter:
 
-* não sejam expostos dados pessoais sensíveis
-* não haja divulgação de informações privadas ou sigilosas
-* o uso das informações esteja vinculado à finalidade institucional
+* administrativo
+* informativo
+* auxiliar à atividade fiscalizatória
+* não certificador
+* não vinculante
+
+O conteúdo **não constitui certidão**, **não substitui documentos oficiais**, **não gera direito subjetivo** e **não produz efeitos jurídicos externos**.
+
+Em caso de divergência, **prevalecem os registros constantes nos sistemas institucionais oficiais da administração pública**.
 
 ---
 
-## VI – Limitações da Aplicação
+## <span style="color:#2c5aa0;">VI – Informações Não Disponibilizadas</span>
 
-Esta aplicação:
+Em observância às normas de controle interno, proteção de dados e governança pública, **não são disponibilizados neste ambiente**:
 
-* não permite inclusão, edição ou exclusão de dados
-* não realiza autenticação ou controle de permissões
+* relatórios internos de fiscalização
+* descrições técnicas detalhadas de inspeções
+* autos de infração, termos ou pareceres
+* despachos administrativos
+* dados pessoais sensíveis
+* informações estratégicas ou de uso restrito
+
+Esses conteúdos permanecem protegidos nos sistemas institucionais competentes.
+
+---
+
+## <span style="color:#2c5aa0;">VII – Proteção de Dados Pessoais</span>
+
+A aplicação observa integralmente os princípios e disposições da **Lei nº 13.709/2018 – Lei Geral de Proteção de Dados Pessoais (LGPD)**.
+
+Foram adotadas medidas técnicas e administrativas para assegurar que **dados pessoais sensíveis, informações privadas ou registros internos protegidos** não sejam expostos neste ambiente.
+
+---
+
+## <span style="color:#2c5aa0;">VIII – Limitações Operacionais</span>
+
+A aplicação:
+
+* não permite inclusão, alteração ou exclusão de dados
+* não realiza autenticação de usuários finalísticos para produção de atos
 * não opera em tempo real
-* não substitui procedimentos formais ou sistemas corporativos
+* não substitui sistemas corporativos oficiais
 
-Trata-se de um **ambiente de consulta**, voltado exclusivamente ao apoio das atividades administrativas e fiscalizatórias.
-
----
-
-## VII – Isenção de Responsabilidade
-
-A administração pública **não se responsabiliza** por:
-
-* uso indevido das informações
-* interpretações fora do contexto institucional
-* decisões tomadas com base exclusiva neste ambiente
-
-O uso correto e responsável é de inteira responsabilidade do servidor autorizado.
+Trata-se de **ferramenta de apoio à gestão e fiscalização**, destinada exclusivamente à consulta institucional.
 
 ---
 
-## VIII – Aspectos Técnicos
+## <span style="color:#2c5aa0;">IX – Responsabilidade e Controle Interno</span>
 
-A solução é composta por:
+A utilização das informações deve observar os princípios da **responsabilidade funcional**, **finalidade pública** e **uso adequado da informação administrativa**.
 
-* aplicação estática (sem backend)
-* HTML, CSS e JavaScript
-* dados estruturados em arquivos JSON
-* hospedagem via GitHub Pages
-* compatibilidade com navegadores modernos e dispositivos móveis
-
-A arquitetura prioriza **economicidade, simplicidade, desempenho e aderência às boas práticas da administração pública digital**.
+A administração pública **não se responsabiliza por interpretações indevidas ou uso fora do contexto institucional**, cabendo ao servidor autorizado a correta utilização das informações.
 
 ---
 
-## IX – Responsabilidade Institucional
+## <span style="color:#2c5aa0;">X – Aspectos Técnicos da Solução</span>
 
-Este projeto foi desenvolvido no âmbito da **Vigilância Sanitária Municipal**, com finalidade estritamente institucional, **não configurando sistema oficial**, **ato administrativo** ou **instrumento de publicidade externa**.
+A solução adotada consiste em aplicação:
+
+* estática, sem backend
+* desenvolvida em HTML, CSS e JavaScript
+* estruturada a partir de arquivos JSON
+* hospedada via GitHub Pages
+* compatível com navegadores modernos e dispositivos móveis
+
+A arquitetura prioriza **economicidade, simplicidade, rastreabilidade e aderência às boas práticas de tecnologia aplicada à gestão pública**.
 
 ---
 
-## X – Contato Institucional
+## <span style="color:#2c5aa0;">XI – Reutilização das Informações</span>
 
-Demandas, correções ou comunicações relacionadas a esta plataforma devem ser realizadas **exclusivamente pelos canais institucionais internos da Vigilância Sanitária Municipal**, conforme os fluxos administrativos estabelecidos.
+A reutilização das informações é permitida **exclusivamente para fins institucionais**, observados os limites legais, a finalidade pública dos dados e as normas de controle interno.
+
+A reutilização **não implica chancela, certificação ou responsabilidade institucional**.
 
 ---
 
-Se quiser, posso:
+## <span style="color:#2c5aa0;">XII – Disposições Finais</span>
 
-* **encurtar** o texto para um README mais objetivo
-* **adaptar a linguagem** para padrão jurídico-administrativo mais formal
-* **criar uma versão “Aviso Legal” curta** para exibição direta no site
-* **alinhar o texto ao padrão de auditoria/TCM**
+Este projeto foi desenvolvido no âmbito da **Vigilância Sanitária Municipal**, como instrumento de apoio à gestão, **não configurando sistema oficial**, **ato administrativo formal** ou **instrumento decisório**.
 
-É só me dizer como pretende usar.
+---
+
+## <span style="color:#2c5aa0;">XIII – Contato Institucional</span>
+
+Dúvidas, correções ou comunicações relacionadas a este ambiente devem ser realizadas **exclusivamente pelos canais institucionais internos**, conforme os fluxos administrativos definidos pela Vigilância Sanitária Municipal.
+
+---
+
+Se quiser, no próximo passo posso:
+
+* **emitir uma versão “enxuta” para auditoria do TCM**
+* criar um **Aviso Legal curto** para exibição no site
+* adequar o texto para **relatório de controle interno anual**
+* padronizar com **linguagem idêntica a parecer técnico**
+
+É só dizer.
