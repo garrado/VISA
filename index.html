@@ -437,6 +437,81 @@ const provider = new GoogleAuthProvider();
 window.loginGoogle = function() {
   signInWithPopup(auth, provider).catch(console.error);
 };
+/* ✅ COLE ESTE BLOCO DENTRO do <script type="module"> do index.html
+   (logo DEPOIS do window.loginGoogle = function() { ... } )
+   No seu index (2).html está faltando o onAuthStateChanged + fecharModalNaoAutorizado. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}
+*/
+
+// helpers tela
+function showLogin(){
+  document.getElementById("login").style.display = "block";
+  document.getElementById("conteudo").style.display = "none";
+}
+function showConteudo(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("conteudo").style.display = "block";
+}
+
+// modal "não autorizado"
+function showUnauthorizedModal(user){
+  const modal = document.getElementById("modalNaoAutorizado");
+  const conta = document.getElementById("modalNaoAutorizadoConta");
+  const email = user?.email || "(e-mail não identificado)";
+  const uid   = user?.uid   || "(uid não identificado)";
+  if (conta) conta.textContent = `E-mail: ${email}\nUID: ${uid}`;
+  if (modal) modal.style.display = "flex";
+}
+window.fecharModalNaoAutorizado = function(){
+  const modal = document.getElementById("modalNaoAutorizado");
+  if (modal) modal.style.display = "none";
+};
+// fechar clicando fora do card
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("modalNaoAutorizado");
+  if (modal && modal.style.display === "flex" && e.target === modal) {
+    window.fecharModalNaoAutorizado();
+  }
+});
+
+// ✅ autorização (normaliza e aceita: (email+uid) OU (apenas email) OU (apenas uid))
+function isAuthorized(user){
+  const email = (user?.email || "").toLowerCase().trim();
+  const uid   = (user?.uid || "").trim();
+
+  return AUTHORIZED_USERS.some(u => {
+    const e = (u.email || "").toLowerCase().trim();
+    const id = (u.uid || "").trim();
+
+    const emailOk = e && email && e === email;
+    const uidOk   = id && uid && id === uid;
+
+    // se tiver os dois cadastrados, exige os dois (mais seguro)
+    if (e && id) return emailOk && uidOk;
+
+    // se por algum motivo você deixar um vazio no futuro, aceita o que tiver
+    return emailOk || uidOk;
+  });
+}
+
+// ✅ CONTROLE DE SESSÃO (ESTAVA AUSENTE NO SEU ARQUIVO) :contentReference[oaicite:2]{index=2}
+onAuthStateChanged(auth, async (user) => {
+  if (!user){
+    showLogin();
+    return;
+  }
+
+  if (isAuthorized(user)){
+    showConteudo();
+    return;
+  }
+
+  // autenticou mas não está liberado
+  showLogin();
+  showUnauthorizedModal(user);
+
+  // encerra sessão e volta para a tela de autenticação
+  try { await signOut(auth); } catch (e) { console.error(e); }
+});
 
 /* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
    REGRA:
@@ -530,6 +605,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
