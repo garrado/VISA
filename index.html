@@ -571,15 +571,6 @@ const AUTHORIZED_USERS = [
   { email: "mens.agitat.molem.cns@gmail.com", uid: "RB9Vlm3cxuPHCuST4mcc0mxPh" }
 ];
 
-function isAuthorized(user){
-  const email = (user?.email || "").toLowerCase();
-  const uid   = (user?.uid || "");
-  return AUTHORIZED_USERS.some(u =>
-    (u.email === email && u.uid === uid)
-  );
-}
-
-
 // LOGOUT
 window.logout = function(){
   signOut(auth);
@@ -605,6 +596,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
