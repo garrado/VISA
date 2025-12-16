@@ -441,16 +441,72 @@ window.loginGoogle = function() {
   signInWithPopup(auth, provider).catch(console.error);
 };
 
-// CONTROLE DE SESSÃO
-onAuthStateChanged(auth, user => {
-  if (user) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("conteudo").style.display = "block";
-  } else {
-    document.getElementById("login").style.display = "block";
-    document.getElementById("conteudo").style.display = "none";
-  }
-});
+/* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
+   REGRA:
+   - Cada e-mail fica imediatamente seguido do respectivo UID
+   - Para adicionar novo usuário: copie um bloco inteiro (email + uid)
+   - Pode liberar por e-mail E UID (mais seguro)
+*/
+
+const AUTHORIZED_USERS = [
+  { email: "ps.visa@anapolis.go.gov.br", uid: "vQ24jNdSX2MmSQX3XTWLvZpde5w1" },
+  { email: "jotadaguas@gmail.com", uid: "ATiLJpWykifv5eUtBTlADPbMldF3" },
+  { email: "geraldoedsonrosa@gmail.com", uid: "4UgVP6laz6bRsFMZOPqhXDNNaWu2" },
+  { email: "patycdmes@gmail.com", uid: "bLLxQQ7wZRYdUA8DtiWUyiqlS3f2" },
+  { email: "ariannefvieira@hotmail.com", uid: "IjHZgV8LKecpHS7s70hxfIWO0di2" },
+  { email: "marinaperillo@hotmail.com", uid: "AthHe789Z5Y1ODx7ND6Y91yXsH22" },
+  { email: "visa@anapolis.go.gov.br", uid: "0h5rl6ExBihjyPwYiiyuLDhWMOz1" },
+  { email: "mariaedwiges@anapolis.go.gov.br", uid: "5eLQe25jCFdC5okWolsk6M6078R2" },
+  { email: "tathnut@hotmail.com", uid: "6ofiI0sZ3kaEEgkv55wvF5W2mrG3" },
+  { email: "simonegrossi@anapolis.go.gov.br", uid: "1qZCusyG4ROTkhuKRAwIHMn0hMg2" },
+  { email: "kamillarolim@gmail.com", uid: "CNl51JmbI7ZGKidp5EPTNPXNbIh1" },
+  { email: "lulucieneepais@gmail.com", uid: "NbeyzbpgwFYJFPrsctpoa1HHUeY2" },
+  { email: "adrianepereira@anapolis.go.gov.br", uid: "G9tImcVZcMZznOcAd21TblbE6tz1" },
+  { email: "claudio@anapolis.go.gov.br", uid: "BZ50Kg9jhTWPGzOHY5dhNRuH7OH3" },
+  { email: "silviamarques@anapolis.go.gov.br", uid: "XX7BE4ikVFReUNcBWPdbpjudMqu1" },
+  { email: "mhg.rodovalho@gmail.com", uid: "HpPwPR2O4eUewE6PbGUrkcqxFHr2" },
+  { email: "medwiges@gmail.com", uid: "wBdmfjl02dMTRcBlhxuqseD1J9z1" },
+  { email: "lindaenila@gmail.com", uid: "rKSf5lmO8UOZljggXVX8K2P9YZ03" },
+  { email: "wanessab412@gmail.com", uid: "8XSDsiN1BbSbmd0uOqjpAomLhR43" },
+  { email: "juliocteles@anapolis.go.gov.br", uid: "jBPkysN5A4M8ryqd2nu9vyGEz733" },
+  { email: "fabiolappmarques@gmail.com", uid: "I1acR3dlyjSbR56auxNQODm5Hzm1" },
+  { email: "lidianesimoes@anapolis.go.gov.br", uid: "xX1K4D6qyrXQZnA1L4zkOKa0ytO2" },
+  { email: "educacao.esportes@anapolis.go.gov.br", uid: "aKtDrT71NdT6063PtlYvoJysRxj1" },
+  { email: "crbferreira81@gmail.com", uid: "wNpfJZVYk4UK3w1p1y5RAAi2sbG2" },
+  { email: "profajulianakenia@gmail.com", uid: "TtaWAMQficU2BxKSXiSTBAXkIYJ3" },
+  { email: "dani.visaanapolis@gmail.com", uid: "TKcUVl3otxb3CICX5yzVTXhWaOU2" },
+  { email: "medicamentos@anapolis.go.gov.br", uid: "k3AtHMuG4WStnYMkdF8y0prfgCm2" },
+  { email: "cesio@anapolis.go.gov.br", uid: "b5kpUvRAx7NArqMY3eaYEEO0Px42" },
+  { email: "gubio@anapolis.go.gov.br", uid: "oN1PBEI65XOIdyAot1AfV8n7W8I3" },
+  { email: "marciorodovalho@anapolis.go.gov.br", uid: "sTWw9MWQj7cpXpkcwmVjymy8vul2" },
+  { email: "edsonarantes@anapolis.go.gov.br", uid: "hL3hodcMR4V9x5AeSSWkwP82Tr63" },
+  { email: "981217644pedro@gmail.com", uid: "h0k91HWioBcOPnKyCxizOBnptDD2" },
+  { email: "julianafviturino@gmail.com", uid: "9E0Xd25nWrQaSH68lvM7sOZ2d833" },
+  { email: "thaysasouza97@gmail.com", uid: "gJhlUwrdhKhY3Wp2pJhZFbxrZl13" },
+  { email: "farm.castro78@gmail.com", uid: "UWz7PgadWBRB70HEx7F6q51t3sr1" },
+  { email: "viniciuscassiano@anapolis.go.gov.br", uid: "atGLmFQ2h5Q6sxpYV4uVNq4r97P2" },
+  { email: "thiagogomesgobo@gmail.com", uid: "aHFvl6xCiohRaiSWOyBuaCipuof1" },
+  { email: "liviabr.visa@gmail.com", uid: "62ac5HfnDEQRn6YHgyDzWOhtRDp2" },
+  { email: "wanessa05@gmail.com", uid: "Ga8G0xd9OBR7d0z07SOL2BKW6Ap1" },
+  { email: "santosrat@gmail.com", uid: "PMHTtuM6DFY1CPW7OqYJOYgoN842" },
+  { email: "vivianemiyada@gmail.com", uid: "MG0lbw8pPvbAF1ZVkIibbEeofiq2" },
+  { email: "angelavet2@gmail.com", uid: "PqW20iPGfGhqPNpkca5FcDhqTIG3" },
+  { email: "diasbrito1515@gmail.com", uid: "W8nsuZ2WN7dIOn2YFeHAlM6skbl2" },
+  { email: "ademargatu86@gmail.com", uid: "FG22ijc8LTfY4KNH9rFAKeDVkab2" },
+  { email: "cidalinacoelho@anapolis.go.gov.br", uid: "2tPhJLW3NTSQjHffsMofb6bKOSl2" },
+  { email: "lauraeleuza@gmail.com", uid: "cEwqfVXYGqfQfY7YbyfIlQ7Danm2" },
+  { email: "portaria344@anapolis.go.gov.br", uid: "8ndHg4JjFDZiDUbrt5klqKn1aJ73" },
+  { email: "mens.agitat.molem.cns@gmail.com", uid: "RB9Vlm3cxuPHCuST4mcc0mxPh" }
+];
+
+function isAuthorized(user){
+  const email = (user?.email || "").toLowerCase();
+  const uid   = (user?.uid || "");
+  return AUTHORIZED_USERS.some(u =>
+    (u.email === email && u.uid === uid)
+  );
+}
+
 
 // LOGOUT
 window.logout = function(){
@@ -458,8 +514,26 @@ window.logout = function(){
 };
 </script>
 
+<!-- 2) COLE ESTE BLOCO DE HTML (logo após o <div id="conteudo">...</div> ou antes do </body>) -->
+<div id="modalNaoAutorizado" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalNaoAutorizadoTitulo">
+  <div class="modalCard">
+    <h3 id="modalNaoAutorizadoTitulo">Acesso não autorizado</h3>
+    <p>
+      Sua conta Google não consta na lista de usuários liberados para esta página institucional.
+    </p>
+    <p class="small" id="modalNaoAutorizadoConta"></p>
+    <p class="small">
+      Solicite a liberação ao administrador da página e tente novamente.
+    </p>
+    <div class="modalActions">
+      <button class="btn btnPrimary" onclick="fecharModalNaoAutorizado()">Entendi</button>
+    </div>
+  </div>
+</div>
+  
 </body>
 </html>
+
 
 
 
