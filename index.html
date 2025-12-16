@@ -562,9 +562,8 @@ function isAuthorized(user){
   showLogin();
   showUnauthorizedModal(user);
 
-  // encerra sessão e volta para a tela de autenticação
-  try { await signOut(auth); } catch (e) { console.error(e); }
-});
+// logout APENAS quando o usuário confirmar
+window.__pendingLogout = true;
 
 /* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
    REGRA:
@@ -599,6 +598,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
