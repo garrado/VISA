@@ -461,10 +461,16 @@ function showUnauthorizedModal(user){
   if (conta) conta.textContent = `E-mail: ${email}\nUID: ${uid}`;
   if (modal) modal.style.display = "flex";
 }
-window.fecharModalNaoAutorizado = function(){
+window.fecharModalNaoAutorizado = async function(){
   const modal = document.getElementById("modalNaoAutorizado");
   if (modal) modal.style.display = "none";
+
+  if (window.__pendingLogout){
+    window.__pendingLogout = false;
+    try { await signOut(auth); } catch(e){}
+  }
 };
+
 // fechar clicando fora do card
 document.addEventListener("click", (e) => {
   const modal = document.getElementById("modalNaoAutorizado");
@@ -598,6 +604,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
