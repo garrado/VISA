@@ -139,14 +139,3 @@ Este projeto foi desenvolvido no âmbito da **Vigilância Sanitária Municipal**
 ## <span style="color:#2c5aa0;">XIII – Contato Institucional</span>
 
 Dúvidas, correções ou comunicações relacionadas a este ambiente devem ser realizadas **exclusivamente pelos canais institucionais internos**, conforme os fluxos administrativos definidos pela Vigilância Sanitária Municipal.
-
----
-
-Se quiser, no próximo passo posso:
-
-* **emitir uma versão “enxuta” para auditoria do TCM**
-* criar um **Aviso Legal curto** para exibição no site
-* adequar o texto para **relatório de controle interno anual**
-* padronizar com **linguagem idêntica a parecer técnico**
-
-É só dizer.
