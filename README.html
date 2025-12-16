@@ -69,9 +69,78 @@
     color:var(--muted);
     font-size:.9rem;
   }
+
+<!-- ✅ 1) COLE ESTE CSS dentro do <style> do README.html (de preferência no final) -->
+<style>
+  /* Barra superior estilo iOS + botão Voltar/OK */
+  .iosTopbar{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: rgba(244,246,250,.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .iosTopbar__inner{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .iosBtn{
+    -webkit-tap-highlight-color: transparent;
+    appearance: none;
+    border: 1px solid rgba(44,90,160,.35);
+    background: rgba(44,90,160,.10);
+    color: var(--brand);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .iosBtn:active{ transform: scale(.98); }
+
+  .iosTitle{
+    font-weight: 800;
+    color: var(--muted);
+    font-size: .95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Em celular, fixa a barra e dá respiro para não esconder o topo do conteúdo */
+  @media (max-width: 640px), (pointer: coarse){
+    body{ padding-top: 0; }
+    .container{ margin-top: 16px; }
+  }
+  
 </style>
 </head>
 
+<!-- ✅ 3) COLE ESTE SCRIPT antes do </body> -->
+<script>
+  function goBackOrHome(){
+    // Se tiver histórico (veio de um link interno), volta.
+    // Se foi aberto direto (sem histórico), volta para a página principal.
+    try{
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "index.html";
+    }catch(e){
+      window.location.href = "index.html";
+    }
+  }
+</script>
+
+  
 <body>
 <div class="container">
   <div class="card">
