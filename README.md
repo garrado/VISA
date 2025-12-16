@@ -1,89 +1,94 @@
-# Vigilância Sanitária Municipal – Consulta Pública de Estabelecimentos Regulados
-
-Este repositório público hospeda aplicação web de natureza **estritamente informativa**, disponibilizada por meio da plataforma **GitHub Pages**, destinada à **consulta pública de informações administrativas de estabelecimentos sujeitos à regulação da Vigilância Sanitária municipal**.
-
-A iniciativa integra ações de **transparência ativa**, **modernização administrativa** e **publicidade institucional**, não substituindo sistemas oficiais, nem produzindo efeitos jurídicos, normativos ou decisórios.
+Segue uma **versão refeita e ajustada do README**, deixando **claro, de forma inequívoca**, que o site é destinado **exclusivamente à consulta institucional pelos servidores da Vigilância Sanitária Municipal**, sem caráter público geral:
 
 ---
 
-## I – Finalidade e Objeto
+# Vigilância Sanitária Municipal
 
-O presente projeto tem por finalidade disponibilizar ao público informações **de interesse coletivo**, extraídas de bases administrativas institucionais, relativas a:
+## Plataforma de Consulta Institucional
 
-- Identificação cadastral de estabelecimentos regulados  
-- Razão social e nome fantasia  
-- Endereço do estabelecimento  
-- Classificação de atividades econômicas (CNAE)  
-- Situação administrativa e validade de alvarás sanitários  
-- Registro de inspeções realizadas (datas e identificadores administrativos)
+Este repositório hospeda uma aplicação web de **uso institucional**, disponibilizada por meio do **GitHub Pages**, destinada **exclusivamente à consulta administrativa por servidores e colaboradores da Vigilância Sanitária Municipal**, no exercício de suas atribuições funcionais.
 
-As informações são apresentadas **exclusivamente para fins de consulta**, sem caráter certificador, probatório, fiscalizatório ou decisório.
+O sistema **não se destina ao público externo**, **não possui finalidade comercial** e **não substitui os sistemas oficiais internos** da administração pública.
 
 ---
 
-## II – Fundamentação Legal e Transparência
+## I – Finalidade da Plataforma
 
-A disponibilização das informações observa, entre outros, os seguintes diplomas legais e princípios:
+A aplicação tem como objetivo **facilitar o acesso rápido e centralizado a informações administrativas** necessárias às rotinas de fiscalização, análise e acompanhamento sanitário, promovendo maior eficiência operacional e padronização das consultas internas.
 
-- **Constituição Federal**, art. 37, caput (princípios da administração pública)  
-- **Lei nº 12.527/2011 – Lei de Acesso à Informação (LAI)**  
-- Normas gerais de transparência da administração pública  
-- Orientações e entendimentos consolidados no âmbito do **Tribunal de Contas dos Municípios do Estado de Goiás – TCM-GO**
+São disponibilizadas, para fins **exclusivamente institucionais**, informações como:
 
-O acesso às informações é **livre e gratuito**, respeitados os limites legais relativos à proteção de dados pessoais, informações sigilosas e dados de uso interno da administração.
+* Identificação cadastral de estabelecimentos regulados
+* Razão social e nome fantasia
+* Endereço do estabelecimento
+* Classificação de atividades econômicas (CNAE)
+* Situação administrativa e vigência de alvarás sanitários
+* Registros objetivos de inspeções (datas e identificadores administrativos)
 
 ---
 
-## III – Natureza das Informações Publicadas
+## II – Público-Alvo e Restrição de Uso
 
-As informações disponibilizadas neste ambiente:
+O acesso e a utilização desta plataforma são **restritos aos funcionários da Vigilância Sanitária Municipal**, incluindo:
 
-- possuem natureza **administrativa e informativa**  
-- não substituem documentos oficiais  
-- não constituem certidão, declaração ou ato administrativo  
-- refletem a base de dados **no momento da extração/exportação**
+* Fiscais sanitários
+* Chefias administrativas
+* Equipes técnicas e de apoio
+* Servidores autorizados no exercício de funções institucionais
 
-Eventuais divergências entre as informações aqui apresentadas e os registros oficiais devem ser dirimidas junto aos sistemas institucionais competentes.
+Qualquer uso por terceiros **não autorizados** ou fora do contexto institucional **não é permitido** e não gera qualquer responsabilidade para a administração pública.
+
+---
+
+## III – Natureza das Informações
+
+As informações apresentadas possuem caráter:
+
+* **Administrativo**
+* **Informativo**
+* **Não certificador**
+* **Não decisório**
+
+O conteúdo **não constitui certidão**, **não substitui documentos oficiais** e **não produz efeitos jurídicos externos**.
+
+Em caso de divergência, **prevalecem sempre os registros constantes nos sistemas oficiais internos da Vigilância Sanitária**.
 
 ---
 
 ## IV – Informações Não Disponibilizadas
 
-Em observância à legislação vigente e às boas práticas de governança e controle, **não são disponibilizadas neste repositório**:
+Por razões legais, técnicas e administrativas, **não são disponibilizados nesta plataforma**:
 
-- Relatórios internos de fiscalização sanitária  
-- Conteúdos descritivos, analíticos ou opinativos de inspeções  
-- Campos de histórico interno, memórias técnicas ou observações administrativas  
-- Autos de infração, termos, pareceres ou despachos  
-- Dados pessoais sensíveis ou de caráter privado  
-- Informações estratégicas ou restritas à atuação administrativa
+* Relatórios internos de fiscalização
+* Conteúdo descritivo ou analítico de inspeções
+* Autos de infração, termos, pareceres ou despachos
+* Dados pessoais sensíveis
+* Informações estratégicas ou de uso restrito da administração
 
-Essas informações permanecem protegidas e acessíveis apenas nos ambientes institucionais apropriados.
+Esses dados permanecem protegidos nos sistemas institucionais apropriados.
 
 ---
 
-## V – Proteção de Dados Pessoais
+## V – Proteção de Dados
 
-O projeto observa os princípios, fundamentos e disposições da:
+A plataforma observa os princípios da **Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 – LGPD)**, garantindo que:
 
-- **Lei nº 13.709/2018 – Lei Geral de Proteção de Dados Pessoais (LGPD)**
-
-Foram adotadas medidas técnicas e administrativas para assegurar que **dados pessoais sensíveis ou informações de uso interno** não sejam expostos neste ambiente público.
-
-Caso seja identificada eventual publicação inadequada, recomenda-se a comunicação formal ao órgão responsável para adoção das providências cabíveis.
+* não sejam expostos dados pessoais sensíveis
+* não haja divulgação de informações privadas ou sigilosas
+* o uso das informações esteja vinculado à finalidade institucional
 
 ---
 
 ## VI – Limitações da Aplicação
 
-A aplicação disponibilizada:
+Esta aplicação:
 
-- não realiza autenticação de usuários  
-- não concede acesso a sistemas internos  
-- não efetua validações em tempo real  
-- não substitui consultas formais aos órgãos competentes  
+* não permite inclusão, edição ou exclusão de dados
+* não realiza autenticação ou controle de permissões
+* não opera em tempo real
+* não substitui procedimentos formais ou sistemas corporativos
 
-O conteúdo apresentado possui caráter meramente informativo e **não deve ser utilizado como base exclusiva para decisões administrativas, comerciais ou jurídicas**.
+Trata-se de um **ambiente de consulta**, voltado exclusivamente ao apoio das atividades administrativas e fiscalizatórias.
 
 ---
 
@@ -91,49 +96,45 @@ O conteúdo apresentado possui caráter meramente informativo e **não deve ser 
 
 A administração pública **não se responsabiliza** por:
 
-- interpretações equivocadas ou uso indevido das informações  
-- decisões tomadas por terceiros com base exclusiva nos dados aqui apresentados  
-- eventuais inconsistências decorrentes de atualizações posteriores nos sistemas oficiais  
+* uso indevido das informações
+* interpretações fora do contexto institucional
+* decisões tomadas com base exclusiva neste ambiente
 
-A utilização das informações é de inteira responsabilidade do usuário, que deverá considerar sua natureza informativa e não vinculante.
+O uso correto e responsável é de inteira responsabilidade do servidor autorizado.
 
 ---
 
 ## VIII – Aspectos Técnicos
 
-A solução adotada consiste em aplicação:
+A solução é composta por:
 
-- estática, sem backend  
-- desenvolvida em HTML, CSS e JavaScript  
-- baseada em arquivos JSON públicos  
-- hospedada por meio do GitHub Pages  
-- compatível com navegadores modernos e dispositivos móveis  
+* aplicação estática (sem backend)
+* HTML, CSS e JavaScript
+* dados estruturados em arquivos JSON
+* hospedagem via GitHub Pages
+* compatibilidade com navegadores modernos e dispositivos móveis
 
-A arquitetura prioriza eficiência, escalabilidade, economicidade e aderência às boas práticas de tecnologia aplicada à gestão pública.
-
----
-
-## IX – Reutilização das Informações
-
-As informações disponibilizadas podem ser reutilizadas para fins lícitos, desde que:
-
-- respeitada a legislação vigente  
-- preservada a finalidade pública dos dados  
-- vedado o uso descontextualizado ou que induza a erro  
-
-A reutilização não implica chancela, validação ou responsabilidade institucional.
+A arquitetura prioriza **economicidade, simplicidade, desempenho e aderência às boas práticas da administração pública digital**.
 
 ---
 
-## X – Responsabilidade Institucional
+## IX – Responsabilidade Institucional
 
-Este projeto foi desenvolvido no âmbito da administração pública municipal, com vistas ao aprimoramento da transparência e do acesso à informação, observadas as normas legais, técnicas e administrativas aplicáveis.
-
-O conteúdo disponibilizado **não constitui ato administrativo**, **não produz efeitos jurídicos** e **não substitui procedimentos oficiais**.
+Este projeto foi desenvolvido no âmbito da **Vigilância Sanitária Municipal**, com finalidade estritamente institucional, **não configurando sistema oficial**, **ato administrativo** ou **instrumento de publicidade externa**.
 
 ---
 
-## XI – Contato Institucional
+## X – Contato Institucional
 
-Para esclarecimentos formais, comunicações administrativas ou solicitações oficiais, devem ser utilizados **exclusivamente os canais institucionais do órgão responsável pela Vigilância Sanitária municipal**.
+Demandas, correções ou comunicações relacionadas a esta plataforma devem ser realizadas **exclusivamente pelos canais institucionais internos da Vigilância Sanitária Municipal**, conforme os fluxos administrativos estabelecidos.
 
+---
+
+Se quiser, posso:
+
+* **encurtar** o texto para um README mais objetivo
+* **adaptar a linguagem** para padrão jurídico-administrativo mais formal
+* **criar uma versão “Aviso Legal” curta** para exibição direta no site
+* **alinhar o texto ao padrão de auditoria/TCM**
+
+É só me dizer como pretende usar.
