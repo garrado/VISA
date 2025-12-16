@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -214,15 +215,6 @@ header h2{
   justify-content:center;
 }
 
-.aviso-importante{
-  color:#b30000;
-  font-weight: 900;
-  background: #fff7dd;
-  padding: 8px 10px;
-  border-left: 5px solid #d00000;
-  border-radius: 10px;
-}
-
 .footer{
   text-align:center;
   padding: 18px 16px 26px;
@@ -243,7 +235,7 @@ header h2{
     padding: 16px 16px !important;
     font-size: 1.05rem !important;
     line-height: 1.15 !important;
-    white-space: normal !important;   /* deixa quebrar linha se precisar */
+    white-space: normal !important;
     text-align: center !important;
   }
   .heroBtn span{
@@ -252,10 +244,6 @@ header h2{
     border-radius: 12px !important;
   }
 }
-
-/* ✅ SUBSTITUA (no seu <style>) TODO o trecho do modal + REMOVA a linha
-   "<!-- 1) COLE ESTE BLOCO DE CSS ... -->" (comentário HTML dentro do CSS quebra o layout)
-*/
 
 /* Modal de acesso não autorizado */
 .modalOverlay{
@@ -277,7 +265,7 @@ header h2{
 }
 .modalCard h3{ margin:0 0 8px 0; color:#b30000; }
 .modalCard p{ margin:8px 0; color:#1f2a3a; }
-.modalCard .small{ color:#5b6b83; font-size:.92rem; }
+.modalCard .small{ color:#5b6b83; font-size:.92rem; white-space:pre-line; }
 .modalActions{
   display:flex;
   gap:10px;
@@ -285,7 +273,6 @@ header h2{
   margin-top:12px;
 }
 .modalActions .btn{ width:auto; }
-  
 </style>
 </head>
 
@@ -296,9 +283,7 @@ header h2{
   <div class="loginCard">
     <h2>Área Restrita</h2>
     <p>Entre com sua conta Google para acessar os conteúdos internos.</p>
-    <button class="btn btnPrimary" onclick="loginGoogle()">
-      Entrar com Google
-    </button>
+    <button class="btn btnPrimary" onclick="loginGoogle()">Entrar com Google</button>
   </div>
 </div>
 
@@ -357,8 +342,6 @@ header h2{
         Agradecemos a compreensão e o comprometimento de todos neste momento que exigiu uma ação ágil e coordenada.
         Contamos com o empenho da equipe para o cumprimento eficaz dessas determinações.
       </p>
-
-      <!-- <p class="aviso-importante">Feliz Natal</p> -->
     </div>
 
     <!-- LINKS PRINCIPAIS -->
@@ -381,24 +364,21 @@ header h2{
     </div>
   </div>
 
- <!-- MENSAGEM INSTITUCIONAL -->
-<div class="card">
-  <h3>Mensagem Institucional</h3>
-  <p>
-    Bem-vindos à página interna da Gerência de Vigilância Sanitária.
-    Aqui reunimos informações, links e comunicados destinados aos servidores responsáveis pela proteção da saúde da população de Anápolis.
-  </p>
-  <p>
-    Nosso compromisso diário é garantir segurança sanitária, qualidade dos serviços fiscalizados e integridade técnica da atuação.
-    Esta página foi criada para facilitar o acesso a dados operacionais e melhorar o fluxo de comunicação interna.
-  </p>
-  <p class="small">
-    📄 <a href="README.html" target="_blank" rel="noopener">
-      Consulte aqui o Aviso Institucional e as regras de uso da plataforma
-    </a>
-  </p>
-</div>
-
+  <!-- MENSAGEM INSTITUCIONAL -->
+  <div class="card">
+    <h3>Mensagem Institucional</h3>
+    <p>
+      Bem-vindos à página interna da Gerência de Vigilância Sanitária.
+      Aqui reunimos informações, links e comunicados destinados aos servidores responsáveis pela proteção da saúde da população de Anápolis.
+    </p>
+    <p>
+      Nosso compromisso diário é garantir segurança sanitária, qualidade dos serviços fiscalizados e integridade técnica da atuação.
+      Esta página foi criada para facilitar o acesso a dados operacionais e melhorar o fluxo de comunicação interna.
+    </p>
+    <p class="small">
+      📄 <a href="README.html" target="_blank" rel="noopener">Consulte aqui o Aviso Institucional e as regras de uso da plataforma</a>
+    </p>
+  </div>
 
 </div>
 
@@ -408,6 +388,19 @@ header h2{
   © 2025
 </div>
 
+</div>
+
+<!-- MODAL NÃO AUTORIZADO -->
+<div id="modalNaoAutorizado" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalNaoAutorizadoTitulo">
+  <div class="modalCard">
+    <h3 id="modalNaoAutorizadoTitulo">Acesso não autorizado</h3>
+    <p>Sua conta Google não consta na lista de usuários liberados para esta página institucional.</p>
+    <p class="small" id="modalNaoAutorizadoConta"></p>
+    <p class="small">Solicite a liberação ao administrador da página e tente novamente.</p>
+    <div class="modalActions">
+      <button class="btn btnPrimary" onclick="fecharModalNaoAutorizado()">Entendi</button>
+    </div>
+  </div>
 </div>
 
 <!-- FIREBASE -->
@@ -433,18 +426,66 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// LOGIN
-window.loginGoogle = function() {
-  signInWithPopup(auth, provider).catch(console.error);
-};
-/* ✅ COLE ESTE BLOCO DENTRO do <script type="module"> do index.html
-   (logo DEPOIS do window.loginGoogle = function() { ... } )
-   No seu index (2).html está faltando o onAuthStateChanged + fecharModalNaoAutorizado. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}
-*/
+/* ===== LISTA DE AUTORIZADOS (SOMENTE E-MAIL) ===== */
+const AUTHORIZED_EMAILS = new Set([
+  "ps.visa@anapolis.go.gov.br",
+  "jotadaguas@gmail.com",
+  "geraldoedsonrosa@gmail.com",
+  "patycdmes@gmail.com",
+  "ariannefvieira@hotmail.com",
+  "marinaperillo@hotmail.com",
+  "visa@anapolis.go.gov.br",
+  "mariaedwiges@anapolis.go.gov.br",
+  "tathnut@hotmail.com",
+  "simonegrossi@anapolis.go.gov.br",
+  "kamillarolim@gmail.com",
+  "lulucieneepais@gmail.com",
+  "adrianepereira@anapolis.go.gov.br",
+  "claudio@anapolis.go.gov.br",
+  "silviamarques@anapolis.go.gov.br",
+  "mhg.rodovalho@gmail.com",
+  "medwiges@gmail.com",
+  "lindaenila@gmail.com",
+  "wanessab412@gmail.com",
+  "juliocteles@anapolis.go.gov.br",
+  "fabiolappmarques@gmail.com",
+  "lidianesimoes@anapolis.go.gov.br",
+  "educacao.esportes@anapolis.go.gov.br",
+  "crbferreira81@gmail.com",
+  "profajulianakenia@gmail.com",
+  "dani.visaanapolis@gmail.com",
+  "medicamentos@anapolis.go.gov.br",
+  "cesio@anapolis.go.gov.br",
+  "gubio@anapolis.go.gov.br",
+  "marciorodovalho@anapolis.go.gov.br",
+  "edsonarantes@anapolis.go.gov.br",
+  "981217644pedro@gmail.com",
+  "julianafviturino@gmail.com",
+  "thaysasouza97@gmail.com",
+  "farm.castro78@gmail.com",
+  "viniciuscassiano@anapolis.go.gov.br",
+  "thiagogomesgobo@gmail.com",
+  "liviabr.visa@gmail.com",
+  "wanessa05@gmail.com",
+  "santosrat@gmail.com",
+  "vivianemiyada@gmail.com",
+  "angelavet2@gmail.com",
+  "diasbrito1515@gmail.com",
+  "ademargatu86@gmail.com",
+  "cidalinacoelho@anapolis.go.gov.br",
+  "lauraeleuza@gmail.com",
+  "portaria344@anapolis.go.gov.br",
+  "mens.agitat.molem.cns@gmail.com"
+]);
 
-// helpers tela
+function isAuthorized(user){
+  const email = (user?.email || "").toLowerCase().trim();
+  return AUTHORIZED_EMAILS.has(email);
+}
+
+/* helpers tela */
 function showLogin(){
-  document.getElementById("login").style.display = "block";
+  document.getElementById("login").style.display = "flex";
   document.getElementById("conteudo").style.display = "none";
 }
 function showConteudo(){
@@ -452,26 +493,28 @@ function showConteudo(){
   document.getElementById("conteudo").style.display = "block";
 }
 
-// modal "não autorizado"
+/* modal não autorizado */
 function showUnauthorizedModal(user){
   const modal = document.getElementById("modalNaoAutorizado");
   const conta = document.getElementById("modalNaoAutorizadoConta");
   const email = user?.email || "(e-mail não identificado)";
-  const uid   = user?.uid   || "(uid não identificado)";
-  if (conta) conta.textContent = `E-mail: ${email}\nUID: ${uid}`;
+  if (conta) conta.textContent = `E-mail: ${email}`;
   if (modal) modal.style.display = "flex";
 }
+
+window.__pendingLogout = false;
+
 window.fecharModalNaoAutorizado = async function(){
   const modal = document.getElementById("modalNaoAutorizado");
   if (modal) modal.style.display = "none";
 
   if (window.__pendingLogout){
     window.__pendingLogout = false;
-    try { await signOut(auth); } catch(e){}
+    try { await signOut(auth); } catch(e){ console.error(e); }
   }
 };
 
-// fechar clicando fora do card
+/* fechar clicando fora do card */
 document.addEventListener("click", (e) => {
   const modal = document.getElementById("modalNaoAutorizado");
   if (modal && modal.style.display === "flex" && e.target === modal) {
@@ -479,81 +522,18 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ✅ autorização (normaliza e aceita: (email+uid) OU (apenas email) OU (apenas uid))
-function isAuthorized(user){
-  const email = (user?.email || "").toLowerCase().trim();
-  const uid   = (user?.uid || "").trim();
+/* LOGIN */
+window.loginGoogle = function() {
+  signInWithPopup(auth, provider).catch(console.error);
+};
 
-  return AUTHORIZED_USERS.some(u => {
-    const e = (u.email || "").toLowerCase().trim();
-    const id = (u.uid || "").trim();
+/* LOGOUT (manual) */
+window.logout = function(){
+  signOut(auth).catch(console.error);
+};
 
-    const emailOk = e && email && e === email;
-    const uidOk   = id && uid && id === uid;
-
-    // se tiver os dois cadastrados, exige os dois (mais seguro)
-    if (e && id) return emailOk && uidOk;
-
-    // se por algum motivo você deixar um vazio no futuro, aceita o que tiver
-    return emailOk || uidOk;
-  });
-}
-
-// ✅ CONTROLE DE SESSÃO (ESTAVA AUSENTE NO SEU ARQUIVO) :contentReference[oaicite:2]{index=2}
-
-  const AUTHORIZED_USERS = [
-  { email: "ps.visa@anapolis.go.gov.br", uid: "vQ24jNdSX2MmSQX3XTWLvZpde5w1" },
-  { email: "jotadaguas@gmail.com", uid: "ATiLJpWykifv5eUtBTlADPbMldF3" },
-  { email: "geraldoedsonrosa@gmail.com", uid: "4UgVP6laz6bRsFMZOPqhXDNNaWu2" },
-  { email: "patycdmes@gmail.com", uid: "bLLxQQ7wZRYdUA8DtiWUyiqlS3f2" },
-  { email: "ariannefvieira@hotmail.com", uid: "IjHZgV8LKecpHS7s70hxfIWO0di2" },
-  { email: "marinaperillo@hotmail.com", uid: "AthHe789Z5Y1ODx7ND6Y91yXsH22" },
-  { email: "visa@anapolis.go.gov.br", uid: "0h5rl6ExBihjyPwYiiyuLDhWMOz1" },
-  { email: "mariaedwiges@anapolis.go.gov.br", uid: "5eLQe25jCFdC5okWolsk6M6078R2" },
-  { email: "tathnut@hotmail.com", uid: "6ofiI0sZ3kaEEgkv55wvF5W2mrG3" },
-  { email: "simonegrossi@anapolis.go.gov.br", uid: "1qZCusyG4ROTkhuKRAwIHMn0hMg2" },
-  { email: "kamillarolim@gmail.com", uid: "CNl51JmbI7ZGKidp5EPTNPXNbIh1" },
-  { email: "lulucieneepais@gmail.com", uid: "NbeyzbpgwFYJFPrsctpoa1HHUeY2" },
-  { email: "adrianepereira@anapolis.go.gov.br", uid: "G9tImcVZcMZznOcAd21TblbE6tz1" },
-  { email: "claudio@anapolis.go.gov.br", uid: "BZ50Kg9jhTWPGzOHY5dhNRuH7OH3" },
-  { email: "silviamarques@anapolis.go.gov.br", uid: "XX7BE4ikVFReUNcBWPdbpjudMqu1" },
-  { email: "mhg.rodovalho@gmail.com", uid: "HpPwPR2O4eUewE6PbGUrkcqxFHr2" },
-  { email: "medwiges@gmail.com", uid: "wBdmfjl02dMTRcBlhxuqseD1J9z1" },
-  { email: "lindaenila@gmail.com", uid: "rKSf5lmO8UOZljggXVX8K2P9YZ03" },
-  { email: "wanessab412@gmail.com", uid: "8XSDsiN1BbSbmd0uOqjpAomLhR43" },
-  { email: "juliocteles@anapolis.go.gov.br", uid: "jBPkysN5A4M8ryqd2nu9vyGEz733" },
-  { email: "fabiolappmarques@gmail.com", uid: "I1acR3dlyjSbR56auxNQODm5Hzm1" },
-  { email: "lidianesimoes@anapolis.go.gov.br", uid: "xX1K4D6qyrXQZnA1L4zkOKa0ytO2" },
-  { email: "educacao.esportes@anapolis.go.gov.br", uid: "aKtDrT71NdT6063PtlYvoJysRxj1" },
-  { email: "crbferreira81@gmail.com", uid: "wNpfJZVYk4UK3w1p1y5RAAi2sbG2" },
-  { email: "profajulianakenia@gmail.com", uid: "TtaWAMQficU2BxKSXiSTBAXkIYJ3" },
-  { email: "dani.visaanapolis@gmail.com", uid: "TKcUVl3otxb3CICX5yzVTXhWaOU2" },
-  { email: "medicamentos@anapolis.go.gov.br", uid: "k3AtHMuG4WStnYMkdF8y0prfgCm2" },
-  { email: "cesio@anapolis.go.gov.br", uid: "b5kpUvRAx7NArqMY3eaYEEO0Px42" },
-  { email: "gubio@anapolis.go.gov.br", uid: "oN1PBEI65XOIdyAot1AfV8n7W8I3" },
-  { email: "marciorodovalho@anapolis.go.gov.br", uid: "sTWw9MWQj7cpXpkcwmVjymy8vul2" },
-  { email: "edsonarantes@anapolis.go.gov.br", uid: "hL3hodcMR4V9x5AeSSWkwP82Tr63" },
-  { email: "981217644pedro@gmail.com", uid: "h0k91HWioBcOPnKyCxizOBnptDD2" },
-  { email: "julianafviturino@gmail.com", uid: "9E0Xd25nWrQaSH68lvM7sOZ2d833" },
-  { email: "thaysasouza97@gmail.com", uid: "gJhlUwrdhKhY3Wp2pJhZFbxrZl13" },
-  { email: "farm.castro78@gmail.com", uid: "UWz7PgadWBRB70HEx7F6q51t3sr1" },
-  { email: "viniciuscassiano@anapolis.go.gov.br", uid: "atGLmFQ2h5Q6sxpYV4uVNq4r97P2" },
-  { email: "thiagogomesgobo@gmail.com", uid: "aHFvl6xCiohRaiSWOyBuaCipuof1" },
-  { email: "liviabr.visa@gmail.com", uid: "62ac5HfnDEQRn6YHgyDzWOhtRDp2" },
-  { email: "wanessa05@gmail.com", uid: "Ga8G0xd9OBR7d0z07SOL2BKW6Ap1" },
-  { email: "santosrat@gmail.com", uid: "PMHTtuM6DFY1CPW7OqYJOYgoN842" },
-  { email: "vivianemiyada@gmail.com", uid: "MG0lbw8pPvbAF1ZVkIibbEeofiq2" },
-  { email: "angelavet2@gmail.com", uid: "PqW20iPGfGhqPNpkca5FcDhqTIG3" },
-  { email: "diasbrito1515@gmail.com", uid: "W8nsuZ2WN7dIOn2YFeHAlM6skbl2" },
-  { email: "ademargatu86@gmail.com", uid: "FG22ijc8LTfY4KNH9rFAKeDVkab2" },
-  { email: "cidalinacoelho@anapolis.go.gov.br", uid: "2tPhJLW3NTSQjHffsMofb6bKOSl2" },
-  { email: "lauraeleuza@gmail.com", uid: "cEwqfVXYGqfQfY7YbyfIlQ7Danm2" },
-  { email: "portaria344@anapolis.go.gov.br", uid: "8ndHg4JjFDZiDUbrt5klqKn1aJ73" },
-  { email: "mens.agitat.molem.cns@gmail.com", uid: "RB9Vlm3cxuPHCuST4mcc0mxPh" }
-];
-
-  
-  onAuthStateChanged(auth, async (user) => {
+/* CONTROLE DE SESSÃO */
+onAuthStateChanged(auth, (user) => {
   if (!user){
     showLogin();
     return;
@@ -564,55 +544,14 @@ function isAuthorized(user){
     return;
   }
 
-  // autenticou mas não está liberado
   showLogin();
   showUnauthorizedModal(user);
 
-// logout APENAS quando o usuário confirmar
-window.__pendingLogout = true;
-
-/* ===== LISTA DE AUTORIZADOS (MANUTENÇÃO SIMPLES) =====
-   REGRA:
-   - Cada e-mail fica imediatamente seguido do respectivo UID
-   - Para adicionar novo usuário: copie um bloco inteiro (email + uid)
-   - Pode liberar por e-mail E UID (mais seguro)
-*/
-
-
-// LOGOUT
-window.logout = function(){
-  signOut(auth);
-};
+  /* desloga somente após o usuário fechar o modal */
+  window.__pendingLogout = true;
+});
 </script>
 
-<!-- 2) COLE ESTE BLOCO DE HTML (logo após o <div id="conteudo">...</div> ou antes do </body>) -->
-<div id="modalNaoAutorizado" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalNaoAutorizadoTitulo">
-  <div class="modalCard">
-    <h3 id="modalNaoAutorizadoTitulo">Acesso não autorizado</h3>
-    <p>
-      Sua conta Google não consta na lista de usuários liberados para esta página institucional.
-    </p>
-    <p class="small" id="modalNaoAutorizadoConta"></p>
-    <p class="small">
-      Solicite a liberação ao administrador da página e tente novamente.
-    </p>
-    <div class="modalActions">
-      <button class="btn btnPrimary" onclick="fecharModalNaoAutorizado()">Entendi</button>
-    </div>
-  </div>
-</div>
-  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
+```
