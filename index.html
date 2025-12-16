@@ -253,7 +253,10 @@ header h2{
   }
 }
 
-<!-- 1) COLE ESTE BLOCO DE CSS (dentro do <style> do index.html) -->
+/* ✅ SUBSTITUA (no seu <style>) TODO o trecho do modal + REMOVA a linha
+   "<!-- 1) COLE ESTE BLOCO DE CSS ... -->" (comentário HTML dentro do CSS quebra o layout)
+*/
+
 /* Modal de acesso não autorizado */
 .modalOverlay{
   position:fixed; inset:0;
@@ -272,22 +275,16 @@ header h2{
   box-shadow:0 18px 50px rgba(0,0,0,.20);
   padding:18px;
 }
-.modalCard h3{
-  margin:0 0 8px 0;
-  color:#b30000;
-}
-.modalCard p{
-  margin:8px 0;
-  color:#1f2a3a;
-}
-.modalCard .small{color:#5b6b83; font-size:.92rem}
+.modalCard h3{ margin:0 0 8px 0; color:#b30000; }
+.modalCard p{ margin:8px 0; color:#1f2a3a; }
+.modalCard .small{ color:#5b6b83; font-size:.92rem; }
 .modalActions{
   display:flex;
   gap:10px;
   justify-content:flex-end;
   margin-top:12px;
 }
-.modalActions .btn{width:auto}
+.modalActions .btn{ width:auto; }
   
 </style>
 </head>
@@ -533,6 +530,7 @@ window.logout = function(){
   
 </body>
 </html>
+
 
 
 
