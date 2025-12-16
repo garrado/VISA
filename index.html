@@ -253,8 +253,41 @@ header h2{
   }
 }
 
-
-
+<!-- 1) COLE ESTE BLOCO DE CSS (dentro do <style> do index.html) -->
+/* Modal de acesso não autorizado */
+.modalOverlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:9999;
+}
+.modalCard{
+  width:min(520px, 100%);
+  background:#fff;
+  border:1px solid rgba(31,42,58,.12);
+  border-radius:16px;
+  box-shadow:0 18px 50px rgba(0,0,0,.20);
+  padding:18px;
+}
+.modalCard h3{
+  margin:0 0 8px 0;
+  color:#b30000;
+}
+.modalCard p{
+  margin:8px 0;
+  color:#1f2a3a;
+}
+.modalCard .small{color:#5b6b83; font-size:.92rem}
+.modalActions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:12px;
+}
+.modalActions .btn{width:auto}
   
 </style>
 </head>
@@ -427,6 +460,7 @@ window.logout = function(){
 
 </body>
 </html>
+
 
 
 
