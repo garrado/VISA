@@ -276,5 +276,57 @@ body{
   }
 }
 
+/* =========================================================
+   MODAL – ACESSO NÃO AUTORIZADO (LOGIN)
+   NÃO interfere nos modais existentes
+   ========================================================= */
+
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999; /* acima de tudo */
+}
+
+.modalCard{
+  width: min(520px, 100%);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.25);
+  padding: 18px;
+}
+
+.modalCard h3{
+  margin: 0 0 8px 0;
+  color: #b30000;
+  font-weight: 900;
+}
+
+.modalCard p{
+  margin: 8px 0;
+  color: var(--text);
+}
+
+.modalCard .small{
+  font-size: .92rem;
+  color: var(--muted);
+  white-space: pre-line; /* quebra linha p/ email + uid */
+}
+
+.modalActions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+
+
+
 
 
