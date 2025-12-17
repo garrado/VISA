@@ -15,6 +15,8 @@
     --line:rgba(0,0,0,.08);
   }
 
+  *{box-sizing:border-box}
+
   body{
     margin:0;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -25,7 +27,7 @@
 
   .container{
     max-width:1000px;
-    margin:32px auto;
+    margin:24px auto;
     padding:0 18px;
   }
 
@@ -38,6 +40,7 @@
 
   h1{
     color:var(--brand);
+    explain: none;
     margin-top:0;
     font-size:1.9rem;
   }
@@ -50,17 +53,9 @@
     font-size:1.25rem;
   }
 
-  p{
-    margin:12px 0;
-  }
-
-  ul{
-    margin:10px 0 10px 20px;
-  }
-
-  li{
-    margin:6px 0;
-  }
+  p{ margin:12px 0; }
+  ul{ margin:10px 0 10px 20px; }
+  li{ margin:6px 0; }
 
   .footer{
     margin-top:40px;
@@ -70,9 +65,7 @@
     font-size:.9rem;
   }
 
-<!-- ✅ 1) COLE ESTE CSS dentro do <style> do README.html (de preferência no final) -->
-<style>
-  /* Barra superior estilo iOS + botão Voltar/OK */
+  /* ✅ Barra superior estilo iOS + botões */
   .iosTopbar{
     position: sticky;
     top: 0;
@@ -116,21 +109,112 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  /* Em celular, fixa a barra e dá respiro para não esconder o topo do conteúdo */
-  @media (max-width: 640px), (pointer: coarse){
-    body{ padding-top: 0; }
-    .container{ margin-top: 16px; }
-  }
-  
 </style>
 </head>
 
-<!-- ✅ 3) COLE ESTE SCRIPT antes do </body> -->
+<body>
+
+<!-- ✅ Topbar com Voltar/OK -->
+<div class="iosTopbar">
+  <div class="iosTopbar__inner">
+    <button class="iosBtn" type="button" onclick="goBackOrHome()">← Voltar</button>
+    <div class="iosTitle">Aviso Institucional</div>
+    <button class="iosBtn" type="button" onclick="goBackOrHome()">OK</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+
+    <h1>Vigilância Sanitária Municipal – Consulta Institucional de Estabelecimentos Regulados</h1>
+
+    <p>
+      Este ambiente hospeda uma aplicação web de natureza <strong>informativa e institucional</strong>,
+      disponibilizada por meio da plataforma GitHub Pages, destinada à
+      <strong>consulta interna por servidores da Vigilância Sanitária Municipal</strong>,
+      no exercício regular de suas atribuições legais e funcionais.
+    </p>
+
+    <p>
+      A iniciativa integra ações de modernização administrativa, controle interno,
+      padronização de informações e apoio operacional, não substituindo sistemas oficiais
+      nem produzindo efeitos jurídicos, normativos ou decisórios.
+    </p>
+
+    <h2>I – Finalidade Administrativa</h2>
+    <p>
+      A aplicação tem por finalidade facilitar o acesso a informações administrativas
+      consolidadas necessárias às atividades de fiscalização sanitária, análise técnica
+      e acompanhamento de estabelecimentos regulados, observando os princípios da
+      legalidade, eficiência, economicidade e publicidade administrativa.
+    </p>
+
+    <h2>II – Enquadramento Institucional</h2>
+    <p>
+      O projeto está vinculado às atividades da Vigilância Sanitária Municipal,
+      órgão integrante da Diretoria de Vigilância em Saúde, observando:
+    </p>
+    <ul>
+      <li>os princípios do art. 37 da Constituição Federal</li>
+      <li>as normas gerais de controle interno da administração pública</li>
+      <li>as orientações do Tribunal de Contas dos Municípios (TCM)</li>
+      <li>as boas práticas de governança pública</li>
+    </ul>
+
+    <h2>III – Público-Alvo e Uso Restrito</h2>
+    <p>
+      A utilização da aplicação é restrita aos servidores da Vigilância Sanitária Municipal,
+      incluindo fiscais sanitários, chefias, equipes técnicas e servidores autorizados.
+    </p>
+
+    <h2>IV – Conteúdo Disponibilizado</h2>
+    <ul>
+      <li>Identificação cadastral de estabelecimentos regulados</li>
+      <li>Razão social e nome fantasia</li>
+      <li>Endereço declarado</li>
+      <li>Classificação de atividades econômicas (CNAE)</li>
+      <li>Situação administrativa e vigência de alvarás sanitários</li>
+      <li>Registros objetivos de inspeções (datas e identificadores)</li>
+    </ul>
+
+    <h2>V – Natureza Jurídica das Informações</h2>
+    <p>
+      Os dados apresentados possuem caráter administrativo, informativo e auxiliar,
+      não constituindo certidão, não gerando direito subjetivo e não produzindo efeitos
+      jurídicos externos.
+    </p>
+
+    <h2>VI – Proteção de Dados</h2>
+    <p>
+      O ambiente observa integralmente a Lei nº 13.709/2018 – Lei Geral de Proteção de
+      Dados Pessoais (LGPD), assegurando que dados pessoais sensíveis ou informações
+      restritas não sejam expostos.
+    </p>
+
+    <h2>VII – Limitações Operacionais</h2>
+    <ul>
+      <li>Não permite inclusão ou edição de dados</li>
+      <li>Não opera em tempo real</li>
+      <li>Não substitui sistemas corporativos oficiais</li>
+    </ul>
+
+    <h2>VIII – Disposições Finais</h2>
+    <p>
+      Este projeto constitui ferramenta de apoio à gestão e fiscalização,
+      não configurando sistema oficial nem ato administrativo formal.
+    </p>
+
+    <div class="footer">
+      Vigilância Sanitária Municipal – Diretoria de Vigilância em Saúde<br>
+      Município de Anápolis – GO<br>
+      © 2025
+    </div>
+
+  </div>
+</div>
+
 <script>
   function goBackOrHome(){
-    // Se tiver histórico (veio de um link interno), volta.
-    // Se foi aberto direto (sem histórico), volta para a página principal.
     try{
       if (window.history.length > 1) window.history.back();
       else window.location.href = "index.html";
@@ -140,105 +224,5 @@
   }
 </script>
 
-  
-<body>
-<div class="container">
-  <div class="card">
-
-<h1>Vigilância Sanitária Municipal – Consulta Institucional de Estabelecimentos Regulados</h1>
-
-<p>
-Este ambiente hospeda uma aplicação web de natureza <strong>informativa e institucional</strong>,
-disponibilizada por meio da plataforma GitHub Pages, destinada à
-<strong>consulta interna por servidores da Vigilância Sanitária Municipal</strong>,
-no exercício regular de suas atribuições legais e funcionais.
-</p>
-
-<p>
-A iniciativa integra ações de modernização administrativa, controle interno,
-padronização de informações e apoio operacional, não substituindo sistemas oficiais
-nem produzindo efeitos jurídicos, normativos ou decisórios.
-</p>
-
-<h2>I – Finalidade Administrativa</h2>
-
-<p>
-A aplicação tem por finalidade facilitar o acesso a informações administrativas
-consolidadas necessárias às atividades de fiscalização sanitária, análise técnica
-e acompanhamento de estabelecimentos regulados, observando os princípios da
-legalidade, eficiência, economicidade e publicidade administrativa.
-</p>
-
-<h2>II – Enquadramento Institucional</h2>
-
-<p>
-O projeto está vinculado às atividades da Vigilância Sanitária Municipal,
-órgão integrante da Diretoria de Vigilância em Saúde, observando:
-</p>
-
-<ul>
-  <li>os princípios do art. 37 da Constituição Federal</li>
-  <li>as normas gerais de controle interno da administração pública</li>
-  <li>as orientações do Tribunal de Contas dos Municípios (TCM)</li>
-  <li>as boas práticas de governança pública</li>
-</ul>
-
-<h2>III – Público-Alvo e Uso Restrito</h2>
-
-<p>
-A utilização da aplicação é restrita aos servidores da Vigilância Sanitária Municipal,
-incluindo fiscais sanitários, chefias, equipes técnicas e servidores autorizados.
-</p>
-
-<h2>IV – Conteúdo Disponibilizado</h2>
-
-<ul>
-  <li>Identificação cadastral de estabelecimentos regulados</li>
-  <li>Razão social e nome fantasia</li>
-  <li>Endereço declarado</li>
-  <li>Classificação de atividades econômicas (CNAE)</li>
-  <li>Situação administrativa e vigência de alvarás sanitários</li>
-  <li>Registros objetivos de inspeções (datas e identificadores)</li>
-</ul>
-
-<h2>V – Natureza Jurídica das Informações</h2>
-
-<p>
-Os dados apresentados possuem caráter administrativo, informativo e auxiliar,
-não constituindo certidão, não gerando direito subjetivo e não produzindo efeitos
-jurídicos externos.
-</p>
-
-<h2>VI – Proteção de Dados</h2>
-
-<p>
-O ambiente observa integralmente a Lei nº 13.709/2018 – Lei Geral de Proteção de
-Dados Pessoais (LGPD), assegurando que dados pessoais sensíveis ou informações
-restritas não sejam expostos.
-</p>
-
-<h2>VII – Limitações Operacionais</h2>
-
-<ul>
-  <li>Não permite inclusão ou edição de dados</li>
-  <li>Não opera em tempo real</li>
-  <li>Não substitui sistemas corporativos oficiais</li>
-</ul>
-
-<h2>VIII – Disposições Finais</h2>
-
-<p>
-Este projeto constitui ferramenta de apoio à gestão e fiscalização,
-não configurando sistema oficial nem ato administrativo formal.
-</p>
-
-<div class="footer">
-Vigilância Sanitária Municipal – Diretoria de Vigilância em Saúde<br>
-Município de Anápolis – GO<br>
-© 2025
-</div>
-
-  </div>
-</div>
 </body>
 </html>
