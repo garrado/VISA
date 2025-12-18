@@ -1,172 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <title>MTS — Mandado de Tarefas Sanitárias</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>MTS Geral — Todos os Fiscais</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="/VISA/css/regulados.css">
 
   <style>
-    :root {
-      --bg: #0b0c0f;
-      --card: #12141a;
-      --text: #e9edf1;
-      --muted: #a6b0bb;
-      --border: rgba(255,255,255,.10);
-      --link: #8ab4f8;
-      --maxw: 980px;
+    @page {
+      size: A4;
+      margin: 20mm;
     }
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f6f7fb;
-        --card: #ffffff;
-        --text: #111827;
-        --muted: #4b5563;
-        --border: rgba(0,0,0,.10);
-        --link: #1d4ed8;
-      }
-    }
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(10px);
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      border-bottom: 1px solid var(--border);
-      padding: calc(12px + env(safe-area-inset-top)) 16px 12px 16px;
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #000;
+      margin: 0;
+      padding: 0;
     }
-    .topbar .wrap {
-      max-width: var(--maxw);
+
+    .container {
+      width: 100%;
       margin: 0 auto;
+      padding-bottom: 120px; /* espaço botão flutuante */
+    }
+
+    .header-institucional {
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.3;
+      margin: 10px 0 15px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+    }
+
+    /* BOTÃO FLUTUANTE (AÇÃO PRINCIPAL) */
+    .fab-pdf {
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 9999;
+      background: #0b5ed7;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,.35);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .title {
-      display:flex;
-      flex-direction:column;
-      gap: 2px;
-      min-width: 0;
-    }
-    .title h1 {
-      font-size: 16px;
-      margin: 0;
-      font-weight: 700;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .title small {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .actions {
-      display:flex;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .btn {
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 90%, transparent);
-      color: var(--text);
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      user-select: none;
-    }
-    .btn:active { transform: translateY(1px); }
-
-    main {
-      max-width: var(--maxw);
-      margin: 18px auto;
-      padding: 0 12px calc(24px + env(safe-area-inset-bottom)) 12px;
     }
 
-    .hint {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-      margin-bottom: 14px;
+    .fab-pdf:active {
+      transform: scale(0.97);
     }
 
-    .pdf-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .pdf-box iframe {
-      width: 100%;
-      height: 85vh;
-      border: 0;
-      background: #fff;
-    }
-
-    footer {
-      max-width: var(--maxw);
-      margin: 10px auto 0;
-      padding: 0 12px 18px 12px;
-      color: var(--muted);
-      font-size: 12px;
+    /* NÃO APARECE NA IMPRESSÃO / PDF */
+    @media print {
+      .topbar,
+      .fab-pdf,
+      .no-print {
+        display: none !important;
+      }
+      html, body {
+        background: #fff !important;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header class="topbar">
-    <div class="wrap">
-      <div class="title">
-        <h1>MTS — Mandado de Tarefas Sanitárias</h1>
-        <small>Caráter de urgência • Prazo final em 31/12/2025</small>
+  <!-- HEADER PADRÃO -->
+  <header class="topbar no-print">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">Documento</div>
+        <div class="brand__subtitle">Mandado de Tarefas Sanitárias (MTS)</div>
       </div>
       <div class="actions">
-        <a class="btn" href="../index.html">⬅️ Voltar</a>
-        <a class="btn" href="MTS_GERAL_TODOS_FISCAIS.pdf" download>⬇️ PDF</a>
-        <a class="btn" href="#topo">⬆️ Topo</a>
+        <a class="btn btn--ghost" href="/VISA/index.html">⬅ Voltar</a>
       </div>
     </div>
   </header>
 
-  <main id="topo">
+  <div class="container">
 
-    <div class="hint">
-      Documento oficial destinado a todos os fiscais da Vigilância Sanitária.
-      Pode ser consultado online ou baixado em PDF para impressão e arquivamento.
+    <div class="header-institucional">
+      PREFEITURA DE ANÁPOLIS<br>
+      SECRETARIA MUNICIPAL DE SAÚDE<br>
+      DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
+      VIGILÂNCIA SANITÁRIA
     </div>
 
-    <div class="pdf-box">
-      <iframe
-        src="MTS_GERAL_TODOS_FISCAIS.pdf"
-        title="Mandado de Tarefas Sanitárias — MTS">
-      </iframe>
-    </div>
+    <h1>MANDADO DE TAREFAS SANITÁRIAS (MTS)</h1>
 
-  </main>
+    <!-- VISUALIZAÇÃO DO PDF -->
+    <iframe src="MTS_GERAL_TODOS_FISCAIS.pdf"
+            title="Mandado de Tarefas Sanitárias"></iframe>
 
-  <footer>
-    Gerado a partir do documento oficial • Atualizado em 31/12/2025
-    (Horário de Brasília – UTC−3).
-  </footer>
+  </div>
+
+  <!-- BOTÃO FLUTUANTE -->
+  <button class="fab-pdf no-print"
+          onclick="window.open('MTS_GERAL_TODOS_FISCAIS.pdf','_blank')">
+    📄 Abrir PDF
+  </button>
 
 </body>
 </html>
