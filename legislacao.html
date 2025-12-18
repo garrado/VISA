@@ -1,233 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Legislação Sanitária – Acessos Rápidos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Legislação Sanitária – Acessos Rápidos</title>
 
-<style>
-  :root{
-    --brand:#2c5aa0;
-    --text:#1f2a3a;
-    --muted:#5b6b83;
-    --bg:#f4f6fa;
-    --card:#ffffff;
-    --line:rgba(0,0,0,.08);
-    --shadow:0 12px 30px rgba(0,0,0,.08);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-  }
-  .iosTopbar{
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: rgba(244,246,250,.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  .iosTopbar__inner{
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 10px 14px;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:10px;
-  }
-  .iosBtn{
-    -webkit-tap-highlight-color: transparent;
-    appearance:none;
-    border:1px solid rgba(44,90,160,.35);
-    background: rgba(44,90,160,.10);
-    color: var(--brand);
-    border-radius: 12px;
-    padding: 10px 12px;
-    font-weight: 800;
-    cursor:pointer;
-  }
-  .iosBtn:active{transform:scale(.98)}
-
-  .container{
-    max-width:1000px;
-    margin: 20px auto 26px;
-    padding: 0 16px;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:16px;
-    box-shadow: var(--shadow);
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  h1{
-    margin: 0 0 8px 0;
-    color: var(--brand);
-    font-size: 1.55rem;
-  }
-  .subtitle{
-    margin:0;
-    color: var(--muted);
-    font-size: .98rem;
-  }
-  h2{
-    margin: 0 0 10px 0;
-    color: var(--brand);
-    font-size: 1.15rem;
-    border-left: 6px solid var(--brand);
-    padding-left: 10px;
-  }
-
-  .list{list-style:none; padding:0; margin:0}
-  .list li{margin:10px 0}
-  .pill{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    background:#fff;
-    text-decoration:none;
-    color: var(--text);
-    font-weight: 850;
-  }
-  .pill small{display:block; font-weight:650; color: var(--muted); margin-top:2px}
-  .pill:active{transform:scale(.995)}
-  .arrow{
-    width:34px;height:34px;border-radius:12px;
-    background: rgba(44,90,160,.10);
-    display:flex;align-items:center;justify-content:center;
-    flex: 0 0 auto;
-  }
-
-  .footer{
-    margin-top: 14px;
-    color: var(--muted);
-    font-size: .92rem;
-  }
-</style>
+  <!-- CSS GLOBAL – PADRÃO REGULADOS -->
+  <link rel="stylesheet" href="/VISA/css/regulados.css" />
 </head>
 
 <body>
 
-<div class="iosTopbar">
-  <div class="iosTopbar__inner">
-    <button class="iosBtn" type="button" onclick="goBackOrHome()">OK</button>
-  </div>
-</div>
-
-<div class="container">
-
-  <div class="card">
-    <h1>Legislação Sanitária – Acessos Rápidos</h1>
-    <p class="subtitle">
-      Links oficiais para consulta (abrirão em nova aba). Uso institucional pelos servidores da Vigilância Sanitária Municipal.
-    </p>
-  </div>
-
-  <div class="card">
-    <h2>Legislação Nacional</h2>
-    <ul class="list">
-      <li>
-        <a class="pill" href="https://www.planalto.gov.br/ccivil_03/leis/l8080.htm" target="_blank" rel="noopener">
-          <div>
-            Lei nº 8.080/1990 (SUS)
-            <small>Planalto – texto integral</small>
-          </div>
-          <div class="arrow">➡</div>
+  <!-- TOPBAR PADRÃO (IGUAL AO regulados.html) -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">WebCVS</div>
+        <div class="brand__subtitle">
+          Legislação Sanitária • Vigilância Sanitária
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/VISA/index.html" aria-label="Voltar ao início">
+          ⬅ Voltar
         </a>
-      </li>
-      <li>
-        <a class="pill" href="https://www.planalto.gov.br/ccivil_03/leis/l6437.htm" target="_blank" rel="noopener">
-          <div>
-            Lei nº 6.437/1977 (Infrações Sanitárias)
-            <small>Planalto – texto integral</small>
-          </div>
-          <div class="arrow">➡</div>
-        </a>
-      </li>
-      <li>
-        <a class="pill" href="https://www.planalto.gov.br/ccivil_03/LEIS/L9782.htm" target="_blank" rel="noopener">
-          <div>
-            Lei nº 9.782/1999 (SNVS / Anvisa)
-            <small>Planalto – texto integral</small>
-          </div>
-          <div class="arrow">➡</div>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>Legislação Estadual – Goiás</h2>
-    <ul class="list">
-      <li>
-        <a class="pill" href="https://legisla.casacivil.go.gov.br/pesquisa_legislacao/86552" target="_blank" rel="noopener">
-          <div>
-            Lei nº 16.140/2007 (SUS no Estado de Goiás)
-            <small>Casa Civil – texto consolidado</small>
-          </div>
-          <div class="arrow">➡</div>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>Legislação Municipal – Anápolis</h2>
-    <ul class="list">
-      <li>
-        <a class="pill" href="normas/lc_377_2018_v3.html" target="_blank" rel="noopener">
-          <div>
-            LC nº 377/2018 (Código Sanitário Municipal)
-            <small>transcrição para consulta institucional interna</small>
-          </div>
-          <div class="arrow">➡</div>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>ANVISA – Portal de Legislação</h2>
-    <ul class="list">
-      <li>
-        <a class="pill" href="https://anvisalegis.datalegis.net/" target="_blank" rel="noopener">
-          <div>
-            AnvisaLegis (RDCs, INs, Portarias e outros atos)
-            <small>Portal oficial de legislação da Anvisa</small>
-          </div>
-          <div class="arrow">➡</div>
-        </a>
-      </li>
-    </ul>
-
-    <div class="footer">
-      Observação: para uso em celular, recomenda-se “Adicionar à Tela de Início”.
+      </div>
     </div>
-  </div>
+  </header>
 
-</div>
+  <!-- CONTEÚDO -->
+  <main class="wrap">
 
-<script>
-  function goBackOrHome(){
-    try{
-      if (window.history.length > 1) window.history.back();
-      else window.location.href = "index.html";
-    }catch(e){
-      window.location.href = "index.html";
-    }
-  }
-</script>
+    <section class="card panel">
+      <h1 class="card__title">Legislação Sanitária – Acessos Rápidos</h1>
+      <p class="small muted">
+        Links oficiais para consulta (abrem em nova aba). Uso institucional pelos
+        servidores da Vigilância Sanitária Municipal.
+      </p>
+    </section>
+
+    <section class="card panel">
+      <h2 class="sectionTitle">Legislação Nacional</h2>
+      <ul class="list">
+        <li>
+          <a href="https://www.planalto.gov.br/ccivil_03/leis/l8080.htm" target="_blank" rel="noopener">
+            Lei nº 8.080/1990 (SUS)
+          </a>
+        </li>
+        <li>
+          <a href="https://www.planalto.gov.br/ccivil_03/leis/l6437.htm" target="_blank" rel="noopener">
+            Lei nº 6.437/1977 (Infrações Sanitárias)
+          </a>
+        </li>
+        <li>
+          <a href="https://www.planalto.gov.br/ccivil_03/LEIS/L9782.htm" target="_blank" rel="noopener">
+            Lei nº 9.782/1999 (SNVS / Anvisa)
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card panel">
+      <h2 class="sectionTitle">Legislação Estadual – Goiás</h2>
+      <ul class="list">
+        <li>
+          <a href="https://legisla.casacivil.go.gov.br/pesquisa_legislacao/86552" target="_blank" rel="noopener">
+            Lei nº 16.140/2007 (SUS no Estado de Goiás)
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card panel">
+      <h2 class="sectionTitle">Legislação Municipal – Anápolis</h2>
+      <ul class="list">
+        <li>
+          <a href="normas/lc_377_2018_v3.html" target="_blank" rel="noopener">
+            LC nº 377/2018 (Código Sanitário Municipal)
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card panel">
+      <h2 class="sectionTitle">ANVISA – Portal de Legislação</h2>
+      <ul class="list">
+        <li>
+          <a href="https://anvisalegis.datalegis.net/" target="_blank" rel="noopener">
+            AnvisaLegis (RDCs, INs, Portarias e outros atos)
+          </a>
+        </li>
+      </ul>
+
+      <p class="small muted">
+        Observação: para uso em celular, recomenda-se “Adicionar à Tela de Início”.
+      </p>
+    </section>
+
+  </main>
 
 </body>
 </html>
