@@ -62,5 +62,16 @@
   <footer>
     Observação: estes HTMLs exibem as páginas como imagens para preservar fidelidade do formulário (tabelas e campos). A versão “preenchível” (inputs/checkbox), implanteremos numa segunda etapa.
   </footer>
+  <script>
+  function goBackOrHome(){
+    try{
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "/VISA/index.html";
+    }catch(e){
+      window.location.href = "/VISA/index.html";
+    }
+  }
+</script>
+
 </body>
 </html>
