@@ -325,6 +325,45 @@ body{
   margin-top: 14px;
 }
 
+<style>
+  /* Botão OK fixo para retorno ao index (padrão app) */
+  .ok-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 14px;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.82);
+    border-top: 1px solid rgba(0,0,0,.08);
+  }
+
+  .ok-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.12);
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    box-shadow: 0 10px 25px rgba(0,0,0,.10);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ajuste de espaço no fim da página para não “esconder” conteúdo atrás do botão */
+  .with-ok-padding {
+    padding-bottom: 84px !important;
+  }
+</style>
+
+
+
 
 
 
