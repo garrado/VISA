@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -27,7 +26,30 @@
       min-width: 920px;
     }
   </style>
-</head>
+<style>
+/* ===== Fix CNAE column (não quebrar + mais larga) ===== */
+table th:first-child, table td:first-child{
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  font-variant-numeric: tabular-nums;
+  width: 160px;
+  min-width: 160px;
+}
+/* Neutraliza quebra agressiva herdada */
+table td, table th{
+  word-break: normal;
+  overflow-wrap: normal;
+}
+/* Wrapper p/ rolagem horizontal (iOS) */
+.tableWrap{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* Evita compressão extrema no mobile */
+table{ min-width: 1020px; }
+</style></head>
 
 <body>
 
@@ -51,335 +73,335 @@
 <h1>Atividades Econômicas por Equipe</h1>
 
 <h2>Equipe: AG - Comércio/Serviços de Alimentação em Geral </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>5211-7/01</td><td>Armazens gerais - emissao de warrant</td></tr>
-<tr><td>5914-6/00</td><td>Atividades de exibicao cinematografica</td></tr>
-<tr><td>5611-2/05</td><td>Bares e outros estabelecimentos especializados em servir bebidas com entrenimento</td></tr>
-<tr><td>5611-2/04</td><td>Bares e outros estabelecimentos especializados em servir bebidas sem entrenimento</td></tr>
-<tr><td>1061-9/01</td><td>Beneficiamento de arroz</td></tr>
-<tr><td>5620-1/03</td><td>Cantinas - servicos de alimentacao privativos</td></tr>
-<tr><td>8230-0/02</td><td>Casas de festas e eventos</td></tr>
-<tr><td>4637-1/02</td><td>Comercio atacadista de acucar</td></tr>
-<tr><td>4635-4/01</td><td>Comercio atacadista de agua mineral</td></tr>
-<tr><td>4634-6/02</td><td>Comercio atacadista de aves abatidas e derivados</td></tr>
-<tr><td>4635-4/99</td><td>Comercio atacadista de bebidas nao especificadas anteriormente</td></tr>
-<tr><td>4637-1/01</td><td>Comercio atacadista de cafe torrado, moido e soluvel</td></tr>
-<tr><td>4634-6/01</td><td>Comercio atacadista de carnes bovinas e suinas e derivados</td></tr>
-<tr><td>4634-6/99</td><td>Comercio atacadista de carnes e derivados de outros animais</td></tr>
-<tr><td>4632-0/01</td><td>Comercio atacadista de cereais e leguminosas beneficiados</td></tr>
-<tr><td>4632-0/03</td><td>Comercio atacadista de cereais e leguminosas beneficiados, farinhas, amidos e feculas, com atividade de fracionamento e acondicionamento associada</td></tr>
-<tr><td>4635-4/02</td><td>Comercio atacadista de cerveja, chope e refrigerante</td></tr>
-<tr><td>4637-1/07</td><td>Comercio atacadista de chocolates, confeitos, balas, bombons e semelhantes</td></tr>
-<tr><td>4636-2/02</td><td>Comercio atacadista de cigarros, cigarrilhas e charutos</td></tr>
-<tr><td>4632-0/02</td><td>Comercio atacadista de farinhas, amidos e feculas</td></tr>
-<tr><td>4633-8/01</td><td>Comercio atacadista de frutas, verduras, raizes, tuberculos, hortalicas e legumes frescos</td></tr>
-<tr><td>4636-2/01</td><td>Comercio atacadista de fumo beneficiado</td></tr>
-<tr><td>4631-1/00</td><td>Comercio atacadista de leite e laticinios</td></tr>
-<tr><td>4637-1/05</td><td>Comercio atacadista de massas alimenticias</td></tr>
-<tr><td>4691-5/00</td><td>Comercio atacadista de mercadorias em geral, com predominancia de produtos alimenticios</td></tr>
-<tr><td>4637-1/03</td><td>Comercio atacadista de oleos e gorduras</td></tr>
-<tr><td>4637-1/04</td><td>Comercio atacadista de paes, bolos, biscoitos e similares</td></tr>
-<tr><td>4634-6/03</td><td>Comercio atacadista de pescados e frutos do mar</td></tr>
-<tr><td>4639-7/01</td><td>Comercio atacadista de produtos alimenticios em geral</td></tr>
-<tr><td>4639-7/02</td><td>Comercio atacadista de produtos alimenticios em geral, com atividade de fracionamento e acondicionamento associada</td></tr>
-<tr><td>4637-1/06</td><td>Comercio atacadista de sorvetes</td></tr>
-<tr><td>4637-1/99</td><td>Comercio atacadista especializado em outros produtos alimenticios nao especificados anteriormente</td></tr>
-<tr><td>4723-7/00</td><td>Comercio varejista de bebidas</td></tr>
-<tr><td>4722-9/01</td><td>Comercio varejista de carnes - acougues</td></tr>
-<tr><td>4721-1/04</td><td>Comercio varejista de doces, balas, bombons e semelhantes</td></tr>
-<tr><td>4724-5/00</td><td>Comercio varejista de hortifrutigranjeiros</td></tr>
-<tr><td>4721-1/03</td><td>Comercio varejista de laticinios e frios</td></tr>
-<tr><td>4712-1/00</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - minimercados, mercearias e armazens</td></tr>
-<tr><td>4711-3/02</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - supermercados</td></tr>
-<tr><td>4729-6/99</td><td>Comercio varejista de produtos alimenticios em geral ou especializado em produtos alimenticios nao especificados anteriormente</td></tr>
-<tr><td>4729-6/02</td><td>Comércio varejista de mercadorias em lojas de conveniência</td></tr>
-<tr><td>9329-8/01</td><td>Discotecas, danceterias, saloes de danca e similares</td></tr>
-<tr><td>8292-0/00</td><td>Envasamento e empacotamento sob contrato</td></tr>
-<tr><td>1096-1/00</td><td>Fabricacao de alimentos e pratos prontos</td></tr>
-<tr><td>1032-5/01</td><td>Fabricacao de conservas de palmito</td></tr>
-<tr><td>2222-6/00</td><td>Fabricação de Embalagens de Material Plástico</td></tr>
-<tr><td>1091-1/02</td><td>Fabricação de Produtos de Padaria e Confeitaria com Predominância de Produção Própria</td></tr>
-<tr><td>1731-1/00</td><td>Fabricação de embalagens de papel</td></tr>
-<tr><td>2591-8/00</td><td>Fabricação de embalagens metálicas</td></tr>
-<tr><td>5620-1/04</td><td>Fornecimento de alimentos preparados preponderantemente para consumo domiciliar</td></tr>
-<tr><td>5620-1/01</td><td>Fornecimento de alimentos preparados preponderantemente para empresas</td></tr>
-<tr><td>5611-2/03</td><td>Lanchonetes, casas de cha, de sucos e similares</td></tr>
-<tr><td>4721-1/02</td><td>Padaria e confeitaria com predominancia de revenda</td></tr>
-<tr><td>9321-2/00</td><td>Parques de diversao e parques tematicos</td></tr>
-<tr><td>4722-9/02</td><td>Peixaria</td></tr>
-<tr><td>9001-9/04</td><td>Producao de espetaculos circenses, de marionetes e similares</td></tr>
-<tr><td>9001-9/05</td><td>Producao de espetaculos de rodeios, vaquejadas e similares</td></tr>
-<tr><td>0892-4/03</td><td>Refino e outros tratamentos do sal</td></tr>
-<tr><td>5611-2/01</td><td>Restaurantes e similares</td></tr>
-<tr><td>5612-1/00</td><td>Servicos ambulantes de alimentacao</td></tr>
-<tr><td>5620-1/02</td><td>Servicos de alimentacao para eventos e recepcoes - bufe</td></tr>
-<tr><td>8230-0/01</td><td>Serviços de organização de feiras, congressos, exposições e festas</td></tr>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">5211-7/01</td><td>Armazens gerais - emissao de warrant</td></tr>
+<tr><td class="cnae">5914-6/00</td><td>Atividades de exibicao cinematografica</td></tr>
+<tr><td class="cnae">5611-2/05</td><td>Bares e outros estabelecimentos especializados em servir bebidas com entrenimento</td></tr>
+<tr><td class="cnae">5611-2/04</td><td>Bares e outros estabelecimentos especializados em servir bebidas sem entrenimento</td></tr>
+<tr><td class="cnae">1061-9/01</td><td>Beneficiamento de arroz</td></tr>
+<tr><td class="cnae">5620-1/03</td><td>Cantinas - servicos de alimentacao privativos</td></tr>
+<tr><td class="cnae">8230-0/02</td><td>Casas de festas e eventos</td></tr>
+<tr><td class="cnae">4637-1/02</td><td>Comercio atacadista de acucar</td></tr>
+<tr><td class="cnae">4635-4/01</td><td>Comercio atacadista de agua mineral</td></tr>
+<tr><td class="cnae">4634-6/02</td><td>Comercio atacadista de aves abatidas e derivados</td></tr>
+<tr><td class="cnae">4635-4/99</td><td>Comercio atacadista de bebidas nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">4637-1/01</td><td>Comercio atacadista de cafe torrado, moido e soluvel</td></tr>
+<tr><td class="cnae">4634-6/01</td><td>Comercio atacadista de carnes bovinas e suinas e derivados</td></tr>
+<tr><td class="cnae">4634-6/99</td><td>Comercio atacadista de carnes e derivados de outros animais</td></tr>
+<tr><td class="cnae">4632-0/01</td><td>Comercio atacadista de cereais e leguminosas beneficiados</td></tr>
+<tr><td class="cnae">4632-0/03</td><td>Comercio atacadista de cereais e leguminosas beneficiados, farinhas, amidos e feculas, com atividade de fracionamento e acondicionamento associada</td></tr>
+<tr><td class="cnae">4635-4/02</td><td>Comercio atacadista de cerveja, chope e refrigerante</td></tr>
+<tr><td class="cnae">4637-1/07</td><td>Comercio atacadista de chocolates, confeitos, balas, bombons e semelhantes</td></tr>
+<tr><td class="cnae">4636-2/02</td><td>Comercio atacadista de cigarros, cigarrilhas e charutos</td></tr>
+<tr><td class="cnae">4632-0/02</td><td>Comercio atacadista de farinhas, amidos e feculas</td></tr>
+<tr><td class="cnae">4633-8/01</td><td>Comercio atacadista de frutas, verduras, raizes, tuberculos, hortalicas e legumes frescos</td></tr>
+<tr><td class="cnae">4636-2/01</td><td>Comercio atacadista de fumo beneficiado</td></tr>
+<tr><td class="cnae">4631-1/00</td><td>Comercio atacadista de leite e laticinios</td></tr>
+<tr><td class="cnae">4637-1/05</td><td>Comercio atacadista de massas alimenticias</td></tr>
+<tr><td class="cnae">4691-5/00</td><td>Comercio atacadista de mercadorias em geral, com predominancia de produtos alimenticios</td></tr>
+<tr><td class="cnae">4637-1/03</td><td>Comercio atacadista de oleos e gorduras</td></tr>
+<tr><td class="cnae">4637-1/04</td><td>Comercio atacadista de paes, bolos, biscoitos e similares</td></tr>
+<tr><td class="cnae">4634-6/03</td><td>Comercio atacadista de pescados e frutos do mar</td></tr>
+<tr><td class="cnae">4639-7/01</td><td>Comercio atacadista de produtos alimenticios em geral</td></tr>
+<tr><td class="cnae">4639-7/02</td><td>Comercio atacadista de produtos alimenticios em geral, com atividade de fracionamento e acondicionamento associada</td></tr>
+<tr><td class="cnae">4637-1/06</td><td>Comercio atacadista de sorvetes</td></tr>
+<tr><td class="cnae">4637-1/99</td><td>Comercio atacadista especializado em outros produtos alimenticios nao especificados anteriormente</td></tr>
+<tr><td class="cnae">4723-7/00</td><td>Comercio varejista de bebidas</td></tr>
+<tr><td class="cnae">4722-9/01</td><td>Comercio varejista de carnes - acougues</td></tr>
+<tr><td class="cnae">4721-1/04</td><td>Comercio varejista de doces, balas, bombons e semelhantes</td></tr>
+<tr><td class="cnae">4724-5/00</td><td>Comercio varejista de hortifrutigranjeiros</td></tr>
+<tr><td class="cnae">4721-1/03</td><td>Comercio varejista de laticinios e frios</td></tr>
+<tr><td class="cnae">4712-1/00</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - minimercados, mercearias e armazens</td></tr>
+<tr><td class="cnae">4711-3/02</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - supermercados</td></tr>
+<tr><td class="cnae">4729-6/99</td><td>Comercio varejista de produtos alimenticios em geral ou especializado em produtos alimenticios nao especificados anteriormente</td></tr>
+<tr><td class="cnae">4729-6/02</td><td>Comércio varejista de mercadorias em lojas de conveniência</td></tr>
+<tr><td class="cnae">9329-8/01</td><td>Discotecas, danceterias, saloes de danca e similares</td></tr>
+<tr><td class="cnae">8292-0/00</td><td>Envasamento e empacotamento sob contrato</td></tr>
+<tr><td class="cnae">1096-1/00</td><td>Fabricacao de alimentos e pratos prontos</td></tr>
+<tr><td class="cnae">1032-5/01</td><td>Fabricacao de conservas de palmito</td></tr>
+<tr><td class="cnae">2222-6/00</td><td>Fabricação de Embalagens de Material Plástico</td></tr>
+<tr><td class="cnae">1091-1/02</td><td>Fabricação de Produtos de Padaria e Confeitaria com Predominância de Produção Própria</td></tr>
+<tr><td class="cnae">1731-1/00</td><td>Fabricação de embalagens de papel</td></tr>
+<tr><td class="cnae">2591-8/00</td><td>Fabricação de embalagens metálicas</td></tr>
+<tr><td class="cnae">5620-1/04</td><td>Fornecimento de alimentos preparados preponderantemente para consumo domiciliar</td></tr>
+<tr><td class="cnae">5620-1/01</td><td>Fornecimento de alimentos preparados preponderantemente para empresas</td></tr>
+<tr><td class="cnae">5611-2/03</td><td>Lanchonetes, casas de cha, de sucos e similares</td></tr>
+<tr><td class="cnae">4721-1/02</td><td>Padaria e confeitaria com predominancia de revenda</td></tr>
+<tr><td class="cnae">9321-2/00</td><td>Parques de diversao e parques tematicos</td></tr>
+<tr><td class="cnae">4722-9/02</td><td>Peixaria</td></tr>
+<tr><td class="cnae">9001-9/04</td><td>Producao de espetaculos circenses, de marionetes e similares</td></tr>
+<tr><td class="cnae">9001-9/05</td><td>Producao de espetaculos de rodeios, vaquejadas e similares</td></tr>
+<tr><td class="cnae">0892-4/03</td><td>Refino e outros tratamentos do sal</td></tr>
+<tr><td class="cnae">5611-2/01</td><td>Restaurantes e similares</td></tr>
+<tr><td class="cnae">5612-1/00</td><td>Servicos ambulantes de alimentacao</td></tr>
+<tr><td class="cnae">5620-1/02</td><td>Servicos de alimentacao para eventos e recepcoes - bufe</td></tr>
+<tr><td class="cnae">8230-0/01</td><td>Serviços de organização de feiras, congressos, exposições e festas</td></tr>
 </table>
-<h2>Equipe: AM - Saúde Ambiental </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8129-0/00</td><td>Atividades de limpeza nao especificadas anteriormente</td></tr>
-<tr><td>9999-9/99</td><td>Atividades não Sujeitas ao Alvará Sanitário</td></tr>
-<tr><td>3702-9/00</td><td>Atividades relacionadas a esgoto, exceto a gestao de redes</td></tr>
-<tr><td>3600-6/01</td><td>Captação, tratamento e distribuição de água</td></tr>
-<tr><td>3811-4/00</td><td>Coleta de residuos nao-perigosos</td></tr>
-<tr><td>3812-2/00</td><td>Coleta de residuos perigosos</td></tr>
-<tr><td>4687-7/03</td><td>Comercio atacadista de residuos e sucatas metalicos</td></tr>
-<tr><td>4687-7/02</td><td>Comercio atacadista de residuos e sucatas nao-metalicos, exceto de papel e papelao</td></tr>
-<tr><td>4731-8/00</td><td>Comércio varejista de combustíveis para veículos automotores</td></tr>
-<tr><td>4222-7/01</td><td>Construção de redes de abastecimento de água, coleta de esgoto e correlatas</td></tr>
-<tr><td>5211-7/99</td><td>Depositos de mercadorias para terceiros, exceto armazens gerais e guarda-moveis</td></tr>
-<tr><td>3600-6/02</td><td>Distribuicao de agua por caminhoes</td></tr>
-<tr><td>3701-1/00</td><td>Gestao de redes de esgoto</td></tr>
-<tr><td>9603-3/01</td><td>Gestao e manutencao de cemiterios</td></tr>
-<tr><td>6822-6/00</td><td>Gestão e Administração de Propriedade Imobiliária</td></tr>
-<tr><td>8121-4/00</td><td>Limpeza em predios e em domicilios</td></tr>
-<tr><td>4543-9/00</td><td>Manutencao e reparacao de motocicletas e motonetas</td></tr>
-<tr><td>3831-9/99</td><td>Recuperacao de materiais metalicos, exceto aluminio</td></tr>
-<tr><td>3839-4/99</td><td>Recuperacao de materiais nao especificados anteriormente</td></tr>
-<tr><td>3832-7/00</td><td>Recuperacao de materiais plasticos</td></tr>
-<tr><td>3831-9/01</td><td>Recuperacao de sucatas de aluminio</td></tr>
-<tr><td>4520-0/06</td><td>Servicos de borracharia para veiculos automotores</td></tr>
-<tr><td>4520-0/05</td><td>Servicos de lavagem, lubrificacao e polimento de veiculos automotores</td></tr>
-<tr><td>4520-0/01</td><td>Servicos de manutencao e reparacao mecanica de veiculos automotores</td></tr>
-<tr><td>5222-2/00</td><td>Terminais rodoviarios e ferroviarios</td></tr>
-<tr><td>3821-1/00</td><td>Tratamento e disposicao de residuos nao-perigosos</td></tr>
-<tr><td>3822-0/00</td><td>Tratamento e disposicao de residuos perigosos</td></tr>
+</div><h2>Equipe: AM - Saúde Ambiental </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8129-0/00</td><td>Atividades de limpeza nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">9999-9/99</td><td>Atividades não Sujeitas ao Alvará Sanitário</td></tr>
+<tr><td class="cnae">3702-9/00</td><td>Atividades relacionadas a esgoto, exceto a gestao de redes</td></tr>
+<tr><td class="cnae">3600-6/01</td><td>Captação, tratamento e distribuição de água</td></tr>
+<tr><td class="cnae">3811-4/00</td><td>Coleta de residuos nao-perigosos</td></tr>
+<tr><td class="cnae">3812-2/00</td><td>Coleta de residuos perigosos</td></tr>
+<tr><td class="cnae">4687-7/03</td><td>Comercio atacadista de residuos e sucatas metalicos</td></tr>
+<tr><td class="cnae">4687-7/02</td><td>Comercio atacadista de residuos e sucatas nao-metalicos, exceto de papel e papelao</td></tr>
+<tr><td class="cnae">4731-8/00</td><td>Comércio varejista de combustíveis para veículos automotores</td></tr>
+<tr><td class="cnae">4222-7/01</td><td>Construção de redes de abastecimento de água, coleta de esgoto e correlatas</td></tr>
+<tr><td class="cnae">5211-7/99</td><td>Depositos de mercadorias para terceiros, exceto armazens gerais e guarda-moveis</td></tr>
+<tr><td class="cnae">3600-6/02</td><td>Distribuicao de agua por caminhoes</td></tr>
+<tr><td class="cnae">3701-1/00</td><td>Gestao de redes de esgoto</td></tr>
+<tr><td class="cnae">9603-3/01</td><td>Gestao e manutencao de cemiterios</td></tr>
+<tr><td class="cnae">6822-6/00</td><td>Gestão e Administração de Propriedade Imobiliária</td></tr>
+<tr><td class="cnae">8121-4/00</td><td>Limpeza em predios e em domicilios</td></tr>
+<tr><td class="cnae">4543-9/00</td><td>Manutencao e reparacao de motocicletas e motonetas</td></tr>
+<tr><td class="cnae">3831-9/99</td><td>Recuperacao de materiais metalicos, exceto aluminio</td></tr>
+<tr><td class="cnae">3839-4/99</td><td>Recuperacao de materiais nao especificados anteriormente</td></tr>
+<tr><td class="cnae">3832-7/00</td><td>Recuperacao de materiais plasticos</td></tr>
+<tr><td class="cnae">3831-9/01</td><td>Recuperacao de sucatas de aluminio</td></tr>
+<tr><td class="cnae">4520-0/06</td><td>Servicos de borracharia para veiculos automotores</td></tr>
+<tr><td class="cnae">4520-0/05</td><td>Servicos de lavagem, lubrificacao e polimento de veiculos automotores</td></tr>
+<tr><td class="cnae">4520-0/01</td><td>Servicos de manutencao e reparacao mecanica de veiculos automotores</td></tr>
+<tr><td class="cnae">5222-2/00</td><td>Terminais rodoviarios e ferroviarios</td></tr>
+<tr><td class="cnae">3821-1/00</td><td>Tratamento e disposicao de residuos nao-perigosos</td></tr>
+<tr><td class="cnae">3822-0/00</td><td>Tratamento e disposicao de residuos perigosos</td></tr>
 </table>
-<h2>Equipe: AO - Outras Áreas I </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8690-9/04</td><td>Atividades de Podologia</td></tr>
-<tr><td>9609-2/05</td><td>Atividades de Sauna e Banhos</td></tr>
-<tr><td>9602-5/02</td><td>Atividades de estética e outros serviços de cuidados com a beleza</td></tr>
-<tr><td>9603-3/99</td><td>Atividades funerarias e servicos relacionados nao especificados anteriormente</td></tr>
-<tr><td>9602-5/01</td><td>Cabeleireiros, manicure, pedicure</td></tr>
-<tr><td>9601-7/01</td><td>Lavanderias</td></tr>
-<tr><td>9603-3/02</td><td>Servicos de cremacao</td></tr>
-<tr><td>9603-3/04</td><td>Servicos de funerarias</td></tr>
-<tr><td>9603-3/03</td><td>Servicos de sepultamento</td></tr>
-<tr><td>9603-3/05</td><td>Servicos de somatoconservacao</td></tr>
-<tr><td>9609-2/06</td><td>Serviço de tatuagem e colocação de Piercing</td></tr>
-<tr><td>9601-7/03</td><td>Toalheiros</td></tr>
+</div><h2>Equipe: AO - Outras Áreas I </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8690-9/04</td><td>Atividades de Podologia</td></tr>
+<tr><td class="cnae">9609-2/05</td><td>Atividades de Sauna e Banhos</td></tr>
+<tr><td class="cnae">9602-5/02</td><td>Atividades de estética e outros serviços de cuidados com a beleza</td></tr>
+<tr><td class="cnae">9603-3/99</td><td>Atividades funerarias e servicos relacionados nao especificados anteriormente</td></tr>
+<tr><td class="cnae">9602-5/01</td><td>Cabeleireiros, manicure, pedicure</td></tr>
+<tr><td class="cnae">9601-7/01</td><td>Lavanderias</td></tr>
+<tr><td class="cnae">9603-3/02</td><td>Servicos de cremacao</td></tr>
+<tr><td class="cnae">9603-3/04</td><td>Servicos de funerarias</td></tr>
+<tr><td class="cnae">9603-3/03</td><td>Servicos de sepultamento</td></tr>
+<tr><td class="cnae">9603-3/05</td><td>Servicos de somatoconservacao</td></tr>
+<tr><td class="cnae">9609-2/06</td><td>Serviço de tatuagem e colocação de Piercing</td></tr>
+<tr><td class="cnae">9601-7/03</td><td>Toalheiros</td></tr>
 </table>
-<h2>Equipe: BI - Outras Áreas II </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>4774-1/00</td><td>Comercio varejista de artigos de optica</td></tr>
-<tr><td>3250-7/07</td><td>Fabricacao de artigos opticos</td></tr>
-<tr><td>1220-4/02</td><td>Fabricacao de cigarrilhas e charutos</td></tr>
-<tr><td>1220-4/01</td><td>Fabricacao de cigarros</td></tr>
-<tr><td>1220-4/03</td><td>Fabricacao de filtros para cigarros</td></tr>
-<tr><td>1220-4/99</td><td>Fabricacao de outros produtos do fumo, exceto cigarros, cigarrilhas e charutos</td></tr>
-<tr><td>8640-2/02</td><td>Laboratorios clinicos</td></tr>
-<tr><td>8640-2/01</td><td>Laboratorios de anatomia patologica e citologica</td></tr>
-<tr><td>1210-7/00</td><td>Processamento industrial do fumo</td></tr>
-<tr><td>3250-7/09</td><td>Serviço de Laboratório Óptico</td></tr>
-<tr><td>4729-6/01</td><td>Tabacaria</td></tr>
+</div><h2>Equipe: BI - Outras Áreas II </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">4774-1/00</td><td>Comercio varejista de artigos de optica</td></tr>
+<tr><td class="cnae">3250-7/07</td><td>Fabricacao de artigos opticos</td></tr>
+<tr><td class="cnae">1220-4/02</td><td>Fabricacao de cigarrilhas e charutos</td></tr>
+<tr><td class="cnae">1220-4/01</td><td>Fabricacao de cigarros</td></tr>
+<tr><td class="cnae">1220-4/03</td><td>Fabricacao de filtros para cigarros</td></tr>
+<tr><td class="cnae">1220-4/99</td><td>Fabricacao de outros produtos do fumo, exceto cigarros, cigarrilhas e charutos</td></tr>
+<tr><td class="cnae">8640-2/02</td><td>Laboratorios clinicos</td></tr>
+<tr><td class="cnae">8640-2/01</td><td>Laboratorios de anatomia patologica e citologica</td></tr>
+<tr><td class="cnae">1210-7/00</td><td>Processamento industrial do fumo</td></tr>
+<tr><td class="cnae">3250-7/09</td><td>Serviço de Laboratório Óptico</td></tr>
+<tr><td class="cnae">4729-6/01</td><td>Tabacaria</td></tr>
 </table>
-<h2>Equipe: CS - Cosméticos Saneantes e Produtos de Higiene Pessoal </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>4646-0/01</td><td>Comercio atacadista de cosmeticos e produtos de perfumaria</td></tr>
-<tr><td>4646-0/02</td><td>Comercio atacadista de produtos de higiene pessoal</td></tr>
-<tr><td>4649-4/08</td><td>Comercio atacadista de produtos de higiene, limpeza e conservacao domiciliar</td></tr>
-<tr><td>4649-4/09</td><td>Comercio atacadista de produtos de higiene, limpeza e conservacao domiciliar, com atividade de fracionamento e acondicionamento associada</td></tr>
-<tr><td>4772-5/00</td><td>Comercio varejista de cosmeticos, produtos de perfumaria e de higiene pessoal</td></tr>
-<tr><td>4789-0/05</td><td>Comercio varejista de produtos saneantes domissanitarios</td></tr>
-<tr><td>1742-7/02</td><td>Fabricacao de absorventes higienicos</td></tr>
-<tr><td>2011-8/00</td><td>Fabricacao de cloro e alcalis</td></tr>
-<tr><td>2063-1/00</td><td>Fabricacao de cosmeticos, produtos de perfumaria e de higiene pessoal</td></tr>
-<tr><td>2052-5/00</td><td>Fabricacao de desinfestantes domissanitarios</td></tr>
-<tr><td>1742-7/01</td><td>Fabricacao de fraldas descartaveis</td></tr>
-<tr><td>2062-2/00</td><td>Fabricacao de produtos de limpeza e polimento</td></tr>
-<tr><td>1742-7/99</td><td>Fabricacao de produtos de papel para uso domestico e higienico-sanitario nao especificados anteriormente</td></tr>
-<tr><td>2061-4/00</td><td>Fabricacao de saboes e detergentes sinteticos</td></tr>
-<tr><td>2029-1/00</td><td>Fabricaçao de Produtos Químicos Orqânicos não Especificados Anteriormente</td></tr>
-<tr><td>2019-3/99</td><td>Fabricação de outros produtos químicos inorgânicos não especificados</td></tr>
+</div><h2>Equipe: CS - Cosméticos Saneantes e Produtos de Higiene Pessoal </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">4646-0/01</td><td>Comercio atacadista de cosmeticos e produtos de perfumaria</td></tr>
+<tr><td class="cnae">4646-0/02</td><td>Comercio atacadista de produtos de higiene pessoal</td></tr>
+<tr><td class="cnae">4649-4/08</td><td>Comercio atacadista de produtos de higiene, limpeza e conservacao domiciliar</td></tr>
+<tr><td class="cnae">4649-4/09</td><td>Comercio atacadista de produtos de higiene, limpeza e conservacao domiciliar, com atividade de fracionamento e acondicionamento associada</td></tr>
+<tr><td class="cnae">4772-5/00</td><td>Comercio varejista de cosmeticos, produtos de perfumaria e de higiene pessoal</td></tr>
+<tr><td class="cnae">4789-0/05</td><td>Comercio varejista de produtos saneantes domissanitarios</td></tr>
+<tr><td class="cnae">1742-7/02</td><td>Fabricacao de absorventes higienicos</td></tr>
+<tr><td class="cnae">2011-8/00</td><td>Fabricacao de cloro e alcalis</td></tr>
+<tr><td class="cnae">2063-1/00</td><td>Fabricacao de cosmeticos, produtos de perfumaria e de higiene pessoal</td></tr>
+<tr><td class="cnae">2052-5/00</td><td>Fabricacao de desinfestantes domissanitarios</td></tr>
+<tr><td class="cnae">1742-7/01</td><td>Fabricacao de fraldas descartaveis</td></tr>
+<tr><td class="cnae">2062-2/00</td><td>Fabricacao de produtos de limpeza e polimento</td></tr>
+<tr><td class="cnae">1742-7/99</td><td>Fabricacao de produtos de papel para uso domestico e higienico-sanitario nao especificados anteriormente</td></tr>
+<tr><td class="cnae">2061-4/00</td><td>Fabricacao de saboes e detergentes sinteticos</td></tr>
+<tr><td class="cnae">2029-1/00</td><td>Fabricaçao de Produtos Químicos Orqânicos não Especificados Anteriormente</td></tr>
+<tr><td class="cnae">2019-3/99</td><td>Fabricação de outros produtos químicos inorgânicos não especificados</td></tr>
 </table>
-<h2>Equipe: DR - Drogarias </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>4771-7/01</td><td>Comercio varejista de produtos farmaceuticos, sem manipulacao de formulas</td></tr>
+</div><h2>Equipe: DR - Drogarias </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">4771-7/01</td><td>Comercio varejista de produtos farmaceuticos, sem manipulacao de formulas</td></tr>
 </table>
-<h2>Equipe: ED - Estabelecimentos de Ensino</h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>9313-1/00</td><td>Atividades de condicionamento fisico</td></tr>
-<tr><td>9312-3/00</td><td>Clubes sociais, esportivos e similares</td></tr>
-<tr><td>8511-2/00</td><td>Educacao infantil - creche</td></tr>
-<tr><td>8512-1/00</td><td>Educacao infantil - pre-escola</td></tr>
-<tr><td>8541-4/00</td><td>Educacao profissional de nivel tecnico</td></tr>
-<tr><td>8542-2/00</td><td>Educacao profissional de nivel tecnologico</td></tr>
-<tr><td>8531-7/00</td><td>Educacao superior - graduacao</td></tr>
-<tr><td>8532-5/00</td><td>Educacao superior - graduacao e pos-graduacao</td></tr>
-<tr><td>8533-3/00</td><td>Educacao superior - pos-graduacao e extensao</td></tr>
-<tr><td>8520-1/00</td><td>Ensino Médio</td></tr>
-<tr><td>8513-9/00</td><td>Ensino fundamental</td></tr>
-<tr><td>9311-5/00</td><td>Gestão e instalação de esportes</td></tr>
+</div><h2>Equipe: ED - Estabelecimentos de Ensino</h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">9313-1/00</td><td>Atividades de condicionamento fisico</td></tr>
+<tr><td class="cnae">9312-3/00</td><td>Clubes sociais, esportivos e similares</td></tr>
+<tr><td class="cnae">8511-2/00</td><td>Educacao infantil - creche</td></tr>
+<tr><td class="cnae">8512-1/00</td><td>Educacao infantil - pre-escola</td></tr>
+<tr><td class="cnae">8541-4/00</td><td>Educacao profissional de nivel tecnico</td></tr>
+<tr><td class="cnae">8542-2/00</td><td>Educacao profissional de nivel tecnologico</td></tr>
+<tr><td class="cnae">8531-7/00</td><td>Educacao superior - graduacao</td></tr>
+<tr><td class="cnae">8532-5/00</td><td>Educacao superior - graduacao e pos-graduacao</td></tr>
+<tr><td class="cnae">8533-3/00</td><td>Educacao superior - pos-graduacao e extensao</td></tr>
+<tr><td class="cnae">8520-1/00</td><td>Ensino Médio</td></tr>
+<tr><td class="cnae">8513-9/00</td><td>Ensino fundamental</td></tr>
+<tr><td class="cnae">9311-5/00</td><td>Gestão e instalação de esportes</td></tr>
 </table>
-<h2>Equipe: IA - Indústrias Alimetícias </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8690-9/02</td><td>Atividades de bancos de leite humano</td></tr>
-<tr><td>8650-0/07</td><td>Atividades de terapia de nutricao enteral e parenteral</td></tr>
-<tr><td>4711-3/01</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - hipermercados</td></tr>
-<tr><td>1072-4/01</td><td>Fabricacao de acucar de cana refinado</td></tr>
-<tr><td>1072-4/02</td><td>Fabricacao de acucar de cereais (dextrose) e de beterraba</td></tr>
-<tr><td>1071-6/00</td><td>Fabricacao de acucar em bruto</td></tr>
-<tr><td>1099-6/06</td><td>Fabricacao de adocantes naturais e artificiais</td></tr>
-<tr><td>1121-6/00</td><td>Fabricacao de aguas envasadas</td></tr>
-<tr><td>1065-1/01</td><td>Fabricacao de amidos e feculas de vegetais</td></tr>
-<tr><td>1092-9/00</td><td>Fabricacao de biscoitos e bolachas</td></tr>
-<tr><td>1031-7/00</td><td>Fabricacao de conservas de frutas</td></tr>
-<tr><td>1032-5/99</td><td>Fabricacao de conservas de legumes e outros vegetais, exceto palmito</td></tr>
-<tr><td>1095-3/00</td><td>Fabricacao de especiarias, molhos, temperos e condimentos</td></tr>
-<tr><td>1063-5/00</td><td>Fabricacao de farinha de mandioca e derivados</td></tr>
-<tr><td>1064-3/00</td><td>Fabricacao de farinha de milho e derivados, exceto oleos de milho</td></tr>
-<tr><td>1099-6/03</td><td>Fabricacao de fermentos e leveduras</td></tr>
-<tr><td>1093-7/02</td><td>Fabricacao de frutas cristalizadas, balas e semelhantes</td></tr>
-<tr><td>1099-6/04</td><td>Fabricacao de gelo comum</td></tr>
-<tr><td>1094-5/00</td><td>Fabricacao de massas alimenticias</td></tr>
-<tr><td>1065-1/02</td><td>Fabricacao de oleo de milho em bruto</td></tr>
-<tr><td>1065-1/03</td><td>Fabricacao de oleo de milho refinado</td></tr>
-<tr><td>1041-4/00</td><td>Fabricacao de oleos vegetais em bruto, exceto oleo de milho</td></tr>
-<tr><td>1042-2/00</td><td>Fabricacao de oleos vegetais refinados, exceto oleo de milho</td></tr>
-<tr><td>1099-6/99</td><td>Fabricacao de outros produtos alimenticios nao especificados anteriormente</td></tr>
-<tr><td>1099-6/02</td><td>Fabricacao de pos alimenticios</td></tr>
-<tr><td>1082-1/00</td><td>Fabricacao de produtos a base de cafe</td></tr>
-<tr><td>1091-1/00</td><td>Fabricacao de produtos de panificacao</td></tr>
-<tr><td>1093-7/01</td><td>Fabricacao de produtos derivados do cacau e de chocolates</td></tr>
-<tr><td>1061-9/02</td><td>Fabricacao de produtos do arroz</td></tr>
-<tr><td>1099-6/05</td><td>Fabricacao de produtos para infusao (cha, mate, etc.)</td></tr>
-<tr><td>1053-8/00</td><td>Fabricacao de sorvetes e outros gelados comestiveis</td></tr>
-<tr><td>1099-6/07</td><td>Fabricação de alimentos dietéticos e complementos alimentares</td></tr>
-<tr><td>1122-4/99</td><td>Fabricação de outras bebidas não alcoólicas não especificadas anteriormente</td></tr>
-<tr><td>1091-1/01</td><td>Fabricação de produtos de panificação industrial</td></tr>
-<tr><td>1062-7/00</td><td>Moagem de trigo e fabricacao de derivados</td></tr>
-<tr><td>1069-4/00</td><td>Moagem e fabricacao de produtos de origem vegetal nao especificados anteriormente</td></tr>
-<tr><td>1081-3/02</td><td>Torrefacao e moagem de cafe</td></tr>
+</div><h2>Equipe: IA - Indústrias Alimetícias </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8690-9/02</td><td>Atividades de bancos de leite humano</td></tr>
+<tr><td class="cnae">8650-0/07</td><td>Atividades de terapia de nutricao enteral e parenteral</td></tr>
+<tr><td class="cnae">4711-3/01</td><td>Comercio varejista de mercadorias em geral, com predominancia de produtos alimenticios - hipermercados</td></tr>
+<tr><td class="cnae">1072-4/01</td><td>Fabricacao de acucar de cana refinado</td></tr>
+<tr><td class="cnae">1072-4/02</td><td>Fabricacao de acucar de cereais (dextrose) e de beterraba</td></tr>
+<tr><td class="cnae">1071-6/00</td><td>Fabricacao de acucar em bruto</td></tr>
+<tr><td class="cnae">1099-6/06</td><td>Fabricacao de adocantes naturais e artificiais</td></tr>
+<tr><td class="cnae">1121-6/00</td><td>Fabricacao de aguas envasadas</td></tr>
+<tr><td class="cnae">1065-1/01</td><td>Fabricacao de amidos e feculas de vegetais</td></tr>
+<tr><td class="cnae">1092-9/00</td><td>Fabricacao de biscoitos e bolachas</td></tr>
+<tr><td class="cnae">1031-7/00</td><td>Fabricacao de conservas de frutas</td></tr>
+<tr><td class="cnae">1032-5/99</td><td>Fabricacao de conservas de legumes e outros vegetais, exceto palmito</td></tr>
+<tr><td class="cnae">1095-3/00</td><td>Fabricacao de especiarias, molhos, temperos e condimentos</td></tr>
+<tr><td class="cnae">1063-5/00</td><td>Fabricacao de farinha de mandioca e derivados</td></tr>
+<tr><td class="cnae">1064-3/00</td><td>Fabricacao de farinha de milho e derivados, exceto oleos de milho</td></tr>
+<tr><td class="cnae">1099-6/03</td><td>Fabricacao de fermentos e leveduras</td></tr>
+<tr><td class="cnae">1093-7/02</td><td>Fabricacao de frutas cristalizadas, balas e semelhantes</td></tr>
+<tr><td class="cnae">1099-6/04</td><td>Fabricacao de gelo comum</td></tr>
+<tr><td class="cnae">1094-5/00</td><td>Fabricacao de massas alimenticias</td></tr>
+<tr><td class="cnae">1065-1/02</td><td>Fabricacao de oleo de milho em bruto</td></tr>
+<tr><td class="cnae">1065-1/03</td><td>Fabricacao de oleo de milho refinado</td></tr>
+<tr><td class="cnae">1041-4/00</td><td>Fabricacao de oleos vegetais em bruto, exceto oleo de milho</td></tr>
+<tr><td class="cnae">1042-2/00</td><td>Fabricacao de oleos vegetais refinados, exceto oleo de milho</td></tr>
+<tr><td class="cnae">1099-6/99</td><td>Fabricacao de outros produtos alimenticios nao especificados anteriormente</td></tr>
+<tr><td class="cnae">1099-6/02</td><td>Fabricacao de pos alimenticios</td></tr>
+<tr><td class="cnae">1082-1/00</td><td>Fabricacao de produtos a base de cafe</td></tr>
+<tr><td class="cnae">1091-1/00</td><td>Fabricacao de produtos de panificacao</td></tr>
+<tr><td class="cnae">1093-7/01</td><td>Fabricacao de produtos derivados do cacau e de chocolates</td></tr>
+<tr><td class="cnae">1061-9/02</td><td>Fabricacao de produtos do arroz</td></tr>
+<tr><td class="cnae">1099-6/05</td><td>Fabricacao de produtos para infusao (cha, mate, etc.)</td></tr>
+<tr><td class="cnae">1053-8/00</td><td>Fabricacao de sorvetes e outros gelados comestiveis</td></tr>
+<tr><td class="cnae">1099-6/07</td><td>Fabricação de alimentos dietéticos e complementos alimentares</td></tr>
+<tr><td class="cnae">1122-4/99</td><td>Fabricação de outras bebidas não alcoólicas não especificadas anteriormente</td></tr>
+<tr><td class="cnae">1091-1/01</td><td>Fabricação de produtos de panificação industrial</td></tr>
+<tr><td class="cnae">1062-7/00</td><td>Moagem de trigo e fabricacao de derivados</td></tr>
+<tr><td class="cnae">1069-4/00</td><td>Moagem e fabricacao de produtos de origem vegetal nao especificados anteriormente</td></tr>
+<tr><td class="cnae">1081-3/02</td><td>Torrefacao e moagem de cafe</td></tr>
 </table>
-<h2>Equipe: LP - Instituto de Longa Permanência e Afins </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8730-1/02</td><td>Albergues assistenciais</td></tr>
-<tr><td>5590-6/01</td><td>Albergues, exceto assistenciais</td></tr>
-<tr><td>5510-8/02</td><td>Apart-hoteis</td></tr>
-<tr><td>8711-5/03</td><td>Atividades de assistencia a deficientes fisicos, imunodeprimidos e convalescentes</td></tr>
-<tr><td>8720-4/99</td><td>Atividades de assistencia psicossocial e a saude a portadores de disturbios psiquicos, deficiencia mental e dependencia quimica nao especificadas anteriormente</td></tr>
-<tr><td>8730-1/99</td><td>Atividades de assistencia social prestadas em residencias coletivas e particulares nao especificadas anteriormente</td></tr>
-<tr><td>8720-4/01</td><td>Atividades de centros de assistencia psicossocial</td></tr>
-<tr><td>8711-5/04</td><td>Centros de apoio a pacientes com cancer e com AIDS</td></tr>
-<tr><td>8711-5/01</td><td>Clinicas e residencias geriatricas</td></tr>
-<tr><td>8711-5/05</td><td>Condominios residenciais para idosos</td></tr>
-<tr><td>5510-8/01</td><td>Hoteis</td></tr>
-<tr><td>8711-5/02</td><td>Instituicoes de longa permanencia para idosos</td></tr>
-<tr><td>5510-8/03</td><td>Moteis</td></tr>
-<tr><td>8730-1/01</td><td>Orfanatos</td></tr>
-<tr><td>5590-6/99</td><td>Outros alojamentos nao especificados anteriormente</td></tr>
-<tr><td>5590-6/03</td><td>Pensoes (alojamento)</td></tr>
-<tr><td>8800-6/00</td><td>Servicos de assistencia social sem alojamento</td></tr>
+</div><h2>Equipe: LP - Instituto de Longa Permanência e Afins </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8730-1/02</td><td>Albergues assistenciais</td></tr>
+<tr><td class="cnae">5590-6/01</td><td>Albergues, exceto assistenciais</td></tr>
+<tr><td class="cnae">5510-8/02</td><td>Apart-hoteis</td></tr>
+<tr><td class="cnae">8711-5/03</td><td>Atividades de assistencia a deficientes fisicos, imunodeprimidos e convalescentes</td></tr>
+<tr><td class="cnae">8720-4/99</td><td>Atividades de assistencia psicossocial e a saude a portadores de disturbios psiquicos, deficiencia mental e dependencia quimica nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8730-1/99</td><td>Atividades de assistencia social prestadas em residencias coletivas e particulares nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8720-4/01</td><td>Atividades de centros de assistencia psicossocial</td></tr>
+<tr><td class="cnae">8711-5/04</td><td>Centros de apoio a pacientes com cancer e com AIDS</td></tr>
+<tr><td class="cnae">8711-5/01</td><td>Clinicas e residencias geriatricas</td></tr>
+<tr><td class="cnae">8711-5/05</td><td>Condominios residenciais para idosos</td></tr>
+<tr><td class="cnae">5510-8/01</td><td>Hoteis</td></tr>
+<tr><td class="cnae">8711-5/02</td><td>Instituicoes de longa permanencia para idosos</td></tr>
+<tr><td class="cnae">5510-8/03</td><td>Moteis</td></tr>
+<tr><td class="cnae">8730-1/01</td><td>Orfanatos</td></tr>
+<tr><td class="cnae">5590-6/99</td><td>Outros alojamentos nao especificados anteriormente</td></tr>
+<tr><td class="cnae">5590-6/03</td><td>Pensoes (alojamento)</td></tr>
+<tr><td class="cnae">8800-6/00</td><td>Servicos de assistencia social sem alojamento</td></tr>
 </table>
-<h2>Equipe: MD - Medicamentos - Alta Complexidade </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8660-7/00</td><td>Atividades de Apoio à Gestão de Saúde</td></tr>
-<tr><td>4644-3/01</td><td>Comercio atacadista de medicamentos e drogas de uso humano</td></tr>
-<tr><td>4771-7/03</td><td>Comercio varejista de produtos farmaceuticos homeopaticos</td></tr>
-<tr><td>4771-7/02</td><td>Comercio varejista de produtos farmaceuticos, com manipulacao de formulas</td></tr>
-<tr><td>7210-1/00</td><td>Pesquisa e desenvolvimento experimental em ciências físicas e naturais</td></tr>
-<tr><td>7120-1/00</td><td>Testes e Análises Técnicas</td></tr>
+</div><h2>Equipe: MD - Medicamentos - Alta Complexidade </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8660-7/00</td><td>Atividades de Apoio à Gestão de Saúde</td></tr>
+<tr><td class="cnae">4644-3/01</td><td>Comercio atacadista de medicamentos e drogas de uso humano</td></tr>
+<tr><td class="cnae">4771-7/03</td><td>Comercio varejista de produtos farmaceuticos homeopaticos</td></tr>
+<tr><td class="cnae">4771-7/02</td><td>Comercio varejista de produtos farmaceuticos, com manipulacao de formulas</td></tr>
+<tr><td class="cnae">7210-1/00</td><td>Pesquisa e desenvolvimento experimental em ciências físicas e naturais</td></tr>
+<tr><td class="cnae">7120-1/00</td><td>Testes e Análises Técnicas</td></tr>
 </table>
-<h2>Equipe: OD - Serviços de Saúde em Odontologia</h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8630-5/04</td><td>Atividade odontológica</td></tr>
-<tr><td>8640-2/05</td><td>Servicos de diagnostico por imagem com uso de radiacao ionizante, exceto tomografia</td></tr>
-<tr><td>8640-2/07</td><td>Servicos de diagnostico por imagem sem uso de radiacao ionizante, exceto ressonancia magnetica</td></tr>
-<tr><td>3250-7/06</td><td>Servicos de protese dentaria</td></tr>
-<tr><td>8640-2/06</td><td>Servicos de ressonancia magnetica</td></tr>
-<tr><td>8640-2/04</td><td>Servicos de tomografia</td></tr>
+</div><h2>Equipe: OD - Serviços de Saúde em Odontologia</h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8630-5/04</td><td>Atividade odontológica</td></tr>
+<tr><td class="cnae">8640-2/05</td><td>Servicos de diagnostico por imagem com uso de radiacao ionizante, exceto tomografia</td></tr>
+<tr><td class="cnae">8640-2/07</td><td>Servicos de diagnostico por imagem sem uso de radiacao ionizante, exceto ressonancia magnetica</td></tr>
+<tr><td class="cnae">3250-7/06</td><td>Servicos de protese dentaria</td></tr>
+<tr><td class="cnae">8640-2/06</td><td>Servicos de ressonancia magnetica</td></tr>
+<tr><td class="cnae">8640-2/04</td><td>Servicos de tomografia</td></tr>
 </table>
-<h2>Equipe: OS - Produtos para Saúde </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>7739-0/02</td><td>Aluguel de equipamentos científicos, médicos e hospitalares, sem operador</td></tr>
-<tr><td>7729-2/03</td><td>Aluguel de material medico</td></tr>
-<tr><td>8712-3/00</td><td>Atividade de Fornecimento de Infraestrutura de Apoio e Assistência a Paciente no Domicilio</td></tr>
-<tr><td>4645-1/01</td><td>Comercio atacadista de instrumentos e materiais para uso medico, cirurgico, hospitalar e de laboratorios</td></tr>
-<tr><td>4664-8/00</td><td>Comercio atacadista de maquinas, aparelhos e equipamentos para uso odonto-medico-hospitalar; partes e pecas</td></tr>
-<tr><td>4645-1/03</td><td>Comercio atacadista de produtos odontologicos</td></tr>
-<tr><td>4645-1/02</td><td>Comercio atacadista de proteses e artigos de ortopedia</td></tr>
-<tr><td>4773-3/00</td><td>Comercio varejista de artigos medicos e ortopedicos</td></tr>
-<tr><td>3250-7/03</td><td>Fabricacao de aparelhos e utensilios para correcao de defeitos fisicos e aparelhos ortopedicos em geral sob encomenda</td></tr>
-<tr><td>3250-7/04</td><td>Fabricacao de aparelhos e utensilios para correcao de defeitos fisicos e aparelhos ortopedicos em geral, exceto sob encomenda</td></tr>
-<tr><td>2660-4/00</td><td>Fabricacao de aparelhos eletromedicos e eletroterapeuticos e equipamentos de irradiacao</td></tr>
-<tr><td>2219-6/00</td><td>Fabricacao de artefatos de borracha nao especificados anteriormente</td></tr>
-<tr><td>3250-7/08</td><td>Fabricacao de artefatos de tecido nao tecido para uso odonto-medico-hospitalar</td></tr>
-<tr><td>3092-0/00</td><td>Fabricacao de bicicletas e triciclos nao-motorizados, pecas e acessorios</td></tr>
-<tr><td>3291-4/00</td><td>Fabricacao de escovas, pinceis e vassouras</td></tr>
-<tr><td>2014-2/00</td><td>Fabricacao de gases industriais</td></tr>
-<tr><td>3250-7/01</td><td>Fabricacao de instrumentos nao-eletrônicos e utensilios para uso medico, cirurgico, odontologico e de laboratorio</td></tr>
-<tr><td>3250-7/05</td><td>Fabricacao de materiais para medicina e odontologia</td></tr>
-<tr><td>3250-7/02</td><td>Fabricacao de mobiliario para uso medico, cirurgico, odontologico e de laboratorio</td></tr>
+</div><h2>Equipe: OS - Produtos para Saúde </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">7739-0/02</td><td>Aluguel de equipamentos científicos, médicos e hospitalares, sem operador</td></tr>
+<tr><td class="cnae">7729-2/03</td><td>Aluguel de material medico</td></tr>
+<tr><td class="cnae">8712-3/00</td><td>Atividade de Fornecimento de Infraestrutura de Apoio e Assistência a Paciente no Domicilio</td></tr>
+<tr><td class="cnae">4645-1/01</td><td>Comercio atacadista de instrumentos e materiais para uso medico, cirurgico, hospitalar e de laboratorios</td></tr>
+<tr><td class="cnae">4664-8/00</td><td>Comercio atacadista de maquinas, aparelhos e equipamentos para uso odonto-medico-hospitalar; partes e pecas</td></tr>
+<tr><td class="cnae">4645-1/03</td><td>Comercio atacadista de produtos odontologicos</td></tr>
+<tr><td class="cnae">4645-1/02</td><td>Comercio atacadista de proteses e artigos de ortopedia</td></tr>
+<tr><td class="cnae">4773-3/00</td><td>Comercio varejista de artigos medicos e ortopedicos</td></tr>
+<tr><td class="cnae">3250-7/03</td><td>Fabricacao de aparelhos e utensilios para correcao de defeitos fisicos e aparelhos ortopedicos em geral sob encomenda</td></tr>
+<tr><td class="cnae">3250-7/04</td><td>Fabricacao de aparelhos e utensilios para correcao de defeitos fisicos e aparelhos ortopedicos em geral, exceto sob encomenda</td></tr>
+<tr><td class="cnae">2660-4/00</td><td>Fabricacao de aparelhos eletromedicos e eletroterapeuticos e equipamentos de irradiacao</td></tr>
+<tr><td class="cnae">2219-6/00</td><td>Fabricacao de artefatos de borracha nao especificados anteriormente</td></tr>
+<tr><td class="cnae">3250-7/08</td><td>Fabricacao de artefatos de tecido nao tecido para uso odonto-medico-hospitalar</td></tr>
+<tr><td class="cnae">3092-0/00</td><td>Fabricacao de bicicletas e triciclos nao-motorizados, pecas e acessorios</td></tr>
+<tr><td class="cnae">3291-4/00</td><td>Fabricacao de escovas, pinceis e vassouras</td></tr>
+<tr><td class="cnae">2014-2/00</td><td>Fabricacao de gases industriais</td></tr>
+<tr><td class="cnae">3250-7/01</td><td>Fabricacao de instrumentos nao-eletrônicos e utensilios para uso medico, cirurgico, odontologico e de laboratorio</td></tr>
+<tr><td class="cnae">3250-7/05</td><td>Fabricacao de materiais para medicina e odontologia</td></tr>
+<tr><td class="cnae">3250-7/02</td><td>Fabricacao de mobiliario para uso medico, cirurgico, odontologico e de laboratorio</td></tr>
 </table>
-<h2>Equipe: PS - Outras Áreas III</h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>2093-2/00</td><td>Fabricação de Aditivos de Uso Industrial</td></tr>
-<tr><td>3292-2/02</td><td>Fabricação de Equipamentos e Acessórios para segurança pessoal e profissional</td></tr>
+</div><h2>Equipe: PS - Outras Áreas III</h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">2093-2/00</td><td>Fabricação de Aditivos de Uso Industrial</td></tr>
+<tr><td class="cnae">3292-2/02</td><td>Fabricação de Equipamentos e Acessórios para segurança pessoal e profissional</td></tr>
 </table>
-<h2>Equipe: SS - Serviços de Saúde </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>8630-5/02</td><td>Atividade medica ambulatorial com recursos para realizacao de exames complementares</td></tr>
-<tr><td>8630-5/01</td><td>Atividade medica ambulatorial com recursos para realizacao de procedimentos cirurgicos</td></tr>
-<tr><td>8630-5/03</td><td>Atividade medica ambulatorial restrita a consultas</td></tr>
-<tr><td>8690-9/03</td><td>Atividades de Acupuntura</td></tr>
-<tr><td>8630-5/99</td><td>Atividades de atencao ambulatorial nao especificadas anteriormente</td></tr>
-<tr><td>8610-1/02</td><td>Atividades de atendimento em pronto-socorro e unidades hospitalares para atendimento a urgencias</td></tr>
-<tr><td>8610-1/01</td><td>Atividades de atendimento hospitalar, exceto pronto-socorro e unidades para atendimento a urgencias</td></tr>
-<tr><td>8650-0/01</td><td>Atividades de enfermagem</td></tr>
-<tr><td>8650-0/04</td><td>Atividades de fisioterapia</td></tr>
-<tr><td>8650-0/06</td><td>Atividades de fonoaudiologia</td></tr>
-<tr><td>8690-9/01</td><td>Atividades de praticas integrativas e complementares em saude humana</td></tr>
-<tr><td>8650-0/99</td><td>Atividades de profissionais da area de saude nao especificadas anteriormente</td></tr>
-<tr><td>8650-0/02</td><td>Atividades de profissionais da nutricao</td></tr>
-<tr><td>8650-0/03</td><td>Atividades de psicologia e psicanalise</td></tr>
-<tr><td>8630-5/07</td><td>Atividades de reproducao humana assistida</td></tr>
-<tr><td>8640-2/99</td><td>Atividades de servicos de complementacao diagnostica e terapeutica nao especificadas anteriormente</td></tr>
-<tr><td>8650-0/05</td><td>Atividades de terapia ocupacional</td></tr>
-<tr><td>8690-9/99</td><td>Outras atividades de atencao a saude humana nao especificadas anteriormente</td></tr>
-<tr><td>8640-2/14</td><td>Servicos de bancos de celulas e tecidos humanos</td></tr>
-<tr><td>8640-2/09</td><td>Servicos de diagnostico por metodos opticos - endoscopia e outros exames analogos</td></tr>
-<tr><td>8640-2/08</td><td>Servicos de diagnostico por registro grafico - ECG, EEG e outros exames analogos</td></tr>
-<tr><td>8640-2/03</td><td>Servicos de dialise e nefrologia</td></tr>
-<tr><td>8640-2/12</td><td>Servicos de hemoterapia</td></tr>
-<tr><td>8640-2/13</td><td>Servicos de litotripsia</td></tr>
-<tr><td>8640-2/10</td><td>Servicos de quimioterapia</td></tr>
-<tr><td>8640-2/11</td><td>Servicos de radioterapia</td></tr>
-<tr><td>8622-4/00</td><td>Servicos de remocao de pacientes, exceto os servicos moveis de atendimento a urgencias</td></tr>
-<tr><td>8630-5/06</td><td>Servicos de vacinacao e imunizacao humana</td></tr>
-<tr><td>8621-6/02</td><td>Servicos moveis de atendimento a urgencias, exceto por UTI movel</td></tr>
-<tr><td>8621-6/01</td><td>UTI movel</td></tr>
+</div><h2>Equipe: SS - Serviços de Saúde </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">8630-5/02</td><td>Atividade medica ambulatorial com recursos para realizacao de exames complementares</td></tr>
+<tr><td class="cnae">8630-5/01</td><td>Atividade medica ambulatorial com recursos para realizacao de procedimentos cirurgicos</td></tr>
+<tr><td class="cnae">8630-5/03</td><td>Atividade medica ambulatorial restrita a consultas</td></tr>
+<tr><td class="cnae">8690-9/03</td><td>Atividades de Acupuntura</td></tr>
+<tr><td class="cnae">8630-5/99</td><td>Atividades de atencao ambulatorial nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8610-1/02</td><td>Atividades de atendimento em pronto-socorro e unidades hospitalares para atendimento a urgencias</td></tr>
+<tr><td class="cnae">8610-1/01</td><td>Atividades de atendimento hospitalar, exceto pronto-socorro e unidades para atendimento a urgencias</td></tr>
+<tr><td class="cnae">8650-0/01</td><td>Atividades de enfermagem</td></tr>
+<tr><td class="cnae">8650-0/04</td><td>Atividades de fisioterapia</td></tr>
+<tr><td class="cnae">8650-0/06</td><td>Atividades de fonoaudiologia</td></tr>
+<tr><td class="cnae">8690-9/01</td><td>Atividades de praticas integrativas e complementares em saude humana</td></tr>
+<tr><td class="cnae">8650-0/99</td><td>Atividades de profissionais da area de saude nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8650-0/02</td><td>Atividades de profissionais da nutricao</td></tr>
+<tr><td class="cnae">8650-0/03</td><td>Atividades de psicologia e psicanalise</td></tr>
+<tr><td class="cnae">8630-5/07</td><td>Atividades de reproducao humana assistida</td></tr>
+<tr><td class="cnae">8640-2/99</td><td>Atividades de servicos de complementacao diagnostica e terapeutica nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8650-0/05</td><td>Atividades de terapia ocupacional</td></tr>
+<tr><td class="cnae">8690-9/99</td><td>Outras atividades de atencao a saude humana nao especificadas anteriormente</td></tr>
+<tr><td class="cnae">8640-2/14</td><td>Servicos de bancos de celulas e tecidos humanos</td></tr>
+<tr><td class="cnae">8640-2/09</td><td>Servicos de diagnostico por metodos opticos - endoscopia e outros exames analogos</td></tr>
+<tr><td class="cnae">8640-2/08</td><td>Servicos de diagnostico por registro grafico - ECG, EEG e outros exames analogos</td></tr>
+<tr><td class="cnae">8640-2/03</td><td>Servicos de dialise e nefrologia</td></tr>
+<tr><td class="cnae">8640-2/12</td><td>Servicos de hemoterapia</td></tr>
+<tr><td class="cnae">8640-2/13</td><td>Servicos de litotripsia</td></tr>
+<tr><td class="cnae">8640-2/10</td><td>Servicos de quimioterapia</td></tr>
+<tr><td class="cnae">8640-2/11</td><td>Servicos de radioterapia</td></tr>
+<tr><td class="cnae">8622-4/00</td><td>Servicos de remocao de pacientes, exceto os servicos moveis de atendimento a urgencias</td></tr>
+<tr><td class="cnae">8630-5/06</td><td>Servicos de vacinacao e imunizacao humana</td></tr>
+<tr><td class="cnae">8621-6/02</td><td>Servicos moveis de atendimento a urgencias, exceto por UTI movel</td></tr>
+<tr><td class="cnae">8621-6/01</td><td>UTI movel</td></tr>
 </table>
-<h2>Equipe: TR - Transportadoras </h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>6422-1/00</td><td>Bancos Múltiplos, Com Carteira Comercial</td></tr>
-<tr><td>4930-2/02</td><td>Transporte rodoviario de carga, exceto produtos perigosos e mudancas, intermunicipal, interestadual e internacional</td></tr>
-<tr><td>4930-2/01</td><td>Transporte rodoviario de carga, exceto produtos perigosos e mudancas, municipal</td></tr>
+</div><h2>Equipe: TR - Transportadoras </h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">6422-1/00</td><td>Bancos Múltiplos, Com Carteira Comercial</td></tr>
+<tr><td class="cnae">4930-2/02</td><td>Transporte rodoviario de carga, exceto produtos perigosos e mudancas, intermunicipal, interestadual e internacional</td></tr>
+<tr><td class="cnae">4930-2/01</td><td>Transporte rodoviario de carga, exceto produtos perigosos e mudancas, municipal</td></tr>
 </table>
-<h2>Equipe: VT - Atividades Veterinária</h2>
-<table>
-<tr><th>Subclasse</th><th>Descrição</th></tr>
-<tr><td>7500-1/00</td><td>Atividades veterinarias</td></tr>
-<tr><td>4633-8/02</td><td>Comércio atacadista de aves vivas e ovos</td></tr>
-<tr><td>9609-2/08</td><td>Higiene e embelezamento de animais</td></tr>
-<tr><td>8122-2/00</td><td>Imunizacao e controle de pragas urbanas</td></tr>
+</div><h2>Equipe: VT - Atividades Veterinária</h2>
+<div class="tableWrap"><table>
+<tr><th class="cnae">Subclasse</th><th>Descrição</th></tr>
+<tr><td class="cnae">7500-1/00</td><td>Atividades veterinarias</td></tr>
+<tr><td class="cnae">4633-8/02</td><td>Comércio atacadista de aves vivas e ovos</td></tr>
+<tr><td class="cnae">9609-2/08</td><td>Higiene e embelezamento de animais</td></tr>
+<tr><td class="cnae">8122-2/00</td><td>Imunizacao e controle de pragas urbanas</td></tr>
 </table>
-<footer>CVS - 27/11/2025 08:36:05 (Horário de Brasília – UTC−3) • Versão 1.1</footer>
+</div><footer>CVS - 27/11/2025 08:36:05 (Horário de Brasília – UTC−3) • Versão 1.1</footer>
 
 </div>
 </main>
