@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Relatório de Tarefas – Plantão Fiscal</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Cabeçalho institucional */
+    .header-institucional {
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.3;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    h2 {
+      font-size: 13px;
+      margin-top: 20px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      padding: 5px 6px;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #e0e0e0;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .label-cell {
+      background-color: #f0f0f0;
+      width: 28%;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 98%;
+      border: none;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    .qtd-input {
+      width: 65px;
+      text-align: center;
+      border: none;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      border: none;
+      resize: none;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    .checkbox-center {
+      text-align: center;
+      width: 60px;
+    }
+
+    .signature-line {
+      margin-top: 35px;
+      text-align: left;
+    }
+
+    .signature-line span {
+      display: inline-block;
+      border-top: 1px solid #000;
+      width: 300px;
+      text-align: center;
+      padding-top: 3px;
+    }
+
+    .small-note {
+      font-size: 10px;
+      color: #444;
+      margin-top: 10px;
+    }
+
+    @media print {
+      input, textarea {
+        border: none !important;
+        outline: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- CABEÇALHO INSTITUCIONAL -->
+    <div class="header-institucional">
+      PREFEITURA DE ANÁPOLIS<br>
+      SECRETARIA MUNICIPAL DE SAÚDE<br>
+      DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
+      VIGILÂNCIA SANITÁRIA
+    </div>
+
+    <h1>RELATÓRIO DE TAREFAS – PLANTÃO FISCAL</h1>
+
+    <!-- 1. Identificação do Servidor -->
+    <h2>1. IDENTIFICAÇÃO DO SERVIDOR</h2>
+    <table>
+      <tr>
+        <td class="label-cell">Data do Plantão:</td>
+        <td><input type="text" name="data_plantao" placeholder="__/__/____"></td>
+      </tr>
+      <tr>
+        <td class="label-cell">Nome do Fiscal:</td>
+        <td><input type="text" name="nome_fiscal" placeholder="Digite o nome completo do fiscal"></td>
+      </tr>
+      <tr>
+        <td class="label-cell">Matrícula:</td>
+        <td><input type="text" name="matricula" placeholder="Digite a matrícula do servidor"></td>
+      </tr>
+    </table>
+
+    <!-- 2. Atividades -->
+    <h2>2. ATIVIDADES REALIZADAS</h2>
+    <table>
+      <tr>
+        <th>Selecionar</th>
+        <th>Atividade</th>
+        <th>Quantidade</th>
+      </tr>
+
+      <tr>
+        <td class="checkbox-center"><input type="checkbox"></td>
+        <td>Orientação verbal</td>
+        <td><input type="text" class="qtd-input"></td>
+      </tr>
+
+      <tr>
+        <td class="checkbox-center"><input type="checkbox"></td>
+        <td>Orientação via WhatsApp</td>
+        <td><input type="text" class="qtd-input"></td>
+      </tr>
+
+      <tr>
+        <td class="checkbox-center"><input type="checkbox"></td>
+        <td>Prorrogação</td>
+        <td><input type="text" class="qtd-input"></td>
+      </tr>
+
+      <tr>
+        <td class="checkbox-center"><input type="checkbox"></td>
+        <td>Recebimento de denúncias</td>
+        <td><input type="text" class="qtd-input"></td>
+      </tr>
+
+      <tr>
+        <td class="checkbox-center"><input type="checkbox"></td>
+        <td>Outros</td>
+        <td><input type="text" class="qtd-input"></td>
+      </tr>
+    </table>
+
+    <!-- 3. Descrição -->
+    <h2>3. DESCRIÇÃO RESUMIDA</h2>
+    <table>
+      <tr>
+        <td>
+          <textarea placeholder="Descreva as situações enquadradas em 'Outros' ou observações relevantes do plantão."></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 4. Assinatura -->
+    <h2>4. ASSINATURA</h2>
+    <p class="signature-line">
+      <span>Assinatura do Fiscal</span>
+    </p>
+
+    <p class="small-note">
+      Este relatório deve ser anexado ao processo no SEI e assinado eletronicamente quando aplicável.
+    </p>
+
+    <p class="no-print">
+      <button onclick="window.print()">Imprimir / Salvar em PDF</button>
+    </p>
+
+  </div>
+</body>
+</html>
