@@ -325,7 +325,6 @@ body{
   margin-top: 14px;
 }
 
-<style>
   /* Botão OK fixo para retorno ao index (padrão app) */
   .ok-bar {
     position: fixed;
@@ -360,7 +359,8 @@ body{
   .with-ok-padding {
     padding-bottom: 84px !important;
   }
-</style>
+
+
 
 
 
