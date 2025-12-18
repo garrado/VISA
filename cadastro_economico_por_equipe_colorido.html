@@ -67,6 +67,11 @@ table{ min-width: 1020px; }
   </div>
 </header>
 
+<section class="card panel" id="cnae-search">
+  <label class="label" for="cnaeSearchInput">Pesquisar CNAE ou descrição</label>
+  <input id="cnaeSearchInput" class="input input--big" type="search" placeholder="Digite código CNAE ou parte da descrição…">
+  <p class="small muted">A busca filtra todas as tabelas abaixo em tempo real.</p>
+</section>
 <main class="wrap">
 <div class="card panel">
 
@@ -406,5 +411,25 @@ table{ min-width: 1020px; }
 </div>
 </main>
 
-</body>
+<html><head><script>
+(function(){
+  const input = document.getElementById('cnaeSearchInput');
+  if(!input) return;
+
+  const rows = Array.from(document.querySelectorAll('table tbody tr'));
+
+  function normalize(t){
+    return (t || '').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+  }
+
+  input.addEventListener('input', function(){
+    const q = normalize(this.value);
+    rows.forEach(tr=>{
+      const txt = normalize(tr.innerText);
+      tr.style.display = q && !txt.includes(q) ? 'none' : '';
+    });
+  });
+})();
+</script>
+</head></html></body>
 </html>
