@@ -1,81 +1,98 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Checklists - Vigilância Sanitária</title>
 
-  <!-- CSS padrão do app (mesmo usado no regulados.html) -->
-  <link rel="stylesheet" href="/VISA/css/regulados.css">
-
-  <!-- Ajustes pontuais desta página (sem competir com o CSS global) -->
-  <style>
-    .page{padding-top:10px}
-    .checklistList{margin:10px 0 0 18px; padding:0}
-    .checklistList li{margin:10px 0}
-    .checklistList .muted{display:inline}
-    footer{padding:0 16px 18px 16px}
-  </style>
+  <!-- CSS GLOBAL DO PROJETO (PADRÃO REGULADOS) -->
+  <link rel="stylesheet" href="/VISA/css/regulados.css" />
 </head>
+
 <body>
 
-  <div class="iosTopbar">
-    <div class="iosTopbar__inner">
-      <button class="iosBtn" type="button" onclick="goBackOrHome()">OK</button>
-    </div>
-  </div>
-
-  <div class="topbar">
+  <!-- TOPBAR PADRÃO (IGUAL AO regulados.html) -->
+  <header class="topbar">
     <div class="wrap topbar__inner">
-      <div>
-        <div class="brand__title">Checklists de Inspeção</div>
-        <div class="brand__subtitle">HTML responsivo (Android/iOS e desktop)</div>
+      <div class="brand">
+        <div class="brand__title">WebCVS</div>
+        <div class="brand__subtitle">
+          Checklists de Inspeção • Vigilância Sanitária
+        </div>
       </div>
-      <a class="btn btn--ghost" href="/VISA/index.html" title="Voltar ao início">Início</a>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/VISA/index.html" aria-label="Voltar ao início">
+          ⬅ Voltar
+        </a>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <div class="wrap page">
-    <div class="card panel">
-      <div class="label">Orientação</div>
-      <div class="small">
-        Abra no celular (Android/iOS) ou no computador. Cada checklist mantém o layout original (PDF) em páginas responsivas.
+  <!-- CONTEÚDO -->
+  <main class="wrap">
+
+    <section class="card panel">
+      <div class="small muted">
+        Atualizado em 12/12/2025 12:14 (Horário de Brasília – UTC−3)
       </div>
 
-      <div class="panel__meta">
-        <div class="status">Lista</div>
-        <div class="small muted">Atualizado em 12/12/2025 12:14 (Horário de Brasília – UTC−3)</div>
-      </div>
-
-      <ul class="checklistList">
-        <li><a href="check-list-saude-cnaes-baixas/index.html">Checklist SAUDE CNAES baixas</a> <span class="muted small">(CHECK LIST  SAUDE CNAES baixas.pdf)</span></li>
-        <li><a href="check-list-varejista-cosme-e-san/index.html">Checklist (VAREJISTA Cosme e san)</a> <span class="muted small">(CHECK LIST (VAREJISTA Cosme e san).pdf)</span></li>
-        <li><a href="check-list-acougue/index.html">Checklist - açougue</a> <span class="muted small">(CHECK LIST - açougue.pdf)</span></li>
-        <li><a href="check-list-alimentos-geral/index.html">Checklist - alimentos geral</a> <span class="muted small">(CHECK LIST - alimentos geral.pdf)</span></li>
-        <li><a href="check-list-drogarias-1/index.html">Checklist DROGARIAS 1</a> <span class="muted small">(CHECK LIST DROGARIAS 1.pdf)</span></li>
-        <li><a href="check-list-saude-cnaes-8630502-e-8630503/index.html">Checklist SAUDE CNAES 8630502 E 8630503</a> <span class="muted small">(CHECK LIST SAUDE CNAES 8630502 E 8630503.pdf)</span></li>
-        <li><a href="check-list-atacadista-cosme-e-saneantes/index.html">Checklist atacadista cosme e saneantes</a> <span class="muted small">(CHECK LIST atacadista cosme e saneantes.pdf)</span></li>
-        <li><a href="check-list-escola/index.html">Checklist escola</a> <span class="muted small">(CHECK LIST escola.pdf)</span></li>
-        <li><a href="checklist-academia/index.html">Checklist ACADEMIA</a> <span class="muted small">(CHECKLIST ACADEMIA.pdf)</span></li>
+      <ul class="list">
+        <li>
+          <a href="check-list-saude-cnaes-baixas/index.html">
+            Checklist SAÚDE – CNAEs baixas
+          </a>
+        </li>
+        <li>
+          <a href="check-list-varejista-cosme-e-san/index.html">
+            Checklist Varejista – Cosméticos e Saneantes
+          </a>
+        </li>
+        <li>
+          <a href="check-list-acougue/index.html">
+            Checklist – Açougue
+          </a>
+        </li>
+        <li>
+          <a href="check-list-alimentos-geral/index.html">
+            Checklist – Alimentos (Geral)
+          </a>
+        </li>
+        <li>
+          <a href="check-list-drogarias-1/index.html">
+            Checklist – Drogarias
+          </a>
+        </li>
+        <li>
+          <a href="check-list-saude-cnaes-8630502-e-8630503/index.html">
+            Checklist Saúde – CNAEs 8630502 / 8630503
+          </a>
+        </li>
+        <li>
+          <a href="check-list-atacadista-cosme-e-saneantes/index.html">
+            Checklist Atacadista – Cosméticos e Saneantes
+          </a>
+        </li>
+        <li>
+          <a href="check-list-escola/index.html">
+            Checklist – Escola
+          </a>
+        </li>
+        <li>
+          <a href="checklist-academia/index.html">
+            Checklist – Academia
+          </a>
+        </li>
       </ul>
-    </div>
-  </div>
 
-  <footer class="wrap small muted">
-    Observação: estes HTMLs exibem as páginas como imagens para preservar fidelidade do formulário (tabelas e campos).
-    A versão “preenchível” (inputs/checkbox), implanteremos numa segunda etapa.
-  </footer>
+    </section>
 
-  <script>
-    function goBackOrHome(){
-      try{
-        if (window.history.length > 1) window.history.back();
-        else window.location.href = "/VISA/index.html";
-      }catch(e){
-        window.location.href = "/VISA/index.html";
-      }
-    }
-  </script>
+    <p class="small muted">
+      Observação: estes HTMLs exibem as páginas como imagens para preservar a
+      fidelidade do formulário original. A versão preenchível será implantada
+      em etapa posterior.
+    </p>
+
+  </main>
 
 </body>
 </html>
