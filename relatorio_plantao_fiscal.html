@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>Relatório de Tarefas – Plantão Fiscal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- CSS GLOBAL WEB (somente navegação) -->
+  <link rel="stylesheet" href="/VISA/css/regulados.css">
+
+  <!-- CSS EXCLUSIVO PARA PDF / IMPRESSÃO -->
   <style>
     @page {
       size: A4;
@@ -12,9 +18,9 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
+      color: #000;
       margin: 0;
       padding: 0;
-      color: #000;
     }
 
     .container {
@@ -22,7 +28,7 @@
       margin: 0 auto;
     }
 
-    /* Cabeçalho institucional */
+    /* Cabeçalho institucional (APARECE NO PDF) */
     .header-institucional {
       text-align: center;
       font-size: 13px;
@@ -71,28 +77,23 @@
       font-weight: bold;
     }
 
-    input[type="text"] {
-      width: 98%;
-      border: none;
-      font-size: 12px;
-      font-family: inherit;
-    }
-
-    .qtd-input {
-      width: 65px;
-      text-align: center;
+    input[type="text"],
+    textarea {
+      width: 100%;
       border: none;
       font-size: 12px;
       font-family: inherit;
     }
 
     textarea {
-      width: 100%;
       height: 80px;
-      border: none;
       resize: none;
-      font-size: 12px;
-      font-family: inherit;
+    }
+
+    .qtd-input {
+      width: 65px;
+      text-align: center;
+      border: none;
     }
 
     .checkbox-center {
@@ -102,7 +103,6 @@
 
     .signature-line {
       margin-top: 35px;
-      text-align: left;
     }
 
     .signature-line span {
@@ -119,21 +119,45 @@
       margin-top: 10px;
     }
 
+    /* ESCONDE QUALQUER ELEMENTO DE NAVEGAÇÃO NO PDF */
     @media print {
-      input, textarea {
-        border: none !important;
-        outline: none !important;
-      }
-      .no-print {
+      .topbar,
+      .no-print,
+      header,
+      nav {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+
+      html, body {
+        background: #fff !important;
       }
     }
   </style>
 </head>
+
 <body>
+
+  <!-- HEADER WEB PADRÃO (NÃO APARECE NO PDF) -->
+  <header class="topbar no-print">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">WebCVS</div>
+        <div class="brand__subtitle">
+          Relatório de Plantão Fiscal • Vigilância Sanitária
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/VISA/index.html">⬅ Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO OFICIAL DO RELATÓRIO / PDF -->
   <div class="container">
 
-    <!-- CABEÇALHO INSTITUCIONAL -->
     <div class="header-institucional">
       PREFEITURA DE ANÁPOLIS<br>
       SECRETARIA MUNICIPAL DE SAÚDE<br>
@@ -143,24 +167,24 @@
 
     <h1>RELATÓRIO DE TAREFAS – PLANTÃO FISCAL</h1>
 
-    <!-- 1. Identificação do Servidor -->
+    <!-- 1. IDENTIFICAÇÃO -->
     <h2>1. IDENTIFICAÇÃO DO SERVIDOR</h2>
     <table>
       <tr>
         <td class="label-cell">Data do Plantão:</td>
-        <td><input type="text" name="data_plantao" placeholder="__/__/____"></td>
+        <td><input type="text" placeholder="__/__/____"></td>
       </tr>
       <tr>
         <td class="label-cell">Nome do Fiscal:</td>
-        <td><input type="text" name="nome_fiscal" placeholder="Digite o nome completo do fiscal"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td class="label-cell">Matrícula:</td>
-        <td><input type="text" name="matricula" placeholder="Digite a matrícula do servidor"></td>
+        <td><input type="text"></td>
       </tr>
     </table>
 
-    <!-- 2. Atividades -->
+    <!-- 2. ATIVIDADES -->
     <h2>2. ATIVIDADES REALIZADAS</h2>
     <table>
       <tr>
@@ -168,49 +192,44 @@
         <th>Atividade</th>
         <th>Quantidade</th>
       </tr>
-
       <tr>
         <td class="checkbox-center"><input type="checkbox"></td>
         <td>Orientação verbal</td>
-        <td><input type="text" class="qtd-input"></td>
+        <td><input class="qtd-input" type="text"></td>
       </tr>
-
       <tr>
         <td class="checkbox-center"><input type="checkbox"></td>
         <td>Orientação via WhatsApp</td>
-        <td><input type="text" class="qtd-input"></td>
+        <td><input class="qtd-input" type="text"></td>
       </tr>
-
       <tr>
         <td class="checkbox-center"><input type="checkbox"></td>
         <td>Prorrogação</td>
-        <td><input type="text" class="qtd-input"></td>
+        <td><input class="qtd-input" type="text"></td>
       </tr>
-
       <tr>
         <td class="checkbox-center"><input type="checkbox"></td>
         <td>Recebimento de denúncias</td>
-        <td><input type="text" class="qtd-input"></td>
+        <td><input class="qtd-input" type="text"></td>
       </tr>
-
       <tr>
         <td class="checkbox-center"><input type="checkbox"></td>
         <td>Outros</td>
-        <td><input type="text" class="qtd-input"></td>
+        <td><input class="qtd-input" type="text"></td>
       </tr>
     </table>
 
-    <!-- 3. Descrição -->
+    <!-- 3. DESCRIÇÃO -->
     <h2>3. DESCRIÇÃO RESUMIDA</h2>
     <table>
       <tr>
         <td>
-          <textarea placeholder="Descreva as situações enquadradas em 'Outros' ou observações relevantes do plantão."></textarea>
+          <textarea></textarea>
         </td>
       </tr>
     </table>
 
-    <!-- 4. Assinatura -->
+    <!-- 4. ASSINATURA -->
     <h2>4. ASSINATURA</h2>
     <p class="signature-line">
       <span>Assinatura do Fiscal</span>
@@ -220,10 +239,12 @@
       Este relatório deve ser anexado ao processo no SEI e assinado eletronicamente quando aplicável.
     </p>
 
+    <!-- BOTÃO DE AÇÃO (NÃO SAI NO PDF) -->
     <p class="no-print">
       <button onclick="window.print()">Imprimir / Salvar em PDF</button>
     </p>
 
   </div>
+
 </body>
 </html>
