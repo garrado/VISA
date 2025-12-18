@@ -325,40 +325,34 @@ body{
   margin-top: 14px;
 }
 
-  /* Botão OK fixo para retorno ao index (padrão app) */
-  .ok-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 12px 14px;
-    z-index: 9999;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(255,255,255,.82);
-    border-top: 1px solid rgba(0,0,0,.08);
-  }
+.header-nav {
+    display: flex;
+    justify-content: flex-end; /* Alinha à direita como o "OK" padrão do iOS */
+    padding: 10px 15px;
+    background-color: #f8f8f8; /* Fundo suave de barra de navegação */
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-  .ok-btn {
-    display: block;
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.12);
+.btn-back {
+    color: #007AFF; /* Azul clássico do iOS */
     text-decoration: none;
-    text-align: center;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 1;
-    box-shadow: 0 10px 25px rgba(0,0,0,.10);
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 600; /* Semibold */
+    padding: 5px 10px;
+}
 
+.btn-back:active {
+    opacity: 0.3; /* Efeito de clique suave */
+}
   /* Ajuste de espaço no fim da página para não “esconder” conteúdo atrás do botão */
   .with-ok-padding {
     padding-bottom: 84px !important;
   }
+
 
 
 
