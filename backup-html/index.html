@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<link rel="stylesheet" href="/VISA/css/design-tokens.css">
+  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta property="og:title" content="Vigilância Sanitária de Anápolis">
+<meta property="og:description" content="Aplicativo interno da Vigilância Sanitária">
+<meta property="og:image" content="https://garrado.github.io/VISA/icons/visa-compartilhar.png">
+<meta property="og:url" content="https://garrado.github.io/VISA/">
+<meta property="og:type" content="website">
+
+<meta property="og:image:width" content="https://garrado.github.io/VISA/icons/visa-compartilhar.png">
+<meta property="og:image:height" content="https://garrado.github.io/VISA/icons/visa-compartilhar.png">
+<meta name="apple-touch-icon" content="icons/visa-compartilhar.png">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#004aad">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/visa-192.png">
+
+<title>Vigilância Sanitária</title>
+
+<style>
+:root{
+  --brand1:#2c5aa0;
+  --brand2:#3d6bb3;
+  --bg:#f2f4f8;
+  --text:#1f2a3a;
+  --muted:#5b6b83;
+  --card:#ffffff;
+  --line:rgba(31,42,58,.10);
+  --shadow:0 10px 28px rgba(0,0,0,.08);
+  --shadow2:0 6px 16px rgba(0,0,0,.08);
+  --warnBg:#fff7dd;
+  --warnLine:#d1a000;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* --- TELA DE CARREGAMENTO (LOADING) --- */
+#loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccd6e0;
+  border-top: 4px solid var(--brand1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- CONTEÚDO E LOGIN (Invisíveis inicialmente) --- */
+#conteudo{display:none}
+
+#login{
+  /* Oculto por padrão para evitar o "pisca" antes do Firebase carregar */
+  display:none; 
+  min-height: 70vh;
+  align-items:center;
+  justify-content:center;
+  padding: 28px 18px;
+}
+
+.loginCard{
+  width:min(520px, 100%);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+  text-align:center;
+}
+.loginCard h2{margin:0 0 6px 0}
+.loginCard p{margin:0 0 14px 0;color:var(--muted)}
+.btn{
+  appearance:none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight:700;
+  transition: .15s transform, .15s box-shadow, .15s background;
+}
+.btn:hover{box-shadow: var(--shadow2); transform: translateY(-1px)}
+.btn:active{transform: translateY(0)}
+.btnPrimary{
+  border: none;
+  background: linear-gradient(135deg, var(--brand1), var(--brand2));
+  color:#fff;
+}
+
+header{
+  background: linear-gradient(135deg, var(--brand1), var(--brand2));
+  color:#fff;
+  padding: 28px 20px 26px;
+  text-align:center;
+  box-shadow: 0 3px 10px rgba(0,0,0,.16);
+}
+header h1{
+  margin:0;
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-weight: 900;
+  letter-spacing:.2px;
+}
+header h2{
+  margin: 8px 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 500;
+  opacity:.92;
+}
+
+.container{
+  max-width: 1100px;
+  margin: 22px auto 30px;
+  padding: 0 16px;
+}
+
+.card{
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px 18px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow2);
+}
+.card h3{
+  margin:0 0 10px 0;
+  color: var(--brand1);
+  padding-left: 10px;
+  border-left: 6px solid var(--brand1);
+}
+
+.avisos{
+  background: var(--warnBg);
+  border-left: 6px solid var(--warnLine);
+}
+
+.muted{color:var(--muted)}
+.small{font-size:.92rem;color:var(--muted)}
+
+.grid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:16px;
+}
+@media (max-width: 920px){
+  .grid{grid-template-columns:1fr}
+}
+
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(44,90,160,.12), rgba(61,107,179,.10));
+  border: 1px solid rgba(44,90,160,.18);
+}
+.heroLeft h3{
+  margin:0 0 6px 0;
+  border-left:none;
+  padding-left:0;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+.heroLeft p{margin:0;color:var(--muted)}
+.heroBtn{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+.heroBtn span{
+  display:inline-flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.22);
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.links-section ul{list-style:none;padding:0;margin:0}
+.links-section li{margin: 10px 0}
+.linkPill{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background:#fff;
+  text-decoration:none;
+  color: var(--text);
+  font-weight:800;
+}
+.linkPill:hover{box-shadow: var(--shadow2); transform: translateY(-1px)}
+.linkPill small{font-weight:600;color:var(--muted)}
+.linkPill .arrow{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(44,90,160,.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.footer{
+  text-align:center;
+  padding: 18px 16px 26px;
+  color: #66728a;
+}
+
+.actionsRow{
+  display:flex;
+  justify-content:flex-end;
+  margin-top: 10px;
+}
+
+/* iOS/telas pequenas: botão "ABRIR WebCVS" com toque melhor e largura total */
+@media (max-width: 640px), (pointer: coarse){
+  .heroBtn{
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 16px 16px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+  .heroBtn span{
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Modal de acesso não autorizado */
+.modalOverlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:9999;
+}
+.modalCard{
+  width:min(520px, 100%);
+  background:#fff;
+  border:1px solid rgba(31,42,58,.12);
+  border-radius:16px;
+  box-shadow:0 18px 50px rgba(0,0,0,.20);
+  padding:18px;
+}
+.modalCard h3{ margin:0 0 8px 0; color:#b30000; }
+.modalCard p{ margin:8px 0; color:#1f2a3a; }
+.modalCard .small{ color:#5b6b83; font-size:.92rem; white-space:pre-line; }
+.modalActions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:12px;
+}
+.modalActions .btn{ width:auto; }
+</style>
+</head>
+
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div style="color:var(--brand1); font-weight:600">Verificando acesso...</div>
+</div>
+
+<div id="login">
+  <div class="loginCard">
+    <h2>Área Restrita</h2>
+    <p>Entre com sua conta Google para acessar os conteúdos internos.</p>
+    <button class="btn btnPrimary" onclick="loginGoogle()">Entrar com Google</button>
+  </div>
+</div>
+
+<div id="conteudo">
+
+<header>
+  <h1>Vigilância Sanitária</h1>
+  <h2>Diretoria de Vigilância em Saúde — Anápolis</h2>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <div class="hero">
+      <div class="heroLeft">
+        <h3>WebCVS</h3>
+        <p>Consulta rápida de regulados, atividades, alvará e histórico.</p>
+      </div>
+      <a class="btn btnPrimary heroBtn" href="Regulados.html" aria-label="Abrir WebCVS">
+        <span>↗</span>
+        ABRIR WebCVS
+      </a>
+    </div>
+    <div class="small muted" style="margin-top:10px">
+      Dica: se você estiver no iOS/Android, pode “Adicionar à tela de início” para usar como app.
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card avisos">
+     
+      <h3>Novidades no Aplicativo</h3>
+
+  <p>
+    📚 <strong>Legislação Sanitária integrada</strong><br>
+    Consulta rápida às principais normas sanitárias (nacional, estadual, Anvisa e Código Sanitário Municipal), diretamente no aplicativo.
+  </p>
+
+  <p>
+    📄 <strong>Código Sanitário Municipal digital</strong><br>
+    O Código Sanitário (LC nº 377/2018) agora está disponível em formato de leitura facilitada, com índice, busca no texto e tabela organizada dos CNAEs.
+  </p>
+
+  <p>
+    🗓️ <strong>Escala de Plantão com informação de férias</strong><br>
+    A Escala de Plantão por Fiscal passou a indicar também os fiscais em período de férias, facilitando a visualização e o planejamento das equipes.
+  </p>
+            
+      <h3>Aviso da Supervisão</h3>
+      <p>Prezados(as) Fiscais,</p>
+
+      <p>
+        Conforme é de conhecimento geral, identificou-se uma demanda reprimida de abertura no Portal do Empreendedor de Goiano,
+        acumulada por questões técnicas e de fluxo. Diante da urgência para regularizar a situação e dar andamento aos processos
+        essenciais, foi necessária uma distribuição extraordinária e massiva das Ordens de Serviço (OS) na última semana.
+      </p>
+
+      <p>
+        A orientação central foi realizar essa distribuição da forma mais equânime e equilibrada possível, considerando a disponibilidade
+        e a carga de trabalho de cada fiscal. Para formalizar e garantir o cumprimento dessas diligências, foi expedido um Mandado de
+        Cumprimento que abrange todas a OS distribuídas. É fundamental que cada uma receba a atenção e o trâmite adequados no prazo estabelecido.
+      </p>
+
+      <p>
+        Importante para o seu dia a dia: todas as Ordens de Serviço referentes a essa ação, assim como todas as demais, já estão devidamente
+        lançadas no sistema e podem ser consultadas e filtradas através do nosso Aplicativo Oficial da Vigilância Sanitária.
+        Recomendamos que utilizem os filtros disponíveis no aplicativo para organizar e priorizar suas atividades.
+      </p>
+
+      <p>
+        Agradecemos a compreensão e o comprometimento de todos neste momento que exigiu uma ação ágil e coordenada.
+        Contamos com o empenho da equipe para o cumprimento eficaz dessas determinações.
+      </p>
+
+       <p>
+                             Supervisor de Vigilância Sanitária
+       </p>
+         
+    </div>
+
+    <div class="card links-section">
+      <h3>Acessos Rápidos</h3>
+      <ul>
+        <li><a class="linkPill" href="legislacao.html"><div>Legislação Sanitária<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="check.html"><div>Check List Fiscalização<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="mts/mts.html"><div>Mandado de Tarefas Sanitárias (MTS)<br><small>Documento oficial</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="redesim.html"><div>Ordens de Serviço RedeSim<br><small>Consulta e acompanhamento</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="escala_dezembro_2025_padrao_regulados"><div>Escala de Plantão — dezembro<br><small>Organização mensal</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="Escala_Veiculos_Dezembro_2025_VERSAO_FINAL.html"><div>Escala de Veículos — dezembro<br><small>Logística</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="folga.html"><div>Escala de folga — dezembro 2025<br><small>Logística</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs por Equipe<br><small>Distribuição por área</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Relatório Plantão Fiscal<br><small>Indicadores e relatório</small></div><div class="arrow">➡</div></a></li>
+      </ul>
+
+      <div class="actionsRow">
+        <button class="btn" onclick="logout()">Encerrar sessão</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Mensagem Institucional</h3>
+    <p>
+      Esta página interna da Gerência de Vigilância Sanitária reúne informações, links e comunicados destinados aos servidores, com o objetivo de apoiar as atividades de fiscalização sanitária, promovendo a qualidade das ações fiscalizatórias e a melhor organização da comunicação e do acesso a dados operacionais.
+    </p>
+    <p class="small">
+      📄 <a href="README.html" target="_blank" rel="noopener">Consulte aqui o Aviso Institucional e as regras de uso da plataforma</a>
+    </p>
+  </div>
+
+</div>
+
+<div class="footer">
+  Vigilância Sanitária – Diretoria de Vigilância em Saúde<br>
+  Município de Anápolis – GO<br>
+  © 2025
+</div>
+
+</div>
+
+<div id="modalNaoAutorizado" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalNaoAutorizadoTitulo">
+  <div class="modalCard">
+    <h3 id="modalNaoAutorizadoTitulo">Acesso não autorizado</h3>
+    <p>Sua conta Google não consta na lista de usuários liberados para esta página institucional.</p>
+    <p class="small" id="modalNaoAutorizadoConta"></p>
+    <p class="small">Solicite a liberação ao administrador da página e tente novamente.</p>
+    <div class="modalActions">
+      <button class="btn btnPrimary" onclick="fecharModalNaoAutorizado()">Entendi</button>
+    </div>
+  </div>
+</div>
+
+<script src="/VISA/js/platform-detector.js"></script>  
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDo473puJesZ9rr3IBoX5AWczCIMuKBTrg",
+  authDomain: "visam-3a30b.firebaseapp.com",
+  projectId: "visam-3a30b",
+  messagingSenderId: "308899251430",
+  appId: "1:308899251430:web:0053cdbd0bed7f0de76727"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// CONFIGURAÇÃO DE PERSISTÊNCIA (Isso evita logins repetidos)
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error("Erro ao definir persistência:", error);
+});
+
+/* ===== LISTA DE AUTORIZADOS (SOMENTE E-MAIL) ===== */
+const AUTHORIZED_EMAILS = new Set([
+  "rubiamarabel@gmail.com",
+  "ps.visa@anapolis.go.gov.br",
+  "jotadaguas@gmail.com",
+  "geraldoedsonrosa@gmail.com",
+  "patycdmes@gmail.com",
+  "ariannefvieira@hotmail.com",
+  "marinaperillo@hotmail.com",
+  "visa@anapolis.go.gov.br",
+  "mariaedwiges@anapolis.go.gov.br",
+  "tathnut@hotmail.com",
+  "simonegrossi@anapolis.go.gov.br",
+  "kamillarolim@gmail.com",
+  "lulucieneepais@gmail.com",
+  "adrianepereira@anapolis.go.gov.br",
+  "claudio@anapolis.go.gov.br",
+  "silviamarques@anapolis.go.gov.br",
+  "mhg.rodovalho@gmail.com",
+  "medwiges@gmail.com",
+  "lindaenila@gmail.com",
+  "wanessab412@gmail.com",
+  "juliocteles@anapolis.go.gov.br",
+  "fabiolappmarques@gmail.com",
+  "lidianesimoes@anapolis.go.gov.br",
+  "educacao.esportes@anapolis.go.gov.br",
+  "crbferreira81@gmail.com",
+  "profajulianakenia@gmail.com",
+  "dani.visaanapolis@gmail.com",
+  "medicamentos@anapolis.go.gov.br",
+  "cesio@anapolis.go.gov.br",
+  "gubio@anapolis.go.gov.br",
+  "marciorodovalho@anapolis.go.gov.br",
+  "edsonarantes@anapolis.go.gov.br",
+  "981217644pedro@gmail.com",
+  "julianafviturino@gmail.com",
+  "thaysasouza97@gmail.com",
+  "farm.castro78@gmail.com",
+  "viniciuscassiano@anapolis.go.gov.br",
+  "thiagogomesgobo@gmail.com",
+  "liviabr.visa@gmail.com",
+  "wanessa05@gmail.com",
+  "santosrat@gmail.com",
+  "vivianemiyada@gmail.com",
+  "angelavet2@gmail.com",
+  "diasbrito1515@gmail.com",
+  "ademargatu86@gmail.com",
+  "cidalinacoelho@anapolis.go.gov.br",
+  "lauraeleuza@gmail.com",
+  "portaria344@anapolis.go.gov.br",
+  "mens.agitat.molem.cns@gmail.com"
+]);
+
+function isAuthorized(user){
+  const email = (user?.email || "").toLowerCase().trim();
+  return AUTHORIZED_EMAILS.has(email);
+}
+
+/* --- CONTROLE DE EXIBIÇÃO --- */
+function showLoading(){
+  document.getElementById("loading").style.display = "flex";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("conteudo").style.display = "none";
+}
+
+function showLogin(){
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("login").style.display = "flex";
+  document.getElementById("conteudo").style.display = "none";
+}
+
+function showConteudo(){
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("conteudo").style.display = "block";
+}
+
+/* modal não autorizado */
+function showUnauthorizedModal(user){
+  const modal = document.getElementById("modalNaoAutorizado");
+  const conta = document.getElementById("modalNaoAutorizadoConta");
+  const email = user?.email || "(e-mail não identificado)";
+  if (conta) conta.textContent = `E-mail: ${email}`;
+  if (modal) modal.style.display = "flex";
+}
+
+window.__pendingLogout = false;
+
+window.fecharModalNaoAutorizado = async function(){
+  const modal = document.getElementById("modalNaoAutorizado");
+  if (modal) modal.style.display = "none";
+
+  if (window.__pendingLogout){
+    window.__pendingLogout = false;
+    try { await signOut(auth); } catch(e){ console.error(e); }
+  }
+};
+
+/* fechar clicando fora do card */
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("modalNaoAutorizado");
+  if (modal && modal.style.display === "flex" && e.target === modal) {
+    window.fecharModalNaoAutorizado();
+  }
+});
+
+/* LOGIN */
+window.loginGoogle = function() {
+  signInWithPopup(auth, provider).catch(console.error);
+};
+
+/* LOGOUT (manual) */
+window.logout = function(){
+  signOut(auth).catch(console.error);
+};
+
+/* CONTROLE DE SESSÃO */
+onAuthStateChanged(auth, (user) => {
+  // O Firebase já verificou o token (seja local ou rede).
+  
+  if (!user){
+    // Não tem usuário: mostra login
+    showLogin();
+    return;
+  }
+
+  if (isAuthorized(user)){
+    // Usuário autorizado: mostra conteúdo
+    showConteudo();
+    return;
+  }
+
+  // Usuário existe mas não está na lista
+  showLogin();
+  showUnauthorizedModal(user);
+  window.__pendingLogout = true;
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
