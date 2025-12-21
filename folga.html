@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Escala de Folgas — Fim de Ano 2025</title>
     <style>
         :root {
@@ -568,6 +568,20 @@
         html {
             -webkit-overflow-scrolling: touch;
         }
+    
+    /* Integração com Topbar */
+    body {
+      padding-top: 0;
+    }
+    
+    .container {
+      padding-top: 20px;
+    }
+    
+    header h1, header p {
+      display: none; /* Título já está no topbar */
+    }
+    
     </style>
 
   <!-- Sistema de Design - VISA Anápolis -->
@@ -576,13 +590,24 @@
   <link rel="stylesheet" href="/VISA/css/layouts.css">
 </head>
 <body>
-    <div class="container">
-        <a href="/VISA/index.html" class="back-button">⬅ Voltar</a>
-        
-        <header>
-            <h1>🗓️ ESCALA DE FOLGAS — FIM DE ANO 2025</h1>
-            <p>Gerência de Vigilância Sanitária — Anápolis/GO</p>
-        </header>
+
+  <!-- Header com Topbar -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">📅 Escala de Folgas</div>
+        <div class="brand__subtitle">Fim de Ano 2025 • VISA Anápolis</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/VISA/index.html">
+          <span class="btn__icon">←</span>
+          Voltar
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
         
         <div class="alert-box">
             <div class="alert-icon">⚠️</div>
