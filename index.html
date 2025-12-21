@@ -463,6 +463,64 @@ import {
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+
+// ===== SISTEMA DE CACHE DE AUTENTICAÇÃO =====
+const AUTH_CACHE_KEY = 'visa_auth_cache';
+const AUTH_CACHE_DURATION = 60 * 60 * 1000; // 1 hora
+
+class AuthCache {
+  constructor() {
+    this.cacheKey = AUTH_CACHE_KEY;
+    this.cacheDuration = AUTH_CACHE_DURATION;
+  }
+
+  save(user) {
+    const cacheData = {
+      email: user.email,
+      uid: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      timestamp: Date.now(),
+      expiresAt: Date.now() + this.cacheDuration
+    };
+    try {
+      localStorage.setItem(this.cacheKey, JSON.stringify(cacheData));
+      console.log('✅ Cache salvo - válido por', Math.floor(this.cacheDuration / 1000 / 60), 'minutos');
+    } catch (error) {
+      console.warn('Erro ao salvar cache:', error);
+    }
+  }
+
+  get() {
+    try {
+      const cached = localStorage.getItem(this.cacheKey);
+      if (!cached) return null;
+      const data = JSON.parse(cached);
+      if (Date.now() < data.expiresAt) return data;
+      this.clear();
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  clear() {
+    try {
+      localStorage.removeItem(this.cacheKey);
+      console.log('🗑️ Cache limpo');
+    } catch (error) {}
+  }
+
+  getTimeRemaining() {
+    const cached = this.get();
+    if (!cached) return 0;
+    return Math.max(0, Math.floor((cached.expiresAt - Date.now()) / 1000));
+  }
+}
+
+const authCache = new AuthCache();
+// ===== FIM DO CACHE =====
+
 const firebaseConfig = {
   apiKey: "AIzaSyDo473puJesZ9rr3IBoX5AWczCIMuKBTrg",
   authDomain: "visam-3a30b.firebaseapp.com",
@@ -597,26 +655,49 @@ window.logout = function(){
 };
 
 /* CONTROLE DE SESSÃO */
-onAuthStateChanged(auth, (user) => {
-  // O Firebase já verificou o token (seja local ou rede).
+
+// ===== INICIALIZAÇÃO OTIMIZADA =====
+(function initOptimizedAuth() {
+  // 1. Verifica cache primeiro
+  const cachedAuth = authCache.get();
   
-  if (!user){
-    // Não tem usuário: mostra login
-    showLogin();
-    return;
-  }
-
-  if (isAuthorized(user)){
-    // Usuário autorizado: mostra conteúdo
+  if (cachedAuth && AUTHORIZED_EMAILS.has(cachedAuth.email.toLowerCase())) {
+    console.log('✅ Login via cache - válido por', authCache.getTimeRemaining(), 'segundos');
     showConteudo();
+    
+    // Verifica token em background
+    onAuthStateChanged(auth, (user) => {
+      if (user && isAuthorized(user)) {
+        authCache.save(user);
+      } else {
+        authCache.clear();
+        showLogin();
+      }
+    });
+    
     return;
   }
 
-  // Usuário existe mas não está na lista
-  showLogin();
-  showUnauthorizedModal(user);
-  window.__pendingLogout = true;
-});
+  // 2. Sem cache válido - usa Firebase normalmente
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      showLogin();
+      return;
+    }
+
+    if (isAuthorized(user)) {
+      authCache.save(user); // Salva no cache
+      showConteudo();
+      return;
+    }
+
+    showLogin();
+    showUnauthorizedModal(user);
+    window.__pendingLogout = true;
+  });
+})();
+// ===== FIM INICIALIZAÇÃO =====
+
 </script>
 
 </body>
