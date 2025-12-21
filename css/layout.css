@@ -1,0 +1,691 @@
+/**
+ * LAYOUTS CSS - VISA ANÁPOLIS
+ * Sistema de Grid e Layouts Responsivos
+ * Versão: 2.0
+ * 
+ * ORDEM DE CARREGAMENTO:
+ * 1. design-tokens.css
+ * 2. base.css
+ * 3. components.css
+ * 4. layouts.css (este arquivo)
+ * 
+ * CONTEÚDO:
+ * - Container System
+ * - Grid System (CSS Grid)
+ * - Flexbox Layouts
+ * - App Shells
+ * - Sidebar Layouts
+ * - Dashboard Layouts
+ * - Responsive Utilities
+ */
+
+/* ========================================
+   CONTAINER SYSTEM
+   ======================================== */
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Container Sizes */
+.container-sm {
+  max-width: 640px;
+}
+
+.container-md {
+  max-width: 768px;
+}
+
+.container-lg {
+  max-width: 1024px;
+}
+
+.container-xl {
+  max-width: 1280px;
+}
+
+.container-2xl {
+  max-width: 1536px;
+}
+
+.container-full {
+  max-width: 100%;
+}
+
+/* Responsive Padding */
+@media (min-width: 640px) {
+  .container {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+/* ========================================
+   GRID SYSTEM - CSS Grid
+   ======================================== */
+
+.grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Grid Columns - Auto-fit */
+.grid-auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Grid Columns - Fixed */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+/* Grid Rows */
+.grid-rows-1 { grid-template-rows: repeat(1, minmax(0, 1fr)); }
+.grid-rows-2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.grid-rows-3 { grid-template-rows: repeat(3, minmax(0, 1fr)); }
+.grid-rows-4 { grid-template-rows: repeat(4, minmax(0, 1fr)); }
+.grid-rows-5 { grid-template-rows: repeat(5, minmax(0, 1fr)); }
+.grid-rows-6 { grid-template-rows: repeat(6, minmax(0, 1fr)); }
+
+/* Grid Gap */
+.gap-0 { gap: 0; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+/* Column/Row Gap */
+.gap-x-2 { column-gap: var(--space-2); }
+.gap-x-4 { column-gap: var(--space-4); }
+.gap-x-6 { column-gap: var(--space-6); }
+
+.gap-y-2 { row-gap: var(--space-2); }
+.gap-y-4 { row-gap: var(--space-4); }
+.gap-y-6 { row-gap: var(--space-6); }
+
+/* Grid Column Span */
+.col-span-1 { grid-column: span 1 / span 1; }
+.col-span-2 { grid-column: span 2 / span 2; }
+.col-span-3 { grid-column: span 3 / span 3; }
+.col-span-4 { grid-column: span 4 / span 4; }
+.col-span-6 { grid-column: span 6 / span 6; }
+.col-span-full { grid-column: 1 / -1; }
+
+/* Grid Row Span */
+.row-span-1 { grid-row: span 1 / span 1; }
+.row-span-2 { grid-row: span 2 / span 2; }
+.row-span-3 { grid-row: span 3 / span 3; }
+.row-span-4 { grid-row: span 4 / span 4; }
+.row-span-full { grid-row: 1 / -1; }
+
+/* Responsive Grid - Breakpoints */
+@media (min-width: 640px) {
+  .sm\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+/* ========================================
+   FLEXBOX LAYOUTS
+   ======================================== */
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+/* Flex Direction */
+.flex-row { flex-direction: row; }
+.flex-row-reverse { flex-direction: row-reverse; }
+.flex-col { flex-direction: column; }
+.flex-col-reverse { flex-direction: column-reverse; }
+
+/* Flex Wrap */
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+
+/* Justify Content */
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+/* Align Items */
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.items-stretch { align-items: stretch; }
+
+/* Align Content */
+.content-start { align-content: flex-start; }
+.content-end { align-content: flex-end; }
+.content-center { align-content: center; }
+.content-between { align-content: space-between; }
+.content-around { align-content: space-around; }
+
+/* Flex Grow/Shrink */
+.flex-1 { flex: 1 1 0%; }
+.flex-auto { flex: 1 1 auto; }
+.flex-initial { flex: 0 1 auto; }
+.flex-none { flex: none; }
+
+.grow { flex-grow: 1; }
+.grow-0 { flex-grow: 0; }
+
+.shrink { flex-shrink: 1; }
+.shrink-0 { flex-shrink: 0; }
+
+/* ========================================
+   APP SHELL LAYOUTS
+   ======================================== */
+
+/* Layout Base: Header + Main + Footer */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  flex-shrink: 0;
+}
+
+.app-main {
+  flex: 1 0 auto;
+  padding: var(--space-6) 0;
+}
+
+.app-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* iOS: Safe Areas */
+.platform-ios .app-shell {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+/* ========================================
+   SIDEBAR LAYOUTS
+   ======================================== */
+
+/* Sidebar Layout: Side + Main */
+.layout-sidebar {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .layout-sidebar {
+    grid-template-columns: 250px 1fr;
+  }
+  
+  .layout-sidebar-wide {
+    grid-template-columns: 300px 1fr;
+  }
+  
+  .layout-sidebar-narrow {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+/* Sidebar invertido (main à esquerda) */
+@media (min-width: 768px) {
+  .layout-sidebar-reverse {
+    grid-template-columns: 1fr 250px;
+  }
+}
+
+/* Sidebar sticky */
+.sidebar-sticky {
+  position: sticky;
+  top: var(--space-4);
+  align-self: start;
+  max-height: calc(100vh - var(--space-8));
+  overflow-y: auto;
+}
+
+/* ========================================
+   DASHBOARD LAYOUTS
+   ======================================== */
+
+/* Dashboard Grid: Header + Sidebar + Main */
+.dashboard {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "main";
+}
+
+.dashboard-header {
+  grid-area: header;
+}
+
+.dashboard-main {
+  grid-area: main;
+  padding: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .dashboard {
+    grid-template-columns: 250px 1fr;
+    grid-template-areas:
+      "sidebar header"
+      "sidebar main";
+  }
+  
+  .dashboard-sidebar {
+    grid-area: sidebar;
+    border-right: 1px solid var(--border-subtle);
+    background-color: var(--surface-elevated);
+  }
+}
+
+/* Dashboard com sidebar colapsável */
+.dashboard-collapsible {
+  --sidebar-width: 250px;
+  --sidebar-collapsed-width: 60px;
+}
+
+.dashboard-collapsible .dashboard-sidebar {
+  width: var(--sidebar-width);
+  transition: width var(--transition-base);
+}
+
+.dashboard-collapsible.sidebar-collapsed .dashboard-sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* ========================================
+   SPLIT LAYOUTS
+   ======================================== */
+
+/* Split 50/50 */
+.split-even {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .split-even {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Split 60/40 */
+.split-60-40 {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .split-60-40 {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+/* Split 70/30 */
+.split-70-30 {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .split-70-30 {
+    grid-template-columns: 2.33fr 1fr;
+  }
+}
+
+/* ========================================
+   CARD GRID LAYOUTS
+   ======================================== */
+
+/* Cards em grid responsivo */
+.cards-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .cards-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Cards Masonry (altura variável) */
+.cards-masonry {
+  column-count: 1;
+  column-gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .cards-masonry {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards-masonry {
+    column-count: 3;
+  }
+}
+
+.cards-masonry > * {
+  break-inside: avoid;
+  margin-bottom: var(--space-4);
+}
+
+/* ========================================
+   HERO SECTIONS
+   ======================================== */
+
+.hero {
+  padding: var(--space-16) 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-black);
+  margin-bottom: var(--space-4);
+}
+
+.hero-subtitle {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-8);
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: var(--space-24) 0;
+  }
+  
+  .hero-title {
+    font-size: var(--text-5xl);
+  }
+}
+
+/* ========================================
+   SPACING UTILITIES
+   ======================================== */
+
+/* Padding */
+.p-0 { padding: 0; }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
+
+.py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.py-6 { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+
+.pt-4 { padding-top: var(--space-4); }
+.pt-6 { padding-top: var(--space-6); }
+.pt-8 { padding-top: var(--space-8); }
+
+.pb-4 { padding-bottom: var(--space-4); }
+.pb-6 { padding-bottom: var(--space-6); }
+.pb-8 { padding-bottom: var(--space-8); }
+
+/* Margin */
+.m-0 { margin: 0; }
+.m-auto { margin: auto; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.mt-2 { margin-top: var(--space-2); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+/* ========================================
+   WIDTH & HEIGHT UTILITIES
+   ======================================== */
+
+.w-full { width: 100%; }
+.w-screen { width: 100vw; }
+.w-auto { width: auto; }
+
+.h-full { height: 100%; }
+.h-screen { height: 100vh; }
+.h-auto { height: auto; }
+
+.min-h-screen { min-height: 100vh; }
+.min-h-full { min-height: 100%; }
+
+.max-w-xs { max-width: 320px; }
+.max-w-sm { max-width: 384px; }
+.max-w-md { max-width: 448px; }
+.max-w-lg { max-width: 512px; }
+.max-w-xl { max-width: 576px; }
+.max-w-2xl { max-width: 672px; }
+.max-w-3xl { max-width: 768px; }
+.max-w-4xl { max-width: 896px; }
+.max-w-5xl { max-width: 1024px; }
+.max-w-6xl { max-width: 1152px; }
+.max-w-7xl { max-width: 1280px; }
+.max-w-full { max-width: 100%; }
+
+/* ========================================
+   POSITION UTILITIES
+   ======================================== */
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+.inset-0 { inset: 0; }
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+/* ========================================
+   DISPLAY UTILITIES
+   ======================================== */
+
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.hidden { display: none; }
+
+/* Responsive Display */
+@media (max-width: 639px) {
+  .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .hide-tablet { display: none !important; }
+}
+
+@media (min-width: 768px) {
+  .hide-desktop { display: none !important; }
+}
+
+@media (min-width: 640px) {
+  .show-mobile-only { display: none !important; }
+}
+
+/* ========================================
+   OVERFLOW UTILITIES
+   ======================================== */
+
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+/* ========================================
+   TEXT ALIGNMENT
+   ======================================== */
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* ========================================
+   Z-INDEX UTILITIES
+   ======================================== */
+
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+/* ========================================
+   ASPECT RATIO
+   ======================================== */
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+/* ========================================
+   MOBILE-FIRST RESPONSIVE UTILITIES
+   ======================================== */
+
+/* Esconder em mobile, mostrar em tablet+ */
+@media (max-width: 767px) {
+  .md\:block { display: none; }
+}
+
+@media (min-width: 768px) {
+  .md\:block { display: block; }
+  .md\:flex { display: flex; }
+  .md\:grid { display: grid; }
+  .md\:hidden { display: none; }
+}
+
+/* Esconder em mobile/tablet, mostrar em desktop */
+@media (max-width: 1023px) {
+  .lg\:block { display: none; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:block { display: block; }
+  .lg\:flex { display: flex; }
+  .lg\:grid { display: grid; }
+  .lg\:hidden { display: none; }
+}
+
+/* ========================================
+   PRINT UTILITIES
+   ======================================== */
+
+@media print {
+  .print\:hidden {
+    display: none !important;
+  }
+  
+  .print\:block {
+    display: block !important;
+  }
+  
+  .print\:break-before {
+    page-break-before: always;
+  }
+  
+  .print\:break-after {
+    page-break-after: always;
+  }
+  
+  .print\:no-break {
+    page-break-inside: avoid;
+  }
+}
