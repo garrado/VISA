@@ -314,6 +314,64 @@ header h2{
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/components.css">
   <link rel="stylesheet" href="./css/layouts.css">
+
+  <style>
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
+    }
+    
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
+    @supports (-webkit-touch-callout: none) {
+      .topbar .btn {
+        color: #007AFF !important;
+        font-weight: 400 !important;
+      }
+      .topbar .btn::before {
+        content: "‹";
+        font-size: 32px;
+        font-weight: 300;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <style>
+    /* Correção WebCVS - Alinhamento */
+    .card p {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  </style>
+
+  <style>
+    /* Textos justificados */
+    .aviso p,
+    .mensagem p,
+    .institucional p {
+      text-align: justify !important;
+      text-justify: inter-word;
+    }
+  </style>
 </head>
 
 <body>

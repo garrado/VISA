@@ -4,181 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Checklist SAUDE CNAES 8630502 E 8630503</title>
-  <style>
-    :root {
-      --bg: #0b0c0f;
-      --card: #12141a;
-      --text: #e9edf1;
-      --muted: #a6b0bb;
-      --border: rgba(255,255,255,.10);
-      --link: #8ab4f8;
-      --maxw: 980px;
-    }
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f6f7fb;
-        --card: #ffffff;
-        --text: #111827;
-        --muted: #4b5563;
-        --border: rgba(0,0,0,.10);
-        --link: #1d4ed8;
-      }
-    }
-    html, :root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-body {
-      height: 100%;
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(10px);
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      border-bottom: 1px solid var(--border);
-      padding: calc(12px + env(safe-area-inset-top)) 16px 12px 16px;
-    }
-    .topbar .wrap {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .title {
-      display:flex;
-      flex-direction:column;
-      gap: 2px;
-      min-width: 0;
-    }
-    .title h1 {
-      font-size: 16px;
-      margin: 0;
-      font-weight: 700;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .title small {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .actions {
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .btn {
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 90%, transparent);
-      color: var(--text);
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      user-select: none;
-    }
-    .btn:active { transform: translateY(1px); }
-    main {
-      max-width: var(--maxw);
-      margin: 18px auto;
-      padding: 0 12px calc(24px + env(safe-area-inset-bottom)) 12px;
-    }
-    .hint {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-      margin-bottom: 14px;
-    }
-    .page {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 10px;
-      margin: 0 0 16px 0;
-      overflow: hidden;
-    }
-    .page img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 10px;
-      background: #fff;
-    }
-    figcaption {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 8px;
-      text-align: center;
-    }
-    footer {
-      max-width: var(--maxw);
-      margin: 10px auto 0;
-      padding: 0 12px 18px 12px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-  </style>
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/layouts.css">
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="../css/design-tokens.css">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/layouts.css">
-
+  
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>
 </head>
 <body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="title">
+        <h1>Checklist SAUDE CNAES 8630502 E 8630503</h1>
+        <small>Checklist de Fiscalização</small>
+      </div>
+      <div class="actions">
+        <a href="../index.html" class="btn">Voltar</a>
+        <button onclick="window.print()" class="btn">🖨️ Imprimir</button>
+      </div>
+    </div>
+  </div>
   
   <!-- Topbar - Apenas Mobile -->
   <header class="topbar topbar--mobile-only">

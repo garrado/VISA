@@ -9,61 +9,44 @@
   <link rel="stylesheet" href="./css/regulados.css" />
 
   <!-- Complemento apenas para tabela (mantendo paleta/tipografia do regulados.css) -->
-  <style>:root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-
-    .tableWrap{overflow-x:auto}
-    table{width:100%; border-collapse:collapse; min-width:720px}
-    th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top}
-    thead th{
-      background: linear-gradient(135deg, var(--brand2), var(--brand1));
-      color:#fff;
-      position:sticky;
-      top:0;
-      z-index:1;
-    }
-    tbody tr:nth-child(even){background: rgba(31,42,58,.03)}
-    .weekend td, .feriado td{
-      background: rgba(44,90,160,.10) !important;
-      font-weight: 700;
-    }
-    .footerNote{
-      margin-top:14px;
-    }
-  </style>
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/layouts.css">
+  
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>

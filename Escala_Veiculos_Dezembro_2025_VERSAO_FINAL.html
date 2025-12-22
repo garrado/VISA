@@ -8,53 +8,44 @@
 
   <link rel="stylesheet" href="./css/regulados.css" />
 
-  <style>:root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-
-    /* Complemento mínimo para manter a tabela legível e responsiva */
-    .tableWrap { overflow-x: auto; border-radius: 16px; }
-    .table { min-width: 720px; }
-    .weekend td {
-      background: color-mix(in srgb, var(--card) 70%, #ffb48a 30%);
-      font-weight: 700;
-    }
-    @media (max-width: 720px) {
-      .table { min-width: 680px; }
-    }
-  </style>
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/layouts.css">
+  
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>

@@ -7,84 +7,44 @@
 
   <link rel="stylesheet" href="./css/regulados.css">
 
-  <style>:root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-
-    td.cnae, th.cnae {
-      white-space: nowrap !important;
-      word-break: keep-all !important;
-      overflow-wrap: normal !important;
-      hyphens: none !important;
-      font-variant-numeric: tabular-nums;
-    }
-    table td, table th {
-      word-break: normal;
-      overflow-wrap: normal;
-    }
-    .tableWrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    table {
-      min-width: 920px;
-    }
-  </style>
-<style>
-/* ===== Fix CNAE column (não quebrar + mais larga) ===== */
-table th:first-child, table td:first-child{
-  white-space: nowrap !important;
-  word-break: keep-all !important;
-  overflow-wrap: normal !important;
-  hyphens: none !important;
-  font-variant-numeric: tabular-nums;
-  width: 160px;
-  min-width: 160px;
-}
-/* Neutraliza quebra agressiva herdada */
-table td, table th{
-  word-break: normal;
-  overflow-wrap: normal;
-}
-/* Wrapper p/ rolagem horizontal (iOS) */
-.tableWrap{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-/* Evita compressão extrema no mobile */
-table{ min-width: 1020px; }
-</style>
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/layouts.css">
+  
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>

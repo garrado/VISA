@@ -8,102 +8,44 @@
 
   <link rel="stylesheet" href="./css/regulados.css">
 
-  <style>:root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-
-    /* complementos sem conflitar com regulados.css */
-    .controls {
-      display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;
-    }
-    .control {
-      display:flex; flex-direction:column; gap:6px; min-width:180px;
-    }
-    .control[style*="flex:1"], .control.flex1 { flex:1; }
-    .control[style*="flex:2"], .control.flex2 { flex:2; min-width:260px; }
-    input[type="text"], input[type="search"], select {
-      width:100%;
-      padding:12px 12px;
-      border-radius:12px;
-    }
-    .meta {
-      display:flex; gap:14px; flex-wrap:wrap; align-items:center;
-      margin-top: 10px;
-    }
-    .tableWrap {
-      overflow-x:auto;
-      -webkit-overflow-scrolling: touch;
-      margin-top: 10px;
-      border-radius: 14px;
-    }
-    #osTable {
-      width:100%;
-      border-collapse: collapse;
-      min-width: 980px;
-    }
-    #osTable th, #osTable td {
-      padding:10px 10px;
-      vertical-align: top;
-    }
-    #osTable thead th {
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-    @media (max-width: 700px) {
-      .controls { flex-direction:column; align-items:stretch; }
-      .control { min-width:0; }
-      #osTable { min-width: 860px; }
-    }
   
-/* garante clique no botão voltar no iOS */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 99999 !important;
-}
-.topbar .actions,
-.topbar .actions a {
-  pointer-events: auto !important;
-}
-.topbar::before,
-.topbar::after {
-  pointer-events: none !important;
-}
-
-</style>
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/layouts.css">
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>

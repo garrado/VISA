@@ -6,146 +6,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vigilância Sanitária Municipal – Consulta Institucional</title>
 
-<style>
-  :root{
-    --brand:#2c5aa0;
-    --text:#1f2a3a;
-    --muted:#5b6b83;
-    --bg:#f4f6fa;
-    --card:#ffffff;
-    --line:rgba(0,0,0,.08);
-  }
 
-  *{box-sizing:border-box}
-
-  :root{
-  /* INPUTS E FORMULÁRIOS */
-  --input-bg: #ffffff;
-  --input-border: rgba(0, 0, 0, 0.23);
-  --input-focus: #2c5aa0;
-  --input-text: #1a202c;
-  --input-placeholder: #a0aec0;
-}
-
-body{
-    margin:0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-  }
-
-  .container{
-    max-width:1000px;
-    margin:24px auto;
-    padding:0 18px;
-  }
-
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:26px;
-  }
-
-  h1{
-    color:var(--brand);
-    explain: none;
-    margin-top:0;
-    font-size:1.9rem;
-  }
-
-  h2{
-    color:var(--brand);
-    margin-top:32px;
-    border-left:6px solid var(--brand);
-    padding-left:10px;
-    font-size:1.25rem;
-  }
-
-  p{ margin:12px 0; }
-  ul{ margin:10px 0 10px 20px; }
-  li{ margin:6px 0; }
-
-  .footer{
-    margin-top:40px;
-    padding-top:16px;
-    border-top:1px solid var(--line);
-    color:var(--muted);
-    font-size:.9rem;
-  }
-
-  /* ✅ Barra superior estilo iOS + botões */
-  .iosTopbar{
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: rgba(244,246,250,.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  .iosTopbar__inner{
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .iosBtn{
-    -webkit-tap-highlight-color: transparent;
-    appearance: none;
-    border: 1px solid rgba(44,90,160,.35);
-    background: rgba(44,90,160,.10);
-    color: var(--brand);
-    border-radius: 12px;
-    padding: 10px 12px;
-    font-weight: 800;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-  .iosBtn:active{ transform: scale(.98); }
-
-  .iosTitle{
-    font-weight: 800;
-    color: var(--muted);
-    font-size: .95rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-</style>
-
-  <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/layouts.css">
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>

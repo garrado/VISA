@@ -6,214 +6,44 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>LC nº 377/2018 – Código Sanitário de Anápolis (Consulta Interna)</title>
-<style>
-:root{
-  --brand:#2c5aa0;
-  --text:#1f2a3a;
-  --muted:#5b6b83;
-  --bg:#f4f6fa;
-  --card:#ffffff;
-  --line:rgba(0,0,0,.08);
-  --shadow:0 12px 30px rgba(0,0,0,.08);
-  --mark: rgba(255, 230, 0, .55);
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.65;
-}
-a{color:var(--brand); text-decoration:none}
-a:hover{text-decoration:underline}
 
-.iosTopbar{
-  position: sticky; top:0; z-index:999;
-  background: rgba(244,246,250,.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
-.iosTopbar__inner{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 10px 14px;
-  display:flex; align-items:center; justify-content:flex-end;
-}
-.iosBtn{
-  -webkit-tap-highlight-color: transparent;
-  appearance:none;
-  border:1px solid rgba(44,90,160,.35);
-  background: rgba(44,90,160,.10);
-  color: var(--brand);
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-weight: 900;
-  cursor:pointer;
-}
-.iosBtn:active{transform:scale(.98)}
-
-.container{ max-width:1100px; margin:18px auto 28px; padding:0 16px; }
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:16px;
-  box-shadow: var(--shadow);
-  padding: 16px;
-  margin-bottom: 14px;
-}
-h1{margin:0 0 6px 0; color:var(--brand); font-size:1.55rem}
-.subtitle{margin:0; color:var(--muted); font-weight:650}
-.badge{
-  display:inline-block;
-  margin-top:10px;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--muted);
-  font-weight:750;
-  font-size:.92rem;
-}
-.controls{
-  display:flex; flex-wrap:wrap; gap:10px;
-  align-items:center; justify-content:space-between;
-}
-.searchBox{
-  flex: 1 1 360px;
-  display:flex; gap:10px; align-items:center;
-}
-.searchBox input{
-  width:100%;
-  padding:12px 12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  outline:none;
-  font-size:1rem;
-}
-.searchActions{ display:flex; gap:10px; flex-wrap:wrap; }
-.btn{
-  appearance:none;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--text);
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor:pointer;
-  font-weight:850;
-}
-.btn:active{transform:scale(.99)}
-.small{color:var(--muted); font-size:.92rem}
-
-details{border:1px solid var(--line); border-radius:14px; background:#fff; padding:10px 12px}
-details > summary{cursor:pointer; font-weight:900; color:var(--brand)}
-.tocList{margin:10px 0 0 0; padding-left: 18px}
-.tocTitle > a{font-weight:950}
-.tocTitle ul{margin:8px 0 14px 0; padding-left: 16px}
-.tocArticle a{color:var(--text)}
-.tocArticle a:hover{color:var(--brand)}
-.tocChapter a, .tocSection a, .tocAnnex a{color:var(--muted)}
-
-.legal h2{
-  color:var(--brand);
-  margin: 28px 0 10px;
-  border-left:6px solid var(--brand);
-  padding-left:10px;
-  font-size:1.2rem;
-}
-.legal h3{ margin:18px 0 8px; color:var(--brand); font-size:1.05rem; }
-.legal h4{ margin:16px 0 8px; color:var(--muted); font-size:1.0rem; }
-
-.legal p{ margin: 10px 0; }
-.art{ padding-left: 10px; border-left: 4px solid rgba(44,90,160,.25); }
-.artLabel{ font-weight: 950; color: var(--brand); }
-
-mark{ background: var(--mark); padding:0 .12em; border-radius:.2em; }
-
-.footer{
-  text-align:center;
-  padding: 18px 16px 26px;
-  color: #66728a;
-}
-
-.artBlock{
-  margin: 12px 0;
-  padding-left: 10px;
-  border-left: 4px solid rgba(44,90,160,.25);
-}
-.artHead{ margin: 10px 0; }
-.artBody{ margin: 8px 0; }
-
-
-/* Justificação do texto (leitura jurídica) */
-.law-text p, .law-text li{
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
-}
-
-
-/* Anexo: tabela CNAE */
-.annexTableBlock{ margin: 14px 0 6px; }
-.annexNote{ margin: 10px 0 12px; color: var(--muted); }
-.tableWrap{
-  overflow:auto;
-  border:1px solid var(--line);
-  border-radius: 14px;
-  background:#fff;
-}
-.annexTable{
-  width:100%;
-  border-collapse: collapse;
-  min-width: 720px;
-}
-.annexTable th, .annexTable td{
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
-  vertical-align: top;
-}
-.annexTable thead th{
-  position: sticky;
-  top: 0;
-  background: #f7f9fc;
-  z-index: 1;
-  text-align:left;
-  color: var(--text);
-}
-.annexTable tbody tr:hover{ background: rgba(44,90,160,.06); }
-.colComp{ white-space: nowrap; font-weight: 800; }
-.colCnae{ white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-
-
-/* Ajuste de leitura (padrão jurídico) */
-.law-content, .law-content p, .law-content li, .law-content .articleText{
-  text-align: justify;
-  text-justify: inter-word;
-}
-</style>
 
   <style>
-    /* Botão Voltar - Estilo iOS/Android Nativo */
-    .btn--back::before {
-      content: "←";
-      margin-right: 6px;
-      font-size: 18px;
-      font-weight: 400;
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
     }
     
-    /* iOS: setinha azul */
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    
+    /* iOS: Setinha fina azul */
     @supports (-webkit-touch-callout: none) {
-      .btn--back {
+      .topbar .btn {
         color: #007AFF !important;
-        font-weight: 400;
+        font-weight: 400 !important;
       }
-      .btn--back::before {
+      .topbar .btn::before {
         content: "‹";
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 300;
-        margin-right: 2px;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
       }
     }
   </style>
