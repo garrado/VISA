@@ -37,17 +37,32 @@
 </head>
 
 <body>
-  <header class="topbar">
+  
+  <!-- Topbar - Apenas Mobile -->
+  <header class="topbar topbar--mobile-only">
     <div class="wrap topbar__inner">
       <div class="brand">
-        <div class="brand__title">Plantão</div>
-        <div class="brand__subtitle">Escala de Plantão • Dezembro/2025</div>
+        <div class="brand__title">VISA Anápolis</div>
+        <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
       <div class="actions">
-        <a class="btn btn--ghost" href="/VISA/index.html" aria-label="Voltar ao início">⬅ Voltar</a>
+        <a class="btn btn--ghost" href="/VISA/index.html">
+          <span class="btn__icon">←</span>
+          Voltar
+        </a>
       </div>
     </div>
   </header>
+
+  <style>
+    /* Topbar visível APENAS em mobile */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+
 
   <main class="wrap">
     <section class="card panel">

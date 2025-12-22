@@ -588,15 +588,24 @@
   <link rel="stylesheet" href="/VISA/css/base.css">
   <link rel="stylesheet" href="/VISA/css/components.css">
   <link rel="stylesheet" href="/VISA/css/layouts.css">
+
+  <!-- Sistema de Design - VISA Anápolis -->
+  <link rel="stylesheet" href="/VISA/css/design-tokens.css">
+  <link rel="stylesheet" href="/VISA/css/base.css">
+  <link rel="stylesheet" href="/VISA/css/components.css">
+  <link rel="stylesheet" href="/VISA/css/layouts.css">
+
 </head>
 <body>
 
   <!-- Header com Topbar -->
-  <header class="topbar">
+  
+  <!-- Topbar - Apenas Mobile -->
+  <header class="topbar topbar--mobile-only">
     <div class="wrap topbar__inner">
       <div class="brand">
-        <div class="brand__title">📅 Escala de Folgas</div>
-        <div class="brand__subtitle">Fim de Ano 2025 • VISA Anápolis</div>
+        <div class="brand__title">VISA Anápolis</div>
+        <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
       <div class="actions">
         <a class="btn btn--ghost" href="/VISA/index.html">
@@ -606,6 +615,16 @@
       </div>
     </div>
   </header>
+
+  <style>
+    /* Topbar visível APENAS em mobile */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+
 
   <div class="container">
         

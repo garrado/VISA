@@ -137,21 +137,41 @@
   <link rel="stylesheet" href="/VISA/css/base.css">
   <link rel="stylesheet" href="/VISA/css/components.css">
   <link rel="stylesheet" href="/VISA/css/layouts.css">
+
+  <!-- Sistema de Design - VISA Anápolis -->
+  <link rel="stylesheet" href="/VISA/css/design-tokens.css">
+  <link rel="stylesheet" href="/VISA/css/base.css">
+  <link rel="stylesheet" href="/VISA/css/components.css">
+  <link rel="stylesheet" href="/VISA/css/layouts.css">
+
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap">
-      <div class="title">
-        <h1>Checklist atacadista cosme e saneantes</h1>
-        <small>Compatível com Android e iOS • Arquivo original: original.pdf</small>
+  
+  <!-- Topbar - Apenas Mobile -->
+  <header class="topbar topbar--mobile-only">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">VISA Anápolis</div>
+        <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
       <div class="actions">
-        <a class="btn" href="../check.html">⬅️ Lista</a>
-        <a class="btn" href="original.pdf" download>⬇️ PDF</a>
-        <a class="btn" href="#topo">⬆️ Topo</a>
+        <a class="btn btn--ghost" href="/VISA/index.html">
+          <span class="btn__icon">←</span>
+          Voltar
+        </a>
       </div>
     </div>
   </header>
+
+  <style>
+    /* Topbar visível APENAS em mobile */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+
 
   <main id="topo">
     <div class="hint">

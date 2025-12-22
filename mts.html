@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MTS – Mandado de Tarefas Sanitárias</title>
+
+  <!-- Sistema de Design - VISA Anápolis -->
+  <link rel="stylesheet" href="/VISA/css/design-tokens.css">
+  <link rel="stylesheet" href="/VISA/css/base.css">
+  <link rel="stylesheet" href="/VISA/css/components.css">
+  <link rel="stylesheet" href="/VISA/css/layouts.css">
+
+  <style>
+    body {
+      background: var(--bg-primary);
+    }
+
+    .document-viewer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px calc(100px + env(safe-area-inset-bottom)) 16px;
+    }
+
+    .header-institucional {
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.4;
+      margin: 20px 0 24px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .document-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 24px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .pdf-viewer {
+      background: var(--surface);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-primary);
+    }
+
+    .pdf-viewer iframe {
+      width: 100%;
+      height: 80vh;
+      min-height: 600px;
+      border: none;
+      display: block;
+    }
+
+    /* Botão flutuante */
+    .fab {
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 9999;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fab:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .fab:active {
+      transform: translateY(0);
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .document-title {
+        font-size: 18px;
+      }
+
+      .pdf-viewer iframe {
+        min-height: 500px;
+      }
+    }
+
+    /* Impressão */
+    @media print {
+      .topbar,
+      .fab {
+        display: none !important;
+      }
+
+      body {
+        background: white !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  
+  <!-- Topbar - Apenas Mobile -->
+  <header class="topbar topbar--mobile-only">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">VISA Anápolis</div>
+        <div class="brand__subtitle">Vigilância Sanitária</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/VISA/index.html">
+          <span class="btn__icon">←</span>
+          Voltar
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <style>
+    /* Topbar visível APENAS em mobile */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+
+
+  <!-- Conteúdo -->
+  <main class="document-viewer">
+
+    <div class="header-institucional">
+      PREFEITURA DE ANÁPOLIS<br>
+      SECRETARIA MUNICIPAL DE SAÚDE<br>
+      DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
+      VIGILÂNCIA SANITÁRIA
+    </div>
+
+    <h1 class="document-title">Mandado de Tarefas Sanitárias (MTS)</h1>
+
+    <div class="pdf-viewer">
+      <iframe 
+        src="mts/MTS_GERAL_TODOS_FISCAIS.pdf"
+        title="Mandado de Tarefas Sanitárias - Visualização em PDF"
+        loading="lazy">
+      </iframe>
+    </div>
+
+  </main>
+
+  <!-- Botão Flutuante -->
+  <button 
+    class="fab" 
+    onclick="window.open('mts/MTS_GERAL_TODOS_FISCAIS.pdf','_blank')"
+    aria-label="Abrir PDF em nova aba">
+    📄 Abrir PDF
+  </button>
+
+  <!-- Platform Detector -->
+  <script src="/VISA/js/platform-detector.js"></script>
+
+</body>
+</html>
