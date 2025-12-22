@@ -749,3 +749,69 @@
     display: none !important;
   }
 }
+
+
+/* ========================================
+   COMPATIBILIDADE (classes antigas)
+   ======================================== */
+.topbar__inner{ /* compat -> .topbar-inner */
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:var(--space-4);
+  max-width:1200px;
+  margin:0 auto;
+}
+.actions{ /* compat -> .topbar-actions */
+  display:flex;
+  gap:var(--space-2);
+  align-items:center;
+}
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.brand__title{
+  font-weight:var(--font-black);
+  letter-spacing:var(--tracking-tight);
+  line-height:var(--leading-tight);
+}
+.brand__subtitle{
+  font-size:var(--text-sm);
+  opacity:.9;
+}
+
+/* iOS: “setinha voltar” padrão no canto superior direito */
+html.platform-ios .topbar-actions .btn--ghost,
+html.platform-ios .actions .btn--ghost{
+  position:fixed;
+  top:calc(var(--safe-top) + 8px);
+  right:calc(var(--safe-right) + 12px);
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:6px 8px !important;
+  color:#0A84FF !important; /* azul iOS */
+  font-weight:600;
+  z-index:var(--z-fixed);
+}
+html.platform-ios .topbar-actions .btn--ghost:hover,
+html.platform-ios .actions .btn--ghost:hover{
+  background:transparent !important;
+}
+html.platform-ios .topbar-actions .btn--ghost .btn__icon,
+html.platform-ios .actions .btn--ghost .btn__icon{
+  font-size:22px;
+  line-height:1;
+}
+/* some o texto “Voltar” no iOS, mantendo só a setinha */
+html.platform-ios .topbar-actions .btn--ghost,
+html.platform-ios .actions .btn--ghost{
+  font-size:0;
+}
+html.platform-ios .topbar-actions .btn--ghost .btn__icon,
+html.platform-ios .actions .btn--ghost .btn__icon{
+  font-size:22px;
+}
+
