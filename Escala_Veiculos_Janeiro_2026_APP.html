@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <link rel="stylesheet" href="./css/design-tokens.css">
+  <meta charset="utf-8" />
+  <title>Escala de Uso de Veículos — Janeiro/2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="./css/regulados.css" />
+  <style>
+    /* Botão Voltar - iOS e Android Nativos */
+    .topbar .btn {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text, #1a202c) !important;
+      padding: 6px 12px !important;
+      font-size: 17px !important;
+      font-weight: 400 !important;
+    }
+    .topbar .btn::before {
+      content: "←";
+      margin-right: 4px;
+      font-size: 20px;
+    }
+    /* iOS: Setinha fina azul */
+    @supports (-webkit-touch-callout: none) {
+      .topbar .btn {
+        color: #007AFF !important;
+        font-weight: 400 !important;
+      }
+      .topbar .btn::before {
+        content: "‹";
+        font-size: 32px;
+        font-weight: 300;
+        margin-right: 0px;
+        vertical-align: middle;
+      }
+    }
+    /* Ocultar topbar no desktop */
+    @media (min-width: 769px) {
+      .topbar--mobile-only {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Topbar - Apenas Mobile -->
+  <header class="topbar topbar--mobile-only">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">VISA Anápolis</div>
+        <div class="brand__subtitle">Vigilância Sanitária</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost btn--back" href="./index.html">Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card panel">
+      <h1 class="card__title">ESCALA DE USO DE VEÍCULOS — JANEIRO/2026</h1>
+      <p class="small muted">Atualizado em 22/12/2025 11:08 (Horário de Brasília – UTC−3)</p>
+    </section>
+
+    <section class="card panel">
+      <div class="tableWrap">
+        <table class="table">
+<tr><th>Dia</th><th>Carro 1</th><th>Carro 2</th></tr>
+<tr class='weekend'><td>01 (Qui — Feriado Confraternização Universal)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>01 (Sex — Ponto Facultativo)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>03 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>04 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class=''><td>05 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
+<tr class=''><td>05 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
+<tr class=''><td>06 (Ter — Matutino)</td><td>Fabíola</td><td>VAGO</td></tr>
+<tr class=''><td>06 (Ter — Vespertino)</td><td>VAGO</td><td>Viviane Miyada</td></tr>
+<tr class=''><td>07 (Qua — Matutino)</td><td>Ariane</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>07 (Qua — Vespertino)</td><td>VAGO</td><td>Juliana Kênia & Tathiane</td></tr>
+<tr class=''><td>08 (Qui — Matutino)</td><td>VAGO</td><td>Lívia Brito</td></tr>
+<tr class=''><td>08 (Qui — Vespertino)</td><td>VAGO</td><td>VAGO</td></tr>
+<tr class=''><td>09 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>09 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
+<tr class='weekend'><td>10 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>11 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class=''><td>12 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
+<tr class=''><td>12 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
+<tr class=''><td>13 (Ter — Matutino)</td><td>VAGO</td><td>VAGO</td></tr>
+<tr class=''><td>13 (Ter — Vespertino)</td><td>VAGO</td><td>Viviane Miyada</td></tr>
+<tr class=''><td>14 (Qua — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>14 (Qua — Vespertino)</td><td>VAGO</td><td>Juliana Kênia & Tathiane</td></tr>
+<tr class=''><td>15 (Qui — Matutino)</td><td>Adriana</td><td>VAGO</td></tr>
+<tr class=''><td>15 (Qui — Vespertino)</td><td>VAGO</td><td>VAGO</td></tr>
+<tr class=''><td>16 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>16 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
+<tr class='weekend'><td>17 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>18 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class=''><td>19 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
+<tr class=''><td>19 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
+<tr class=''><td>20 (Ter — Matutino)</td><td>Fabíola & Lidiane</td><td>Luciana Consolação & Adriana</td></tr>
+<tr class=''><td>20 (Ter — Vespertino)</td><td>Adriane</td><td>Clóvis & Viviane Miyada</td></tr>
+<tr class=''><td>21 (Qua — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>21 (Qua — Vespertino)</td><td>José Luiz</td><td>Juliana Kênia & Tathiane</td></tr>
+<tr class=''><td>22 (Qui — Matutino)</td><td>Adriana & Luciana Consolação</td><td>Pedro</td></tr>
+<tr class=''><td>22 (Qui — Vespertino)</td><td>Adriane</td><td>José Luiz</td></tr>
+<tr class=''><td>23 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>23 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
+<tr class='weekend'><td>24 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class='weekend'><td>25 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
+<tr class=''><td>26 (Seg — Matutino)</td><td>Júlio</td><td>Luciene</td></tr>
+<tr class=''><td>26 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
+<tr class=''><td>27 (Ter — Matutino)</td><td>Fabíola & Lidiane</td><td>Luciana Consolação & Adriana</td></tr>
+<tr class=''><td>27 (Ter — Vespertino)</td><td>Adriane & Patrícia</td><td>Clóvis & Viviane Miyada</td></tr>
+<tr class=''><td>28 (Qua — Matutino)</td><td>Aline</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>28 (Qua — Vespertino)</td><td>José Luiz</td><td>Juliana Kênia & Tathiane</td></tr>
+<tr class=''><td>29 (Qui — Matutino)</td><td>Adriana & Luciana Consolação</td><td>Pedro</td></tr>
+<tr class=''><td>29 (Qui — Vespertino)</td><td>Adriane & Patrícia</td><td>José Luiz</td></tr>
+<tr class=''><td>30 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
+<tr class=''><td>30 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
+<tr class='weekend'><td>31 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <p class="small muted" style="text-align:center; padding-bottom: 24px;">
+      Atualizado em 22/12/2025 11:08 — versão PRELIMINAR (Horário de Brasília – UTC−3)
+    </p>
+  </main>
+
+  <!-- Platform Detector -->
+  <script src="./js/platform-detector.js"></script>
+</body>
+</html>
