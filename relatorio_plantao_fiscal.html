@@ -12,7 +12,16 @@
   <style>
     @page { size: A4; margin: 20mm; }
 
-    html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+    html, :root{
+  /* INPUTS E FORMULÁRIOS */
+  --input-bg: #ffffff;
+  --input-border: rgba(0, 0, 0, 0.23);
+  --input-focus: #2c5aa0;
+  --input-text: #1a202c;
+  --input-placeholder: #a0aec0;
+}
+
+body { margin: 0; padding: 0; background: #fff; color: #000; }
     body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
 
     .container { width: 100%; margin: 0 auto; padding: 0 12px 140px; box-sizing: border-box; }
