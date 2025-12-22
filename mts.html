@@ -6,10 +6,10 @@
   <title>MTS – Mandado de Tarefas Sanitárias</title>
 
   <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="/VISA/css/design-tokens.css">
-  <link rel="stylesheet" href="/VISA/css/base.css">
-  <link rel="stylesheet" href="/VISA/css/components.css">
-  <link rel="stylesheet" href="/VISA/css/layouts.css">
+  <link rel="stylesheet" href="./css/design-tokens.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layouts.css">
 
   <style>
     body {
@@ -110,6 +110,30 @@
       }
     }
   </style>
+
+  <style>
+    /* Botão Voltar - Estilo iOS/Android Nativo */
+    .btn--back::before {
+      content: "←";
+      margin-right: 6px;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    
+    /* iOS: setinha azul */
+    @supports (-webkit-touch-callout: none) {
+      .btn--back {
+        color: #007AFF !important;
+        font-weight: 400;
+      }
+      .btn--back::before {
+        content: "‹";
+        font-size: 28px;
+        font-weight: 300;
+        margin-right: 2px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -118,14 +142,13 @@
   
   <!-- Topbar - Apenas Mobile -->
   <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar-inner topbar__inner">
+    <div class="wrap topbar__inner">
       <div class="brand">
         <div class="brand__title">VISA Anápolis</div>
         <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
-      <div class="topbar-actions actions">
-        <a class="btn btn--ghost" href="/VISA/index.html">
-          <span class="btn__icon">←</span>
+      <div class="actions">
+                <a class="btn btn--ghost btn--back" href="./index.html">
           Voltar
         </a>
       </div>
@@ -173,7 +196,7 @@
   </button>
 
   <!-- Platform Detector -->
-  <script src="/VISA/js/platform-detector.js"></script>
+  <script src="./js/platform-detector.js"></script>
 
 </body>
 </html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="stylesheet" href="/VISA/css/design-tokens.css">
+  <link rel="stylesheet" href="./css/design-tokens.css">
   <meta charset="UTF-8" />
   <title>Relatório de Tarefas – Plantão Fiscal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <!-- CSS WebCVS somente para tela (não afeta impressão/PDF) -->
-  <link rel="stylesheet" href="/VISA/css/regulados.css" media="screen">
+  <link rel="stylesheet" href="./css/regulados.css" media="screen">
 
   <style>
     @page { size: A4; margin: 20mm; }
@@ -103,9 +103,33 @@
   </style>
 
   <!-- Sistema de Design - VISA Anápolis -->
-  <link rel="stylesheet" href="/VISA/css/base.css">
-  <link rel="stylesheet" href="/VISA/css/components.css">
-  <link rel="stylesheet" href="/VISA/css/layouts.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/layouts.css">
+
+  <style>
+    /* Botão Voltar - Estilo iOS/Android Nativo */
+    .btn--back::before {
+      content: "←";
+      margin-right: 6px;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    
+    /* iOS: setinha azul */
+    @supports (-webkit-touch-callout: none) {
+      .btn--back {
+        color: #007AFF !important;
+        font-weight: 400;
+      }
+      .btn--back::before {
+        content: "‹";
+        font-size: 28px;
+        font-weight: 300;
+        margin-right: 2px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -113,14 +137,13 @@
   
   <!-- Topbar - Apenas Mobile -->
   <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar-inner topbar__inner">
+    <div class="wrap topbar__inner">
       <div class="brand">
         <div class="brand__title">VISA Anápolis</div>
         <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
-      <div class="topbar-actions actions">
-        <a class="btn btn--ghost" href="/VISA/index.html">
-          <span class="btn__icon">←</span>
+      <div class="actions">
+                <a class="btn btn--ghost btn--back" href="./index.html">
           Voltar
         </a>
       </div>
@@ -245,7 +268,7 @@
 
 
   <!-- Platform Detector -->
-  <script src="/VISA/js/platform-detector.js"></script>
+  <script src="./js/platform-detector.js"></script>
 </body>
 </html>
 

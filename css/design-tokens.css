@@ -1,171 +1,443 @@
 /**
- * DESIGN TOKENS - VISA ANÁPOLIS
- * (CSS Variables)
- * Gerado para restaurar o tema claro e padronizar componentes (iOS/Android/Web)
- * Versão: 2.0-fix
+ * PLATFORM DETECTOR - VISA ANÁPOLIS
+ * Detecta plataforma e aplica otimizações específicas
+ * Versão: 2.0
  */
-:root{
-  /* Brand */
-  --color-primary-900:#17345f;
-  --color-primary-800:#1f447a;
-  --color-primary-700:#28559a;
-  --color-primary-600:#2c5aa0; /* brand */
-  --color-primary-500:#3d6bb3; /* brand alt */
-  --color-primary-200:#c9d8f2;
 
-  /* Semantic */
-  --color-success:#1f8b4c;
-  --color-warning:#b96b00;
-  --color-error:#c62828;
-  --color-info:#1666c5;
-
-  /* Surfaces */
-  --bg-primary:#f2f4f8;
-  --surface:#ffffff;
-
-  /* Text */
-  --text-primary:#1f2a3a;
-  --text-secondary:#5b6b83;
-  --text-tertiary:#7787a2;
-  --text-inverse:#ffffff;
-
-  /* Borders */
-  --border-subtle:rgba(31,42,58,.10);
-  --border-default:rgba(31,42,58,.16);
-  --border-strong:rgba(31,42,58,.28);
-
-  /* Radii */
-  --radius-sm:10px;
-  --radius-md:14px;
-  --radius-xl:18px;
-
-  /* Shadows */
-  --shadow-sm:0 2px 10px rgba(0,0,0,.06);
-  --shadow-md:0 6px 16px rgba(0,0,0,.10);
-  --shadow-lg:0 10px 28px rgba(0,0,0,.12);
-  --shadow-xl:0 18px 46px rgba(0,0,0,.16);
-  --shadow-2xl:0 26px 70px rgba(0,0,0,.18);
-
-  /* Typography */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-bold:700;
-  --font-black:800;
-
-  --text-xs:12px;
-  --text-sm:13px;
-  --text-lg:16px;
-  --text-xl:18px;
-  --text-4xl:28px;
-
-  --leading-tight:1.15;
-  --tracking-tight:-0.02em;
-
-  /* Spacing */
-  --space-1:4px;
-  --space-2:8px;
-  --space-3:12px;
-  --space-4:16px;
-  --space-5:20px;
-  --space-6:24px;
-  --space-8:32px;
-  --space-10:40px;
-
-  /* Transitions */
-  --transition-fast:150ms ease;
-  --transition-base:220ms ease;
-
-  /* Z-index */
-  --z-sticky:100;
-  --z-fixed:200;
-  --z-modal-backdrop:900;
-  --z-modal:1000;
-  --z-toast:1200;
-
-  /* Layout */
-  --sidebar-width:280px;
-  --sidebar-collapsed-width:72px;
-
-  /* Blur */
-  --blur-lg:14px;
-  --blur-xl:22px;
-
-  /* Safe areas */
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-
-
-  /* Additional typography */
-  --font-normal:400;
-  --font-medium:500;
-  --font-semibold:600;
-  --leading-none:1;
-  --leading-normal:1.45;
-
-  --text-base:14px;
-  --text-2xl:22px;
-  --text-3xl:24px;
-  --text-5xl:34px;
-
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  /* Links */
-  --link-color: #0A84FF;
-  --link-hover: #0A84FF;
-
-  /* Inputs */
-  --input-bg: rgba(255,255,255,.92);
-  --input-border: var(--border-default);
-  --input-focus: rgba(10,132,255,.35);
-
-  /* Surfaces */
-  --surface-elevated: #ffffff;
-  --surface-sunken: rgba(255,255,255,.65);
-
-  /* More spacing */
-  --space-12:48px;
-  --space-16:64px;
-  --space-24:96px;
-
-  /* More radii */
-  --radius-lg:16px;
-  --radius-full:999px;
-
-  /* Focus ring */
-  --focus-ring: 0 0 0 3px var(--input-focus);
-  /* Backwards compatibility */
-  --brand1: var(--color-primary-600);
-  --brand2: var(--color-primary-500);
-  --bg: var(--bg-primary);
-  --text: var(--text-primary);
-  --muted: var(--text-secondary);
-  --card: var(--surface);
-  --line: var(--border-subtle);
-  --shadow: var(--shadow-lg);
-  --shadow2: var(--shadow-md);
+class PlatformDetector {
+  constructor() {
+    this.platform = null;
+    this.features = {};
+    this.metrics = {};
+    
+    this.init();
+  }
+  
+  /**
+   * Inicializa o detector
+   */
+  init() {
+    this.detectPlatform();
+    this.detectFeatures();
+    this.detectMetrics();
+    this.applyPlatformClass();
+    this.setupListeners();
+    
+    console.log('🔍 Platform Detector iniciado:', {
+      platform: this.platform,
+      features: this.features,
+      metrics: this.metrics
+    });
+  }
+  
+  /**
+   * Detecta a plataforma atual
+   */
+  detectPlatform() {
+    const ua = navigator.userAgent;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                         window.navigator.standalone ||
+                         document.referrer.includes('android-app://');
+    
+    // iOS
+    if (/iPhone|iPad|iPod/.test(ua)) {
+      this.platform = 'ios';
+      this.platformVersion = this.getIOSVersion();
+      return;
+    }
+    
+    // Android
+    if (/Android/.test(ua)) {
+      this.platform = 'android';
+      this.platformVersion = this.getAndroidVersion();
+      return;
+    }
+    
+    // Desktop (hover capability)
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      this.platform = 'desktop';
+      return;
+    }
+    
+    // Fallback: web mobile
+    this.platform = 'mobile-web';
+  }
+  
+  /**
+   * Detecta recursos disponíveis
+   */
+  detectFeatures() {
+    this.features = {
+      // Suporte a blur
+      backdropFilter: this.supportsBackdropFilter(),
+      
+      // Suporte a gestos
+      touchEvents: 'ontouchstart' in window,
+      pointerEvents: 'PointerEvent' in window,
+      
+      // Suporte a vibração
+      vibration: 'vibrate' in navigator,
+      
+      // Suporte a notificações
+      notifications: 'Notification' in window,
+      pushNotifications: 'PushManager' in window,
+      
+      // Suporte a service worker
+      serviceWorker: 'serviceWorker' in navigator,
+      
+      // Suporte a clipboard
+      clipboard: 'clipboard' in navigator,
+      
+      // Suporte a share API
+      share: 'share' in navigator,
+      
+      // Suporte a dark mode
+      darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      
+      // Suporte a reduced motion
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      
+      // PWA instalado
+      installed: window.matchMedia('(display-mode: standalone)').matches,
+      
+      // Suporte a safe areas
+      safeAreas: this.supportsSafeAreas(),
+      
+      // Capacidades de conexão
+      connection: 'connection' in navigator ? {
+        effectiveType: navigator.connection?.effectiveType,
+        downlink: navigator.connection?.downlink,
+        saveData: navigator.connection?.saveData
+      } : null
+    };
+  }
+  
+  /**
+   * Detecta métricas do dispositivo
+   */
+  detectMetrics() {
+    this.metrics = {
+      // Dimensões da tela
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      
+      // Orientação
+      orientation: this.getOrientation(),
+      
+      // Tipo de dispositivo
+      deviceType: this.getDeviceType(),
+      
+      // Safe areas (iOS notch, Android gestures)
+      safeAreaTop: this.getSafeArea('top'),
+      safeAreaBottom: this.getSafeArea('bottom'),
+      safeAreaLeft: this.getSafeArea('left'),
+      safeAreaRight: this.getSafeArea('right'),
+      
+      // Performance
+      memory: performance.memory?.jsHeapSizeLimit || null,
+      cores: navigator.hardwareConcurrency || null
+    };
+  }
+  
+  /**
+   * Aplica classe da plataforma no HTML
+   */
+  applyPlatformClass() {
+    const html = document.documentElement;
+    
+    // Remove classes anteriores
+    html.classList.remove('platform-ios', 'platform-android', 'platform-desktop', 'platform-mobile-web');
+    
+    // Adiciona classe da plataforma
+    html.classList.add(`platform-${this.platform}`);
+    
+    // Adiciona classes de recursos
+    if (this.features.backdropFilter) {
+      html.classList.add('has-backdrop-filter');
+    }
+    
+    if (this.features.touchEvents) {
+      html.classList.add('has-touch');
+    }
+    
+    if (this.features.vibration) {
+      html.classList.add('has-vibration');
+    }
+    
+    if (this.features.darkMode) {
+      html.classList.add('dark-mode');
+    }
+    
+    if (this.features.reducedMotion) {
+      html.classList.add('reduce-motion');
+    }
+    
+    if (this.features.installed) {
+      html.classList.add('pwa-installed');
+    }
+    
+    // Adiciona atributos data para CSS
+    html.dataset.platform = this.platform;
+    html.dataset.deviceType = this.metrics.deviceType;
+    html.dataset.orientation = this.metrics.orientation;
+  }
+  
+  /**
+   * Configura listeners para mudanças
+   */
+  setupListeners() {
+    // Dark mode
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      this.features.darkMode = e.matches;
+      document.documentElement.classList.toggle('dark-mode', e.matches);
+      this.dispatchEvent('darkModeChange', { darkMode: e.matches });
+    });
+    
+    // Orientação
+    window.addEventListener('orientationchange', () => {
+      this.metrics.orientation = this.getOrientation();
+      document.documentElement.dataset.orientation = this.metrics.orientation;
+      this.dispatchEvent('orientationChange', { orientation: this.metrics.orientation });
+    });
+    
+    // Resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        this.metrics.screenWidth = window.innerWidth;
+        this.metrics.screenHeight = window.innerHeight;
+        this.dispatchEvent('metricsChange', { metrics: this.metrics });
+      }, 150);
+    });
+    
+    // Reduced motion
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+      this.features.reducedMotion = e.matches;
+      document.documentElement.classList.toggle('reduce-motion', e.matches);
+      this.dispatchEvent('reducedMotionChange', { reducedMotion: e.matches });
+    });
+    
+    // Connection change
+    if (this.features.connection) {
+      navigator.connection.addEventListener('change', () => {
+        this.features.connection = {
+          effectiveType: navigator.connection.effectiveType,
+          downlink: navigator.connection.downlink,
+          saveData: navigator.connection.saveData
+        };
+        this.dispatchEvent('connectionChange', { connection: this.features.connection });
+      });
+    }
+  }
+  
+  /**
+   * Helpers de detecção
+   */
+  
+  supportsBackdropFilter() {
+    return CSS.supports('backdrop-filter', 'blur(1px)') ||
+           CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
+  }
+  
+  supportsSafeAreas() {
+    return CSS.supports('padding-top: env(safe-area-inset-top)');
+  }
+  
+  getIOSVersion() {
+    const match = navigator.userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/);
+    if (match) {
+      return parseFloat(`${match[1]}.${match[2]}`);
+    }
+    return null;
+  }
+  
+  getAndroidVersion() {
+    const match = navigator.userAgent.match(/Android (\d+(\.\d+)?)/);
+    if (match) {
+      return parseFloat(match[1]);
+    }
+    return null;
+  }
+  
+  getOrientation() {
+    if (window.innerWidth > window.innerHeight) {
+      return 'landscape';
+    }
+    return 'portrait';
+  }
+  
+  getDeviceType() {
+    const width = window.innerWidth;
+    
+    if (width < 640) return 'phone';
+    if (width < 1024) return 'tablet';
+    return 'desktop';
+  }
+  
+  getSafeArea(side) {
+    const temp = document.createElement('div');
+    temp.style.cssText = `
+      position: fixed;
+      ${side}: 0;
+      ${side === 'top' || side === 'bottom' ? 'height' : 'width'}: env(safe-area-inset-${side}, 0px);
+    `;
+    document.body.appendChild(temp);
+    const value = parseInt(getComputedStyle(temp)[side === 'top' || side === 'bottom' ? 'height' : 'width']);
+    document.body.removeChild(temp);
+    return value || 0;
+  }
+  
+  /**
+   * APIs públicas
+   */
+  
+  isIOS() {
+    return this.platform === 'ios';
+  }
+  
+  isAndroid() {
+    return this.platform === 'android';
+  }
+  
+  isDesktop() {
+    return this.platform === 'desktop';
+  }
+  
+  isMobile() {
+    return this.platform === 'ios' || this.platform === 'android' || this.platform === 'mobile-web';
+  }
+  
+  isPWA() {
+    return this.features.installed;
+  }
+  
+  hasFeature(feature) {
+    return this.features[feature] === true;
+  }
+  
+  getMetric(metric) {
+    return this.metrics[metric];
+  }
+  
+  /**
+   * Haptic feedback (iOS/Android)
+   */
+  vibrate(pattern = 10) {
+    if (this.features.vibration) {
+      navigator.vibrate(pattern);
+    }
+  }
+  
+  /**
+   * Feedback tátil específico por plataforma
+   */
+  hapticFeedback(type = 'light') {
+    const patterns = {
+      light: 10,
+      medium: 20,
+      heavy: 30,
+      success: [10, 50, 10],
+      warning: [10, 100, 10],
+      error: [30, 100, 30, 100, 30]
+    };
+    
+    this.vibrate(patterns[type] || patterns.light);
+  }
+  
+  /**
+   * Sistema de eventos customizados
+   */
+  dispatchEvent(eventName, detail = {}) {
+    const event = new CustomEvent(`platform:${eventName}`, {
+      detail: {
+        platform: this.platform,
+        ...detail
+      }
+    });
+    window.dispatchEvent(event);
+  }
+  
+  /**
+   * Otimizações por plataforma
+   */
+  applyOptimizations() {
+    // iOS: previne zoom em double-tap
+    if (this.isIOS()) {
+      document.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+    }
+    
+    // Android: otimiza scroll
+    if (this.isAndroid()) {
+      document.body.style.overscrollBehavior = 'none';
+    }
+    
+    // Todos: otimiza passive listeners
+    const passiveSupported = this.testPassiveListener();
+    if (passiveSupported) {
+      ['touchstart', 'touchmove', 'wheel', 'mousewheel'].forEach(event => {
+        document.addEventListener(event, () => {}, { passive: true });
+      });
+    }
+  }
+  
+  testPassiveListener() {
+    let passiveSupported = false;
+    try {
+      const options = {
+        get passive() {
+          passiveSupported = true;
+          return false;
+        }
+      };
+      window.addEventListener('test', null, options);
+      window.removeEventListener('test', null, options);
+    } catch (err) {
+      passiveSupported = false;
+    }
+    return passiveSupported;
+  }
+  
+  /**
+   * Debug info
+   */
+  getDebugInfo() {
+    return {
+      platform: this.platform,
+      platformVersion: this.platformVersion,
+      features: this.features,
+      metrics: this.metrics,
+      userAgent: navigator.userAgent,
+      vendor: navigator.vendor,
+      language: navigator.language
+    };
+  }
 }
 
-/* Dark mode (mantém legibilidade; iOS será forçado ao claro abaixo) */
-html.dark-mode{
-  --bg-primary:#0f1520;
-  --surface:#121a28;
-  --text-primary:#e9eef9;
-  --text-secondary:#b8c3da;
-  --text-tertiary:#93a3c4;
-  --border-subtle:rgba(233,238,249,.10);
-  --border-default:rgba(233,238,249,.16);
-  --border-strong:rgba(233,238,249,.28);
-}
+// Inicialização automática
+const platform = new PlatformDetector();
 
-/* iOS: manter tema claro para evitar “fundo preto” inesperado */
-html.platform-ios.dark-mode{
-  --bg-primary:#f2f4f8;
-  --surface:#ffffff;
-  --text-primary:#1f2a3a;
-  --text-secondary:#5b6b83;
-  --text-tertiary:#7787a2;
-  --border-subtle:rgba(31,42,58,.10);
-  --border-default:rgba(31,42,58,.16);
-  --border-strong:rgba(31,42,58,.28);
+// Aplica otimizações
+platform.applyOptimizations();
+
+// Expõe globalmente
+window.platform = platform;
+
+// Export para módulos
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = PlatformDetector;
 }

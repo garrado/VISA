@@ -2,7 +2,7 @@
 
 <html lang="pt-BR">
 <head>
-<link rel="stylesheet" href="/VISA/css/design-tokens.css">
+<link rel="stylesheet" href="../css/design-tokens.css">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>LC nº 377/2018 – Código Sanitário de Anápolis (Consulta Interna)</title>
@@ -193,6 +193,30 @@ mark{ background: var(--mark); padding:0 .12em; border-radius:.2em; }
   text-justify: inter-word;
 }
 </style>
+
+  <style>
+    /* Botão Voltar - Estilo iOS/Android Nativo */
+    .btn--back::before {
+      content: "←";
+      margin-right: 6px;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    
+    /* iOS: setinha azul */
+    @supports (-webkit-touch-callout: none) {
+      .btn--back {
+        color: #007AFF !important;
+        font-weight: 400;
+      }
+      .btn--back::before {
+        content: "‹";
+        font-size: 28px;
+        font-weight: 300;
+        margin-right: 2px;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Topbar Padrão VISA -->
@@ -205,8 +229,7 @@ mark{ background: var(--mark); padding:0 .12em; border-radius:.2em; }
         <div class="brand__subtitle">Vigilância Sanitária</div>
       </div>
       <div class="actions">
-        <a class="btn btn--ghost" href="/VISA/index.html">
-          <span class="btn__icon">←</span>
+                <a class="btn btn--ghost btn--back" href="./index.html">
           Voltar
         </a>
       </div>
@@ -1352,7 +1375,7 @@ mark{ background: var(--mark); padding:0 .12em; border-radius:.2em; }
 </script>
 
   <!-- Platform Detector -->
-  <script src="/VISA/js/platform-detector.js"></script>
+  <script src="../js/platform-detector.js"></script>
 
 </body>
 </html>
