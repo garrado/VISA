@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<title>REGRAS OFICIAIS v3.3 — ESCALA DE PLANTÃO (Anápolis – VISA)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>REGRAS OFICIAIS v4.2 — ESCALA DE PLANTÃO (Anápolis – VISA)</title>
 <style>
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fffaf5; color: #4b2c00; margin: 0; padding: 40px; line-height: 1.6; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fffaf5; color: #4b2c00; margin: 0; padding: 20px; line-height: 1.6; }
   .container { max-width: 950px; margin: auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 5px solid #cc5200; }
   
   h1 { color: #b34700; text-align: center; margin-bottom: 10px; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; }
@@ -19,14 +20,15 @@
   
   .footer { text-align: center; font-size: 12px; color: #996633; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
   
-  /* Destaque para a regra nova */
-  .new-rule { background-color: #e6fffa; border-left: 4px solid #00b386; padding: 10px; color: #004d39; }
+  /* Destaque para as regras novas */
+  .new-rule { background-color: #e6fffa; border-left: 4px solid #00b386; padding: 10px; color: #004d39; margin-bottom: 15px; }
+  .update-tag { background-color: #fff0e6; border: 1px solid #ffccb3; color: #cc5200; padding: 2px 5px; border-radius: 4px; font-size: 0.8em; vertical-align: middle; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>🧾 Regras Oficiais — Versão 3.3</h1>
+  <h1>🧾 Regras Oficiais — Versão 4.2</h1>
   <p style="text-align:center; color:#666; font-size:14px;">Atualizado em: 22/12/2025 | Aplicação: Janeiro/2026</p>
 
   <h2>1. Definição de Turnos e Carga Horária</h2>
@@ -36,7 +38,7 @@
     <li><strong>Distribuição:</strong> Mínimo de 1 plantão por fiscal apto. Fiscais de 30h fazem preferencialmente 1. Fiscais de 40h cobrem as lacunas restantes.</li>
   </ul>
 
-  <h2 class="new-rule">2. Compatibilidade de Áreas (NOVA REGRA v3.3)</h2>
+  <h2>2. Compatibilidade de Áreas <span class="update-tag">v3.3</span></h2>
   <div class="new-rule">
     <p><strong>Diretriz:</strong> Não escalar dois fiscais da mesma área técnica no mesmo dia de plantão, salvo em caso de extrema necessidade ou falta de efetivo disponível.</p>
     <ul>
@@ -57,10 +59,7 @@
   <ul>
     <li><strong>Não escalar às Sextas-feiras:</strong>
       <ul>
-        <li>Maria Edwiges</li>
-        <li>Gleiciane</li>
-        <li>Simone</li>
-        <li>Lidiane</li>
+        <li>Maria Edwiges, Gleiciane, Simone, Lidiane.</li>
       </ul>
     </li>
     <li><strong>Não escalar às Segundas-feiras (Reunião Grupo Garantia):</strong>
@@ -83,7 +82,7 @@
 
   <h2>5. Férias e Licenças (Janeiro/2026)</h2>
   <ul>
-    <li><strong>Férias/Licenças Totais ou Parciais:</strong>
+    <li><strong>Férias Totais ou Parciais:</strong>
       <ul>
         <li>Adriana (02-13), Adriane (05-19), Aline (05-22), Ana Paula (05-19), Arianne (12-31).</li>
         <li>Clóvis (05-19), Daniela (05-14), Edson (05-19), Fabíola (07-16), Geraldo (05-19), Gúbio (05-19).</li>
@@ -93,30 +92,28 @@
         <li>Sílvia (05-24), Simone (Licença até 16), Viviane Manoel (até 04), Wanessa Brito (até 12).</li>
       </ul>
     </li>
-    <li><strong>Atestados/Outros:</strong>
-      <ul>
-        <li>Angela (Atestado 29-31).</li>
-        <li>Thiago (Função Administrativa o mês todo - Sem plantão).</li>
-      </ul>
-    </li>
+    <li><strong>Atestados:</strong> Angela (29-31).</li>
   </ul>
 
-  <h2>6. Exceções Específicas para Janeiro</h2>
-  <ul>
-    <li><strong>José Luiz:</strong> Definido com 0 plantões excepcionalmente neste mês.</li>
-    <li><strong>Feriados/Pontos Facultativos:</strong>
-      <ul>
-        <li>01/Jan (Confraternização Universal) - Sem Plantão.</li>
-        <li>02/Jan (Ponto Facultativo) - Sem Plantão.</li>
-      </ul>
-    </li>
-  </ul>
+  <h2>6. Exceções e Ajustes Específicos <span class="update-tag">v4.2</span></h2>
+  <div class="new-rule">
+    <ul>
+      <li><strong>Thiago:</strong> Indisponibilidade administrativa revogada. Está apto para a escala.</li>
+      <li><strong>José Luiz:</strong> Definido com 0 plantões excepcionalmente neste mês.</li>
+      <li><strong>Feriados/Pontos Facultativos:</strong>
+        <ul>
+          <li>01/Jan (Confraternização Universal) - Sem Plantão.</li>
+          <li>02/Jan (Ponto Facultativo) - Sem Plantão.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 
   <h2>7. Layout e Formatação</h2>
   <ul>
     <li>Manter padrão visual do APP (Design Tokens).</li>
-    <li>Totalização em ordem alfabética, ignorando acentuação (Ex: "Ângela" junto com "A").</li>
-    <li>Exibir "Matutino" e "Vespertino" na totalização de forma abreviada para melhor leitura.</li>
+    <li>Totalização em ordem alfabética.</li>
+    <li>Tabela responsiva para visualização mobile.</li>
   </ul>
 
   <div class="footer">
