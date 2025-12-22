@@ -1,194 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="stylesheet" href="./css/design-tokens.css">
-  <meta charset="UTF-8" />
-  <title>Relatório de Tarefas – Plantão Fiscal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-
-  <!-- CSS WebCVS somente para tela (não afeta impressão/PDF) -->
-  <link rel="stylesheet" href="./css/regulados.css" media="screen">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Plantão Fiscal</title>
   
-
+  <link rel="stylesheet" href="./css/design-tokens.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  
   <style>
-    /* Botão Voltar - iOS e Android Nativos */
-    .topbar .btn {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text, #1a202c) !important;
-      padding: 6px 12px !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      background: #f5f7fa;
     }
     
-    .topbar .btn::before {
-      content: "←";
-      margin-right: 4px;
-      font-size: 20px;
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #ddd;
+      padding: 16px 20px;
+      margin: -20px -20px 20px -20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     
-    /* iOS: Setinha fina azul */
-    @supports (-webkit-touch-callout: none) {
-      .topbar .btn {
-        color: #007AFF !important;
-        font-weight: 400 !important;
-      }
-      .topbar .btn::before {
-        content: "‹";
-        font-size: 32px;
-        font-weight: 300;
-        margin-right: 0px;
-        vertical-align: middle;
-      }
+    .topbar a {
+      text-decoration: none;
+      color: #007AFF;
+      font-size: 17px;
     }
     
-    /* Ocultar topbar no desktop */
     @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
+      .topbar {
+        display: none;
       }
+    }
+    
+    .header-institucional {
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #1a202c;
+      margin: 20px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #2d3748;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    
+    button {
+      background: #2c5aa0;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    
+    button:hover {
+      background: #1e3f70;
+    }
+    
+    @media print {
+      body { background: white; }
+      .topbar, button { display: none; }
     }
   </style>
 </head>
-
 <body>
-  
-  
-  <!-- Topbar - Apenas Mobile -->
-  <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__title">VISA Anápolis</div>
-        <div class="brand__subtitle">Vigilância Sanitária</div>
-      </div>
-      <div class="actions">
-                <a class="btn btn--ghost btn--back" href="./index.html">
-          Voltar
-        </a>
-      </div>
-    </div>
-  </header>
 
-  <style>
-    /* Topbar visível APENAS em mobile */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
-    }
-  </style>
-
-
-
-  
-
-  <div class="container">
-
-    <div class="header-institucional">
-      PREFEITURA DE ANÁPOLIS<br>
-      SECRETARIA MUNICIPAL DE SAÚDE<br>
-      DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
-      VIGILÂNCIA SANITÁRIA
-    </div>
-
-    <h1>RELATÓRIO DE TAREFAS – PLANTÃO FISCAL</h1>
-
-    <h2>1. IDENTIFICAÇÃO DO SERVIDOR</h2>
-    <table>
-      <tr>
-        <td class="label-cell">Data do Plantão:</td>
-        <td><input id="dataPlantao" type="text" placeholder="__/__/____"></td>
-      </tr>
-      <tr>
-        <td class="label-cell">Nome do Fiscal:</td>
-        <td><input id="nomeFiscal" type="text"></td>
-      </tr>
-      <tr>
-        <td class="label-cell">Matrícula:</td>
-        <td><input id="matricula" type="text"></td>
-      </tr>
-    </table>
-
-    <h2>2. ATIVIDADES REALIZADAS</h2>
-    <table>
-      <tr>
-        <th>Selecionar</th>
-        <th>Atividade</th>
-        <th>Quantidade</th>
-      </tr>
-      <tr>
-        <td class="checkbox-center"><input type="checkbox"></td>
-        <td>Orientação verbal</td>
-        <td><input class="qtd-input" type="text"></td>
-      </tr>
-      <tr>
-        <td class="checkbox-center"><input type="checkbox"></td>
-        <td>Orientação via WhatsApp</td>
-        <td><input class="qtd-input" type="text"></td>
-      </tr>
-      <tr>
-        <td class="checkbox-center"><input type="checkbox"></td>
-        <td>Prorrogação</td>
-        <td><input class="qtd-input" type="text"></td>
-      </tr>
-      <tr>
-        <td class="checkbox-center"><input type="checkbox"></td>
-        <td>Recebimento de denúncias</td>
-        <td><input class="qtd-input" type="text"></td>
-      </tr>
-      <tr>
-        <td class="checkbox-center"><input type="checkbox"></td>
-        <td>Outros</td>
-        <td><input class="qtd-input" type="text"></td>
-      </tr>
-    </table>
-
-    <h2>3. DESCRIÇÃO RESUMIDA</h2>
-    <table>
-      <tr>
-        <td><textarea id="descricao"></textarea></td>
-      </tr>
-    </table>
-
-    <h2>4. ASSINATURA</h2>
-    <p class="signature-line">
-      <span>Assinatura do Fiscal</span>
-    </p>
-
-    <p class="small-note">
-      Este relatório deve ser anexado ao processo no SEI e assinado eletronicamente quando aplicável.
-    </p>
-
+  <div class="topbar">
+    <a href="./index.html">← Voltar</a>
   </div>
 
-  <button class="fab-print no-print" type="button" id="btnSalvarPdf">
-    🖨️ Salvar em PDF
-  </button>
+  <div class="header-institucional">
+    PREFEITURA DE ANÁPOLIS<br>
+    SECRETARIA MUNICIPAL DE SAÚDE<br>
+    DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
+    VIGILÂNCIA SANITÁRIA
+  </div>
 
-  <script>
-    // Força os valores digitados a aparecerem na impressão/PDF
-    function syncFieldsForPrint(){
-      document.querySelectorAll('input[type="text"]').forEach(inp=>{
-        inp.setAttribute('value', inp.value || '');
-      });
-      document.querySelectorAll('textarea').forEach(tx=>{
-        tx.textContent = tx.value || '';
-      });
-    }
+  <h1>Relatório de Plantão Fiscal</h1>
 
-    window.addEventListener('beforeprint', syncFieldsForPrint);
+  <form>
+    <div class="form-group">
+      <label>Nome do Fiscal:</label>
+      <input type="text" placeholder="Digite seu nome completo">
+    </div>
 
-    // iOS/Safari: garante sincronização antes do print
-    document.getElementById('btnSalvarPdf').addEventListener('click', function(){
-      syncFieldsForPrint();
-      setTimeout(function(){ window.print(); }, 50);
-    });
-  </script>
+    <div class="form-group">
+      <label>Data do Plantão:</label>
+      <input type="date">
+    </div>
 
+    <div class="form-group">
+      <label>Período:</label>
+      <select>
+        <option>Selecione</option>
+        <option>Manhã (8h-12h)</option>
+        <option>Tarde (12h-18h)</option>
+        <option>Integral (8h-18h)</option>
+      </select>
+    </div>
 
-  <!-- Platform Detector -->
+    <div class="form-group">
+      <label>Atividades Realizadas:</label>
+      <textarea placeholder="Descreva as atividades realizadas durante o plantão"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Observações:</label>
+      <textarea placeholder="Observações adicionais (opcional)"></textarea>
+    </div>
+
+    <button type="button" onclick="window.print()">🖨️ Imprimir Relatório</button>
+  </form>
+
   <script src="./js/platform-detector.js"></script>
 </body>
 </html>
-

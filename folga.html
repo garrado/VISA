@@ -1,383 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Escala de Folgas — Fim de Ano 2025</title>
-    
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escala de Folgas - Dezembro 2025</title>
+  
+  <link rel="stylesheet" href="./css/design-tokens.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  
   <style>
-    /* Botão Voltar - iOS e Android Nativos */
-    .topbar .btn {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text, #1a202c) !important;
-      padding: 6px 12px !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #f5f7fa;
     }
     
-    .topbar .btn::before {
-      content: "←";
-      margin-right: 4px;
-      font-size: 20px;
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #ddd;
+      padding: 16px 20px;
+      margin: -20px -20px 20px -20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     
-    /* iOS: Setinha fina azul */
-    @supports (-webkit-touch-callout: none) {
-      .topbar .btn {
-        color: #007AFF !important;
-        font-weight: 400 !important;
-      }
-      .topbar .btn::before {
-        content: "‹";
-        font-size: 32px;
-        font-weight: 300;
-        margin-right: 0px;
-        vertical-align: middle;
-      }
+    .topbar a {
+      text-decoration: none;
+      color: #007AFF;
+      font-size: 17px;
     }
     
-    /* Ocultar topbar no desktop */
     @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
+      .topbar {
+        display: none;
       }
+    }
+    
+    h1 {
+      text-align: center;
+      color: #1a202c;
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      text-align: center;
+      color: #4a5568;
+      font-size: 18px;
+      font-weight: normal;
+      margin-bottom: 30px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+    
+    th {
+      background: #2c5aa0;
+      color: white;
+      font-weight: 600;
+    }
+    
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    
+    .folga {
+      background: #fff3cd !important;
+      font-weight: bold;
+    }
+    
+    .ferias {
+      background: #d1ecf1 !important;
+      font-weight: bold;
+    }
+    
+    @media print {
+      body { background: white; }
+      .topbar { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header com Topbar -->
-  
-  <!-- Topbar - Apenas Mobile -->
-  <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__title">VISA Anápolis</div>
-        <div class="brand__subtitle">Vigilância Sanitária</div>
-      </div>
-      <div class="actions">
-                <a class="btn btn--ghost btn--back" href="./index.html">
-          Voltar
-        </a>
-      </div>
-    </div>
-  </header>
+  <div class="topbar">
+    <a href="./index.html">← Voltar</a>
+  </div>
 
-  <style>
-    /* Topbar visível APENAS em mobile */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
-    }
-  </style>
+  <h1>Escala de Folgas</h1>
+  <h2>Dezembro 2025 - Vigilância Sanitária Anápolis</h2>
 
+  <table>
+    <thead>
+      <tr>
+        <th>Fiscal</th>
+        <th>Data</th>
+        <th>Tipo</th>
+        <th>Observações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="4" style="text-align: center; padding: 40px; color: #999;">
+          Carregue os dados da escala de folgas aqui
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <div class="container">
-        
-        <div class="alert-box">
-            <div class="alert-icon">⚠️</div>
-            <div class="alert-content">
-                <h3>ATENÇÃO</h3>
-                <p><strong>Confome Art 42 Portaria 246/2023(Regimento Interno) e Art. 15 LC 484 de 17 de dezembro de 2024, os fiscais que NÃO estiverem de folga deverão permanecer ALCANÇÁVEIS durante todo o horário de expediente.</strong> Mantenha o telefone funcional e atenda prontamente às convocações da Gerência.</p>
-            </div>
-        </div>
-        
-        <div class="grid">
-            <!-- SEMANA DO NATAL -->
-            <div class="card">
-                <div class="card-header natal">
-                    <span class="icon">🎄</span>
-                    <h2>Folga Semana do Natal</h2>
-                    <span class="dates">22 e 23/12</span>
-                </div>
-                <div class="card-body">
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🥗</span> Alimentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Adriana</span>
-                            <span class="fiscal-tag">Ângela</span>
-                            <span class="fiscal-tag">Geraldo</span>
-                            <span class="fiscal-tag">Rúbia</span>
-                            <span class="fiscal-tag">Luciene</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏥</span> Medicamentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Daniela</span>
-                            <span class="fiscal-tag">Eduardo</span>
-                            <span class="fiscal-tag">Márcio</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏥</span> Serviços de Saúde</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Arianne</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🧼</span> Saneantes</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Patrícia</span>
-                            <span class="fiscal-tag">Adriane</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🌱</span> Ambiental</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Pedro</span>
-                            <span class="fiscal-tag">Vanessa Santana</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏭</span> ILP</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Rodrigo</span>
-                            <span class="fiscal-tag">Viviane Miyada</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🦷</span> Odontologia</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Sílvia</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🧪</span> Indústria de Alimentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Lidiane</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">📦</span> Produtos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Gúbio</span>
-                        </div>
-                    </div>
-                    
-                    <div class="excluded-section">
-                        <div class="excluded-title">❌ Excluídos desta semana:</div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">📋 Em plantão (22 ou 23/12):</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag plantao">Marina (22)</span>
-                                <span class="fiscal-tag plantao">Wanessa Brito (22)</span>
-                                <span class="fiscal-tag plantao">João Batista (23)</span>
-                                <span class="fiscal-tag plantao">Lívia Brito (23)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">🏖️ Em férias:</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag ferias">Acádia (15-29)</span>
-                                <span class="fiscal-tag ferias">Juliana Kênia (16-30)</span>
-                                <span class="fiscal-tag ferias">Juliana Viturino (11-23)</span>
-                                <span class="fiscal-tag ferias">Júlio (09-23)</span>
-                                <span class="fiscal-tag ferias">Luciana Santana (09-23)</span>
-                                <span class="fiscal-tag ferias">Tathiane (15-24)</span>
-                                <span class="fiscal-tag ferias">Viviane Manoel (16/12-04/01)</span>
-                                <span class="fiscal-tag ferias">Simone (Licença Prêmio)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">📝 Licença/Afastamento:</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag licenca">José Luiz (Atestado Médico)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- SEMANA DO ANO NOVO -->
-            <div class="card">
-                <div class="card-header ano-novo">
-                    <span class="icon">🎆</span>
-                    <h2>Folga Semana do Ano Novo</h2>
-                    <span class="dates">29 e 30/12</span>
-                </div>
-                <div class="card-body">
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🥗</span> Alimentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">João Batista</span>
-                            <span class="fiscal-tag">Tathiane</span>
-                            <span class="fiscal-tag">Acádia</span>
-                            <span class="fiscal-tag">Thiago</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏥</span> Medicamentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Edson</span>
-                            <span class="fiscal-tag">Gleiciane</span>
-                            <span class="fiscal-tag">Juliana Viturino</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏥</span> Serviços de Saúde</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Marina</span>
-                            <span class="fiscal-tag">Aline</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🧼</span> Saneantes</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Kamilla</span>
-                            <span class="fiscal-tag">Luciana Santana</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🌱</span> Ambiental</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Lívia Brito</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏭</span> ILP</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Clóvis</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🦷</span> Odontologia</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Júlio</span>
-                            <span class="fiscal-tag">Maria Edwiges</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🏫</span> Educação</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Luciana Consolação</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">🧪</span> Indústria de Alimentos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Fabíola</span>
-                        </div>
-                    </div>
-                    
-                    <div class="area-group">
-                        <div class="area-title"><span class="emoji">📦</span> Produtos</div>
-                        <div class="fiscal-list">
-                            <span class="fiscal-tag">Ana Paula</span>
-                        </div>
-                    </div>
-                    
-                    <div class="excluded-section">
-                        <div class="excluded-title">❌ Excluídos desta semana:</div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">📋 Em plantão (29 ou 30/12):</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag plantao">Ângela (29)</span>
-                                <span class="fiscal-tag plantao">Eduardo (29)</span>
-                                <span class="fiscal-tag plantao">Gúbio (30)</span>
-                                <span class="fiscal-tag plantao">Viviane Miyada (30)</span>
-                                <span class="fiscal-tag plantao">Pedro (31)</span>
-                                <span class="fiscal-tag plantao">Patrícia (31)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">🏖️ Em férias:</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag ferias">Juliana Kênia (16-30)</span>
-                                <span class="fiscal-tag ferias">Viviane Manoel (16/12-04/01)</span>
-                                <span class="fiscal-tag ferias">Wanessa Brito (29/12-12/01)</span>
-                                <span class="fiscal-tag ferias">Simone (Licença Prêmio)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="excluded-group">
-                            <div class="excluded-group-title">📝 Licença/Afastamento:</div>
-                            <div class="fiscal-list">
-                                <span class="fiscal-tag licenca">José Luiz (Atestado Médico)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="summary-card">
-            <h3>📊 Resumo Geral</h3>
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="number">41</div>
-                    <div class="label">Total de Fiscais</div>
-                </div>
-                <div class="summary-item">
-                    <div class="number">18</div>
-                    <div class="label">Folga Natal (22-23/12)</div>
-                </div>
-                <div class="summary-item">
-                    <div class="number">18</div>
-                    <div class="label">Folga Ano Novo (29-30/12)</div>
-                </div>
-                <div class="summary-item">
-                    <div class="number">5</div>
-                    <div class="label">Férias/Licença/Atestado</div>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <h3>📋 Regras Aplicadas</h3>
-            <ul class="rules-list">
-                <li>
-                    <span class="rule-number">1</span>
-                    <span>Fiscais em plantão não podem folgar na semana do respectivo plantão.</span>
-                </li>
-                <li>
-                    <span class="rule-number">2</span>
-                    <span>Pelo menos um fiscal de cada área deve permanecer em cada semana.</span>
-                </li>
-                <li>
-                    <span class="rule-number">3</span>
-                    <span>Os fiscais não atingidos pelas regras anteriores foram distribuídos de forma equilibrada entre os dois grupos.</span>
-                </li>
-            </ul>
-            
-            <div class="expediente-info">
-                <h4>📅 Dias sem expediente:</h4>
-                <p><strong>24/12, 26/12, 31/12 e 02/01 (Ponto Facultativo) </strong> • <strong>25/12 (Natal)</strong>  • <strong>01/01/2026 (Confraternização Universal)</strong></p>
-            </div>
-            
-            <div class="version-info">
-                <p>Gerência de Vigilância Sanitária — Anápolis/GO</p>
-                <p>Documento gerado em 19 de dezembro de 2025</p>
-            </div>
-        </footer>
-    </div>
+  <p style="text-align: center; color: #666; margin-top: 30px;">
+    <small>Documento gerado pela Gerência de Vigilância Sanitária - Anápolis/GO</small>
+  </p>
 
-
-  <!-- Platform Detector -->
   <script src="./js/platform-detector.js"></script>
 </body>
 </html>

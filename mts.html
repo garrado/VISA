@@ -2,119 +2,85 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>MTS – Mandado de Tarefas Sanitárias</title>
-
-  <!-- Sistema de Design - VISA Anápolis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTS - Mandado de Tarefas Sanitárias</title>
+  
   <link rel="stylesheet" href="./css/design-tokens.css">
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/components.css">
   <link rel="stylesheet" href="./css/layouts.css">
-
   
-
   <style>
-    /* Botão Voltar - iOS e Android Nativos */
-    .topbar .btn {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text, #1a202c) !important;
-      padding: 6px 12px !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
+    body {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     
-    .topbar .btn::before {
-      content: "←";
-      margin-right: 4px;
+    .topbar {
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      padding: 16px 20px;
+      margin: -20px -20px 20px -20px;
+      z-index: 100;
+    }
+    
+    .topbar h1 {
+      margin: 0;
       font-size: 20px;
     }
     
-    /* iOS: Setinha fina azul */
-    @supports (-webkit-touch-callout: none) {
-      .topbar .btn {
-        color: #007AFF !important;
-        font-weight: 400 !important;
-      }
-      .topbar .btn::before {
-        content: "‹";
-        font-size: 32px;
-        font-weight: 300;
-        margin-right: 0px;
-        vertical-align: middle;
+    .topbar a {
+      text-decoration: none;
+      color: #007AFF;
+    }
+    
+    @media (min-width: 769px) {
+      .topbar {
+        display: none;
       }
     }
     
-    /* Ocultar topbar no desktop */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
+    .pdf-container {
+      width: 100%;
+      height: 80vh;
+      border: 1px solid #ddd;
+      margin: 20px 0;
+    }
+    
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Header -->
-  
-  <!-- Topbar - Apenas Mobile -->
-  <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__title">VISA Anápolis</div>
-        <div class="brand__subtitle">Vigilância Sanitária</div>
-      </div>
-      <div class="actions">
-                <a class="btn btn--ghost btn--back" href="./index.html">
-          Voltar
-        </a>
-      </div>
-    </div>
-  </header>
+  <div class="topbar">
+    <a href="./index.html">← Voltar</a>
+    <h1>MTS - Mandado de Tarefas Sanitárias</h1>
+  </div>
 
-  <style>
-    /* Topbar visível APENAS em mobile */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
-    }
-  </style>
+  <h1>Mandado de Tarefas Sanitárias (MTS)</h1>
+  <p>Documento oficial para fiscalização sanitária.</p>
 
+  <div class="pdf-container">
+    <iframe 
+      src="mts/MTS_GERAL_TODOS_FISCAIS.pdf"
+      title="MTS PDF">
+    </iframe>
+  </div>
 
-  <!-- Conteúdo -->
-  <main class="document-viewer">
+  <p>
+    <button onclick="window.open('mts/MTS_GERAL_TODOS_FISCAIS.pdf','_blank')" 
+            style="padding: 10px 20px; background: #007AFF; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      📄 Abrir PDF em Nova Guia
+    </button>
+  </p>
 
-    <div class="header-institucional">
-      PREFEITURA DE ANÁPOLIS<br>
-      SECRETARIA MUNICIPAL DE SAÚDE<br>
-      DIRETORIA DE VIGILÂNCIA EM SAÚDE<br>
-      VIGILÂNCIA SANITÁRIA
-    </div>
-
-    <h1 class="document-title">Mandado de Tarefas Sanitárias (MTS)</h1>
-
-    <div class="pdf-viewer">
-      <iframe 
-        src="mts/MTS_GERAL_TODOS_FISCAIS.pdf"
-        title="Mandado de Tarefas Sanitárias - Visualização em PDF"
-        loading="lazy">
-      </iframe>
-    </div>
-
-  </main>
-
-  <!-- Botão Flutuante -->
-  <button 
-    class="fab" 
-    onclick="window.open('mts/MTS_GERAL_TODOS_FISCAIS.pdf','_blank')"
-    aria-label="Abrir PDF em nova aba">
-    📄 Abrir PDF
-  </button>
-
-  <!-- Platform Detector -->
   <script src="./js/platform-detector.js"></script>
-
 </body>
 </html>
