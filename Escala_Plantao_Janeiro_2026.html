@@ -53,6 +53,30 @@
       color: #c53030;
       font-weight: bold;
     }
+
+    /* --- CORREÇÃO DE RESPONSIVIDADE (MOBILE) --- */
+    /* Faz a tabela rolar horizontalmente DENTRO do card branco */
+    .tableWrap {
+      display: block;
+      width: 100%;
+      overflow-x: auto; /* Ativa rolagem horizontal */
+      -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
+      margin-bottom: 16px;
+    }
+
+    /* Garante que a tabela tenha uma largura mínima aceitável */
+    /* Isso impede que o texto fique espremido e força a rolagem aparecer */
+    .tableWrap table {
+      width: 100%;
+      min-width: 600px; /* Ajuste este valor se precisar de mais espaço */
+      border-collapse: collapse;
+    }
+
+    /* Garante que o Card pai não estoure a tela */
+    .card {
+      max-width: 100%;
+      overflow: hidden; /* Mantém o conteúdo contido no box-shadow */
+    }
   </style>
 </head>
 
@@ -75,7 +99,7 @@
   <main class="wrap">
     <section class="card panel">
       <h1 class="card__title">ESCALA DE PLANTÃO — JANEIRO/2026</h1>
-      <div class="small muted">Gerada em 22/12/2025 às 14:40 — Regras 3.3 </div>
+      <div class="small muted">Gerada em 22/12/2025 às 14:40 — Regras 3.3 (Responsivo Ajustado)</div>
     </section>
 
     <section class="card panel">
@@ -112,7 +136,7 @@
             <tr><td>20 (Ter)</td><td>Kamilla</td><td>Edson</td><td>Gúbio</td></tr>
             <tr><td>21 (Qua)</td><td>—</td><td>Geraldo</td><td>Clóvis, Lidiane</td></tr>
             <tr><td>22 (Qui)</td><td>—</td><td>Rodrigo</td><td>Ana Paula, Simone</td></tr>
-            <tr><td>23 (Sex)</td><td>—</td><td>Tathiane</td><td>Angela,Acádia </td></tr>
+            <tr><td>23 (Sex)</td><td>—</td><td>Tathiane</td><td>Angela, Acádia</td></tr>
             <tr class="weekend"><td>24 (Sáb)</td><td>—</td><td>—</td><td>—</td></tr>
             <tr class="weekend"><td>25 (Dom)</td><td>—</td><td>—</td><td>—</td></tr>
             <tr><td>26 (Seg)</td><td>—</td><td>—</td><td>Aline, Luciana Santana</td></tr>
