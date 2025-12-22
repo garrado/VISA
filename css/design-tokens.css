@@ -1,443 +1,170 @@
 /**
- * PLATFORM DETECTOR - VISA ANÁPOLIS
- * Detecta plataforma e aplica otimizações específicas
- * Versão: 2.0
+ * DESIGN TOKENS - VISA ANÁPOLIS
+ * Sistema de variáveis CSS adaptativas para iOS, Android e Web
  */
 
-class PlatformDetector {
-  constructor() {
-    this.platform = null;
-    this.features = {};
-    this.metrics = {};
+:root {
+  /* === CORES PRINCIPAIS === */
+  --primary: #2c5aa0;
+  --primary-dark: #1e3f70;
+  --primary-light: #4a7bc8;
+  
+  --secondary: #5c6bc0;
+  --accent: #00bcd4;
+  
+  /* === CORES DE SUPERFÍCIE === */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --surface: #ffffff;
+  --surface-variant: #f8f9fa;
+  
+  /* === CORES DE TEXTO === */
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-tertiary: #718096;
+  --text-disabled: #a0aec0;
+  
+  /* === BORDAS === */
+  --border-primary: rgba(0, 0, 0, 0.12);
+  --border-secondary: rgba(0, 0, 0, 0.08);
+  --border-focus: #2c5aa0;
+  
+  /* === INPUTS E FORMULÁRIOS === */
+  --input-bg: #ffffff;
+  --input-border: rgba(0, 0, 0, 0.23);
+  --input-focus: #2c5aa0;
+  --input-text: #1a202c;
+  --input-placeholder: #a0aec0;
+  
+  /* === ESTADOS === */
+  --success: #38a169;
+  --warning: #ed8936;
+  --error: #e53e3e;
+  --info: #3182ce;
+  
+  /* === SOMBRAS === */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* === ESPAÇAMENTOS === */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  
+  /* === RAIO DE BORDA === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  /* === TRANSIÇÕES === */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* === TIPOGRAFIA === */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+               'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+  
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  
+  /* === Z-INDEX === */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* === MODO ESCURO === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --surface: #2d3748;
+    --surface-variant: #374151;
     
-    this.init();
-  }
-  
-  /**
-   * Inicializa o detector
-   */
-  init() {
-    this.detectPlatform();
-    this.detectFeatures();
-    this.detectMetrics();
-    this.applyPlatformClass();
-    this.setupListeners();
+    --text-primary: #f7fafc;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #cbd5e0;
+    --text-disabled: #718096;
     
-    console.log('🔍 Platform Detector iniciado:', {
-      platform: this.platform,
-      features: this.features,
-      metrics: this.metrics
-    });
-  }
-  
-  /**
-   * Detecta a plataforma atual
-   */
-  detectPlatform() {
-    const ua = navigator.userAgent;
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                         window.navigator.standalone ||
-                         document.referrer.includes('android-app://');
+    --border-primary: rgba(255, 255, 255, 0.12);
+    --border-secondary: rgba(255, 255, 255, 0.08);
     
-    // iOS
-    if (/iPhone|iPad|iPod/.test(ua)) {
-      this.platform = 'ios';
-      this.platformVersion = this.getIOSVersion();
-      return;
-    }
-    
-    // Android
-    if (/Android/.test(ua)) {
-      this.platform = 'android';
-      this.platformVersion = this.getAndroidVersion();
-      return;
-    }
-    
-    // Desktop (hover capability)
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      this.platform = 'desktop';
-      return;
-    }
-    
-    // Fallback: web mobile
-    this.platform = 'mobile-web';
-  }
-  
-  /**
-   * Detecta recursos disponíveis
-   */
-  detectFeatures() {
-    this.features = {
-      // Suporte a blur
-      backdropFilter: this.supportsBackdropFilter(),
-      
-      // Suporte a gestos
-      touchEvents: 'ontouchstart' in window,
-      pointerEvents: 'PointerEvent' in window,
-      
-      // Suporte a vibração
-      vibration: 'vibrate' in navigator,
-      
-      // Suporte a notificações
-      notifications: 'Notification' in window,
-      pushNotifications: 'PushManager' in window,
-      
-      // Suporte a service worker
-      serviceWorker: 'serviceWorker' in navigator,
-      
-      // Suporte a clipboard
-      clipboard: 'clipboard' in navigator,
-      
-      // Suporte a share API
-      share: 'share' in navigator,
-      
-      // Suporte a dark mode
-      darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
-      
-      // Suporte a reduced motion
-      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-      
-      // PWA instalado
-      installed: window.matchMedia('(display-mode: standalone)').matches,
-      
-      // Suporte a safe areas
-      safeAreas: this.supportsSafeAreas(),
-      
-      // Capacidades de conexão
-      connection: 'connection' in navigator ? {
-        effectiveType: navigator.connection?.effectiveType,
-        downlink: navigator.connection?.downlink,
-        saveData: navigator.connection?.saveData
-      } : null
-    };
-  }
-  
-  /**
-   * Detecta métricas do dispositivo
-   */
-  detectMetrics() {
-    this.metrics = {
-      // Dimensões da tela
-      screenWidth: window.innerWidth,
-      screenHeight: window.innerHeight,
-      devicePixelRatio: window.devicePixelRatio || 1,
-      
-      // Orientação
-      orientation: this.getOrientation(),
-      
-      // Tipo de dispositivo
-      deviceType: this.getDeviceType(),
-      
-      // Safe areas (iOS notch, Android gestures)
-      safeAreaTop: this.getSafeArea('top'),
-      safeAreaBottom: this.getSafeArea('bottom'),
-      safeAreaLeft: this.getSafeArea('left'),
-      safeAreaRight: this.getSafeArea('right'),
-      
-      // Performance
-      memory: performance.memory?.jsHeapSizeLimit || null,
-      cores: navigator.hardwareConcurrency || null
-    };
-  }
-  
-  /**
-   * Aplica classe da plataforma no HTML
-   */
-  applyPlatformClass() {
-    const html = document.documentElement;
-    
-    // Remove classes anteriores
-    html.classList.remove('platform-ios', 'platform-android', 'platform-desktop', 'platform-mobile-web');
-    
-    // Adiciona classe da plataforma
-    html.classList.add(`platform-${this.platform}`);
-    
-    // Adiciona classes de recursos
-    if (this.features.backdropFilter) {
-      html.classList.add('has-backdrop-filter');
-    }
-    
-    if (this.features.touchEvents) {
-      html.classList.add('has-touch');
-    }
-    
-    if (this.features.vibration) {
-      html.classList.add('has-vibration');
-    }
-    
-    if (this.features.darkMode) {
-      html.classList.add('dark-mode');
-    }
-    
-    if (this.features.reducedMotion) {
-      html.classList.add('reduce-motion');
-    }
-    
-    if (this.features.installed) {
-      html.classList.add('pwa-installed');
-    }
-    
-    // Adiciona atributos data para CSS
-    html.dataset.platform = this.platform;
-    html.dataset.deviceType = this.metrics.deviceType;
-    html.dataset.orientation = this.metrics.orientation;
-  }
-  
-  /**
-   * Configura listeners para mudanças
-   */
-  setupListeners() {
-    // Dark mode
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      this.features.darkMode = e.matches;
-      document.documentElement.classList.toggle('dark-mode', e.matches);
-      this.dispatchEvent('darkModeChange', { darkMode: e.matches });
-    });
-    
-    // Orientação
-    window.addEventListener('orientationchange', () => {
-      this.metrics.orientation = this.getOrientation();
-      document.documentElement.dataset.orientation = this.metrics.orientation;
-      this.dispatchEvent('orientationChange', { orientation: this.metrics.orientation });
-    });
-    
-    // Resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        this.metrics.screenWidth = window.innerWidth;
-        this.metrics.screenHeight = window.innerHeight;
-        this.dispatchEvent('metricsChange', { metrics: this.metrics });
-      }, 150);
-    });
-    
-    // Reduced motion
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
-      this.features.reducedMotion = e.matches;
-      document.documentElement.classList.toggle('reduce-motion', e.matches);
-      this.dispatchEvent('reducedMotionChange', { reducedMotion: e.matches });
-    });
-    
-    // Connection change
-    if (this.features.connection) {
-      navigator.connection.addEventListener('change', () => {
-        this.features.connection = {
-          effectiveType: navigator.connection.effectiveType,
-          downlink: navigator.connection.downlink,
-          saveData: navigator.connection.saveData
-        };
-        this.dispatchEvent('connectionChange', { connection: this.features.connection });
-      });
-    }
-  }
-  
-  /**
-   * Helpers de detecção
-   */
-  
-  supportsBackdropFilter() {
-    return CSS.supports('backdrop-filter', 'blur(1px)') ||
-           CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
-  }
-  
-  supportsSafeAreas() {
-    return CSS.supports('padding-top: env(safe-area-inset-top)');
-  }
-  
-  getIOSVersion() {
-    const match = navigator.userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/);
-    if (match) {
-      return parseFloat(`${match[1]}.${match[2]}`);
-    }
-    return null;
-  }
-  
-  getAndroidVersion() {
-    const match = navigator.userAgent.match(/Android (\d+(\.\d+)?)/);
-    if (match) {
-      return parseFloat(match[1]);
-    }
-    return null;
-  }
-  
-  getOrientation() {
-    if (window.innerWidth > window.innerHeight) {
-      return 'landscape';
-    }
-    return 'portrait';
-  }
-  
-  getDeviceType() {
-    const width = window.innerWidth;
-    
-    if (width < 640) return 'phone';
-    if (width < 1024) return 'tablet';
-    return 'desktop';
-  }
-  
-  getSafeArea(side) {
-    const temp = document.createElement('div');
-    temp.style.cssText = `
-      position: fixed;
-      ${side}: 0;
-      ${side === 'top' || side === 'bottom' ? 'height' : 'width'}: env(safe-area-inset-${side}, 0px);
-    `;
-    document.body.appendChild(temp);
-    const value = parseInt(getComputedStyle(temp)[side === 'top' || side === 'bottom' ? 'height' : 'width']);
-    document.body.removeChild(temp);
-    return value || 0;
-  }
-  
-  /**
-   * APIs públicas
-   */
-  
-  isIOS() {
-    return this.platform === 'ios';
-  }
-  
-  isAndroid() {
-    return this.platform === 'android';
-  }
-  
-  isDesktop() {
-    return this.platform === 'desktop';
-  }
-  
-  isMobile() {
-    return this.platform === 'ios' || this.platform === 'android' || this.platform === 'mobile-web';
-  }
-  
-  isPWA() {
-    return this.features.installed;
-  }
-  
-  hasFeature(feature) {
-    return this.features[feature] === true;
-  }
-  
-  getMetric(metric) {
-    return this.metrics[metric];
-  }
-  
-  /**
-   * Haptic feedback (iOS/Android)
-   */
-  vibrate(pattern = 10) {
-    if (this.features.vibration) {
-      navigator.vibrate(pattern);
-    }
-  }
-  
-  /**
-   * Feedback tátil específico por plataforma
-   */
-  hapticFeedback(type = 'light') {
-    const patterns = {
-      light: 10,
-      medium: 20,
-      heavy: 30,
-      success: [10, 50, 10],
-      warning: [10, 100, 10],
-      error: [30, 100, 30, 100, 30]
-    };
-    
-    this.vibrate(patterns[type] || patterns.light);
-  }
-  
-  /**
-   * Sistema de eventos customizados
-   */
-  dispatchEvent(eventName, detail = {}) {
-    const event = new CustomEvent(`platform:${eventName}`, {
-      detail: {
-        platform: this.platform,
-        ...detail
-      }
-    });
-    window.dispatchEvent(event);
-  }
-  
-  /**
-   * Otimizações por plataforma
-   */
-  applyOptimizations() {
-    // iOS: previne zoom em double-tap
-    if (this.isIOS()) {
-      document.addEventListener('touchstart', (e) => {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      let lastTouchEnd = 0;
-      document.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-          e.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, false);
-    }
-    
-    // Android: otimiza scroll
-    if (this.isAndroid()) {
-      document.body.style.overscrollBehavior = 'none';
-    }
-    
-    // Todos: otimiza passive listeners
-    const passiveSupported = this.testPassiveListener();
-    if (passiveSupported) {
-      ['touchstart', 'touchmove', 'wheel', 'mousewheel'].forEach(event => {
-        document.addEventListener(event, () => {}, { passive: true });
-      });
-    }
-  }
-  
-  testPassiveListener() {
-    let passiveSupported = false;
-    try {
-      const options = {
-        get passive() {
-          passiveSupported = true;
-          return false;
-        }
-      };
-      window.addEventListener('test', null, options);
-      window.removeEventListener('test', null, options);
-    } catch (err) {
-      passiveSupported = false;
-    }
-    return passiveSupported;
-  }
-  
-  /**
-   * Debug info
-   */
-  getDebugInfo() {
-    return {
-      platform: this.platform,
-      platformVersion: this.platformVersion,
-      features: this.features,
-      metrics: this.metrics,
-      userAgent: navigator.userAgent,
-      vendor: navigator.vendor,
-      language: navigator.language
-    };
+    --input-bg: #2d3748;
+    --input-border: rgba(255, 255, 255, 0.23);
+    --input-text: #f7fafc;
+    --input-placeholder: #718096;
   }
 }
 
-// Inicialização automática
-const platform = new PlatformDetector();
+/* === OTIMIZAÇÕES iOS === */
+@supports (-webkit-touch-callout: none) {
+  :root {
+    /* iOS usa San Francisco como fonte padrão */
+    --font-sans: -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* iOS prefere bordas mais arredondadas */
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    
+    /* iOS usa cores mais vibrantes */
+    --primary: #007AFF;
+    --success: #34C759;
+    --warning: #FF9500;
+    --error: #FF3B30;
+    --info: #5AC8FA;
+    
+    /* Inputs iOS */
+    --input-border: rgba(0, 0, 0, 0.15);
+    --input-focus: #007AFF;
+  }
+}
 
-// Aplica otimizações
-platform.applyOptimizations();
+/* === OTIMIZAÇÕES ANDROID === */
+@media (min-width: 0) and (max-width: 9999px) {
+  html.platform-android {
+    /* Android usa Roboto */
+    --font-sans: Roboto, 'Helvetica Neue', Arial, sans-serif;
+    
+    /* Material Design prefere bordas menos arredondadas */
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    
+    /* Cores Material Design */
+    --primary: #1976d2;
+    --success: #4caf50;
+    --warning: #ff9800;
+    --error: #f44336;
+    --info: #2196f3;
+  }
+}
 
-// Expõe globalmente
-window.platform = platform;
-
-// Export para módulos
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = PlatformDetector;
+/* === SAFE AREAS === */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
 }
