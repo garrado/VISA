@@ -15,13 +15,6 @@
     <!-- PapaParse para ler CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-    
-    <!-- Bibliotecas para Exportação -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
-
     <!-- Biblioteca para SHA-256 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
@@ -282,23 +275,23 @@
             }
         }
     
-        /* Botões de Exportação */
-        .export-buttons {
+        /* === BOTÕES DE EXPORTAÇÃO === */
+        .export-section {
             background: white;
             padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            display: none; /* Oculto até ter resultados */
+            display: none;
         }
 
-        .export-buttons h3 {
-            color: #495057;
+        .export-section h3 {
+            color: #333;
             font-size: 1em;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .export-row {
+        .export-buttons {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
@@ -308,25 +301,29 @@
             padding: 10px 20px;
             border: none;
             border-radius: 6px;
-            font-size: 0.95em;
+            font-size: 0.9em;
             font-weight: 600;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.2s;
         }
 
         .btn-export:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
-        .btn-pdf { background: #dc3545; color: white; }
-        .btn-excel { background: #28a745; color: white; }
-        .btn-word { background: #007bff; color: white; }
-        .btn-html { background: #fd7e14; color: white; }
+        .btn-pdf { background: #dc3545; }
+        .btn-excel { background: #28a745; }
+        .btn-word { background: #007bff; }
+        .btn-html { background: #fd7e14; }
 </style>
+    <!-- Bibliotecas de Exportação -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
+
 </head>
 <body>
     <!-- Modal de Autenticação -->
@@ -373,21 +370,14 @@
             </div>
 
             
-            <div class="export-buttons" id="exportButtons">
+            <!-- Botões de Exportação -->
+            <div class="export-section" id="exportSection">
                 <h3>📤 Exportar Resultados</h3>
-                <div class="export-row">
-                    <button class="btn-export btn-pdf" onclick="exportarPDF()">
-                        📄 PDF
-                    </button>
-                    <button class="btn-export btn-excel" onclick="exportarExcel()">
-                        📊 Excel
-                    </button>
-                    <button class="btn-export btn-word" onclick="exportarWord()">
-                        📝 Word
-                    </button>
-                    <button class="btn-export btn-html" onclick="exportarHTML()">
-                        🌐 HTML
-                    </button>
+                <div class="export-buttons">
+                    <button class="btn-export btn-pdf" onclick="exportarPDF()">📄 PDF</button>
+                    <button class="btn-export btn-excel" onclick="exportarExcel()">📊 Excel</button>
+                    <button class="btn-export btn-word" onclick="exportarWord()">📝 Word</button>
+                    <button class="btn-export btn-html" onclick="exportarHTML()">🌐 HTML</button>
                 </div>
             </div>
 
@@ -686,11 +676,7 @@
 
             // Inicializar DataTable
             $('#tabelaInspecoes').show();
-            // Mostrar botões de exportação quando houver resultados
-            if (dataArray.length > 0) {
-                document.getElementById('exportButtons').style.display = 'block';
-            }
-
+                    document.getElementById('exportSection').style.display = 'block';
             dataTable = $('#tabelaInspecoes').DataTable({
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
@@ -706,6 +692,7 @@
             return `${partes[2]}/${partes[1]}/${partes[0]}`;
         }
     
+
         // ========== FUNÇÕES DE EXPORTAÇÃO ==========
 
         function exportarPDF() {
@@ -713,23 +700,20 @@
             const doc = new jsPDF('landscape');
 
             const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
 
-            // Título
             doc.setFontSize(16);
             doc.text('Relatório de Produção Fiscal - VISAM Anápolis', 14, 15);
             doc.setFontSize(11);
             doc.text(`Fiscal: ${fiscal}`, 14, 22);
             doc.text(`Período: ${dataInicial} a ${dataFinal}`, 14, 28);
 
-            // Obter dados da tabela
             const table = $('#tabelaInspecoes').DataTable();
             const dados = table.rows({search: 'applied'}).data().toArray();
 
-            const dadosTabela = dados.map(row => [
-                row[0], row[1], row[2], row[3], row[4], row[5]
-            ]);
+            const dadosTabela = dados.map(row => [row[0], row[1], row[2], row[3], row[4], row[5]]);
 
             doc.autoTable({
                 head: [['Data', 'Tipo Doc', 'Nº Doc', 'Razão Social', 'CNAE', 'Complexidade']],
@@ -739,14 +723,14 @@
                 headStyles: { fillColor: [102, 126, 234] }
             });
 
-            const hoje = new Date().toISOString().split('T')[0];
             doc.save(`RPF-${hoje}.pdf`);
         }
 
         function exportarExcel() {
             const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
 
             const table = $('#tabelaInspecoes').DataTable();
             const dados = table.rows({search: 'applied'}).data().toArray();
@@ -767,14 +751,14 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Inspeções');
 
-            const hoje = new Date().toISOString().split('T')[0];
             XLSX.writeFile(wb, `RPF-${hoje}.xlsx`);
         }
 
         function exportarWord() {
             const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
 
             const table = $('#tabelaInspecoes').DataTable();
             const dados = table.rows({search: 'applied'}).data().toArray();
@@ -825,7 +809,6 @@
             });
 
             docx.Packer.toBlob(doc).then(blob => {
-                const hoje = new Date().toISOString().split('T')[0];
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -836,8 +819,9 @@
 
         function exportarHTML() {
             const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
 
             const table = $('#tabelaInspecoes').DataTable();
             const dados = table.rows({search: 'applied'}).data().toArray();
@@ -891,7 +875,6 @@
 </body>
 </html>`;
 
-            const hoje = new Date().toISOString().split('T')[0];
             const blob = new Blob([html], { type: 'text/html' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
