@@ -329,134 +329,167 @@ header h2{
   .linkPill:active {
     transform: scale(0.97);
 
-/* === WIDGET DE INDICADORES (DESKTOP ONLY) === */
-.indicadores-widget {
+/* === WIDGET DE INDICADORES - FORMATO TABELA (DESKTOP ONLY) === */
+.indicadores-section {
   display: none;
 }
 
 @media (min-width: 921px) {
-  .indicadores-widget {
+  .indicadores-section {
     display: block;
-    background: linear-gradient(135deg, #ffffff, #f8f9fb);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow2);
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 2px solid var(--line);
   }
-  .indicadores-widget h3 {
+  
+  .indicadores-section h3 {
     margin: 0 0 16px 0;
     color: var(--brand1);
     padding-left: 10px;
     border-left: 6px solid var(--brand1);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
+  
   .indicadores-loading {
     text-align: center;
     padding: 30px 20px;
     color: var(--muted);
+    font-size: 0.9rem;
   }
-  .indicadores-grid {
+  
+  /* Grid de cards principais */
+  .stats-grid {
     display: grid;
-    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
     margin-bottom: 18px;
   }
-  .indicador-card {
-    background: #fff;
+  
+  .stat-card {
+    background: linear-gradient(135deg, #f8f9fb, #ffffff);
+    border: 1px solid rgba(44, 90, 160, 0.15);
     border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(44, 90, 160, 0.12);
-    transition: all 0.2s ease;
+    padding: 14px;
+    text-align: center;
+    transition: transform 0.2s;
   }
-  .indicador-card:hover {
+  
+  .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.15);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.12);
   }
-  .indicador-numero {
-    font-size: 2rem;
+  
+  .stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+  
+  .stat-numero {
+    font-size: 2.2rem;
     font-weight: 900;
     background: linear-gradient(135deg, var(--brand1), var(--brand2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 8px 0 4px 0;
     line-height: 1;
+    margin: 6px 0;
   }
-  .indicador-label {
-    font-size: 0.88rem;
-    color: var(--muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .indicador-icon {
-    font-size: 1.8rem;
-    opacity: 0.9;
-  }
-  .indicador-detalhe {
+  
+  .stat-label {
     font-size: 0.82rem;
+    color: var(--text);
+    font-weight: 700;
+    margin: 4px 0;
+  }
+  
+  .stat-detalhe {
+    font-size: 0.75rem;
     color: var(--muted);
-    margin-top: 6px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(0,0,0,0.06);
+    margin-top: 4px;
   }
-  .tipos-docs {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(44, 90, 160, 0.12);
-    margin-top: 14px;
+  
+  /* Tabela de tipos de documentos */
+  .tipos-table-container {
+    margin-top: 16px;
   }
-  .tipos-docs h4 {
+  
+  .tipos-table-container h4 {
     margin: 0 0 12px 0;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--brand1);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .tipo-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+  
+  .tipos-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
   }
-  .tipo-barra-container {
-    flex: 1;
-    background: #f0f2f5;
-    border-radius: 8px;
-    height: 28px;
-    overflow: hidden;
+  
+  .tipos-table tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
+  
+  .tipos-table tr:last-child {
+    border-bottom: none;
+  }
+  
+  .tipos-table td {
+    padding: 10px 8px;
+  }
+  
+  .tipos-table td:first-child {
+    text-align: left;
+    color: var(--text);
+    font-weight: 600;
+    padding-left: 0;
+  }
+  
+  .tipos-table td:last-child {
+    text-align: right;
+    font-weight: 900;
+    color: var(--brand1);
+    font-size: 1rem;
+    padding-right: 0;
+  }
+  <p>
+    📊 <strong>Indicadores em Tempo Real</strong> (Computador)<br>
+  </p>
+ <br>
+      <p>
+      Agora a versão desktop exibe indicadores do mês: inspeções, autos, fiscais ativos e tipos de documentos. Dados atualizados automaticamente ao carregar a página.
+      </p>
+ <br>
+  
   .tipo-barra {
+    height: 6px;
+    background: #e8edf3;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  
+  .tipo-barra-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--brand1), var(--brand2));
-    border-radius: 8px;
+    border-radius: 3px;
     transition: width 0.6s ease;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
   }
-  .tipo-nome {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .tipo-count {
-    font-size: 0.85rem;
-    font-weight: 900;
-    color: var(--text);
-    min-width: 35px;
-    text-align: right;
-  }
+  
   .update-info {
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--muted);
-    margin-top: 16px;
+      <!-- Indicadores (Desktop Only) -->
+      <div class="indicadores-section">
+        <h3>📊 Indicadores do Mês</h3>
+        <div id="indicadores-content">
+          <div class="indicadores-loading">📊 Carregando...</div>
+        </div>
+      </div>
+    margin-top: 14px;
     padding-top: 12px;
     border-top: 1px solid rgba(0,0,0,0.06);
   }
@@ -588,14 +621,6 @@ header h2{
       <h3>Novidades no Aplicativo</h3>
 
   <p>
-    📊 <strong>Indicadores em Tempo Real</strong> (Computador)<br>
-  </p>
- <br>
-      <p>
-      Agora a versão para computador (desktop) exibe indicadores do mês em tempo real: total de inspeções, autos lavrados, fiscais ativos e tipos de documentos mais emitidos. Os dados são carregados automaticamente e atualizados sempre que você acessa a página. Esta funcionalidade está disponível apenas na versão desktop para melhor visualização.
-      </p>
- <br>
-  <p>
     📚 <strong>Inspeções por Período</strong><br>
   </p>
  <br>
@@ -617,13 +642,6 @@ header h2{
        </p>
          
     </div>
-    <!-- Widget de Indicadores (Desktop Only) -->
-    <div class="indicadores-widget">
-      <h3>📊 Indicadores do Mês</h3>
-      <div id="indicadores-content">
-        <div class="indicadores-loading">📊 Carregando dados...</div>
-      </div>
-    </div>
 
     <div class="card links-section">
       <h3>Central de Trabalho</h3>
@@ -637,7 +655,7 @@ header h2{
         <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Ocorrências<br><small>Relatório do plantão fiscal</small></div><div class="arrow">📈</div></a></li>
         <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs<br><small>Distribuição por área</small></div><div class="arrow">👥</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
-        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#9aecf3e9fbdafbf4fbeaf5f6f3e9b4fdf5b4fdf5ecb4f8e8"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
+        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#16607f65775677787766797a7f6538717938717960387464"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
       </ul>
 
   </div>
@@ -929,25 +947,21 @@ window.logout = function(){
     window.__pendingLogout = true;
   });
 })();
-// ===== FIM INICIALIZAÇÃO =====
-
 </script>
 
-<!-- Papa Parse CDN para processar CSV -->
+<!-- Papa Parse CDN -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-<!-- Script dos Indicadores -->
+<!-- Script Indicadores -->
 <script>
-// === SISTEMA DE INDICADORES - JANEIRO 2026 ===
+// === SISTEMA DE INDICADORES - LAYOUT TABELA ===
 
 function carregarIndicadores() {
   const container = document.getElementById('indicadores-content');
   if (!container) return;
   
-  // Mostrar loading
   container.innerHTML = '<div class="indicadores-loading">📊 Carregando dados...</div>';
   
-  // Usar Papa Parse via CDN
   Papa.parse('RPF/inspecoes.cvs', {
     download: true,
     header: false,
@@ -957,66 +971,51 @@ function carregarIndicadores() {
       processarDados(results.data, container);
     },
     error: function(error) {
-      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro ao carregar dados. Verifique se o arquivo RPF/inspecoes.cvs existe.</div>';
-      console.error('Erro ao carregar CSV:', error);
+      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro: Arquivo RPF/inspecoes.cvs não encontrado</div>';
+      console.error('Erro CSV:', error);
     }
   });
 }
 
 function processarDados(data, container) {
-  // Remover header (primeira linha)
   const rows = data.slice(1);
   
-  // Filtrar dados de Janeiro 2026
-  const mesAtual = '01.2026';
-  const inspecoesJaneiro = rows.filter(row => {
-    const data = row[2]; // Coluna DT_VISITA
-    return data && data.includes(mesAtual);
-  });
-  
-  // Se não houver dados de Janeiro 2026, usar Dezembro 2025 ou últimos registros
-  let inspecoesFiltradas = inspecoesJaneiro;
+  // Filtrar Janeiro 2026
+  let inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('01.2026'));
   let periodoTexto = 'Janeiro 2026';
   
-  if (inspecoesJaneiro.length === 0) {
-    inspecoesFiltradas = rows.filter(row => {
-      const data = row[2];
-      return data && data.includes('12.2025');
-    });
+  // Fallback para Dezembro 2025
+  if (inspecoesFiltradas.length === 0) {
+    inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('12.2025'));
     periodoTexto = 'Dezembro 2025';
-    
-    if (inspecoesFiltradas.length === 0) {
-      inspecoesFiltradas = rows.slice(-1000);
-      periodoTexto = 'Últimos 1000 registros';
-    }
   }
   
-  // CÁLCULOS DOS INDICADORES
+  // Fallback para últimos 1000
+  if (inspecoesFiltradas.length === 0) {
+    inspecoesFiltradas = rows.slice(-1000);
+    periodoTexto = 'Últimos 1000 registros';
+  }
+  
+  // Cálculos
   const totalInspecoes = inspecoesFiltradas.length;
   
-  // Autos lavrados
   const autos = inspecoesFiltradas.filter(row => {
     const tipo = row[6];
     return tipo && tipo.includes('AUTO DE IMPOSIÇÃO');
   }).length;
   
-  // Fiscais únicos ativos
   const fiscaisSet = new Set();
   inspecoesFiltradas.forEach(row => {
-    const fiscal1 = row[17];
-    if (fiscal1 && fiscal1.trim() !== '') {
-      fiscaisSet.add(fiscal1.trim());
-    }
+    const fiscal = row[17];
+    if (fiscal && fiscal.trim()) fiscaisSet.add(fiscal.trim());
   });
   const totalFiscais = fiscaisSet.size;
   
-  // Tipos de documentos mais comuns
   const tiposDocumentos = {};
   inspecoesFiltradas.forEach(row => {
     const tipo = row[6];
-    if (tipo && tipo.trim() !== '') {
-      const tipoLimpo = tipo.trim();
-      tiposDocumentos[tipoLimpo] = (tiposDocumentos[tipoLimpo] || 0) + 1;
+    if (tipo && tipo.trim()) {
+      tiposDocumentos[tipo.trim()] = (tiposDocumentos[tipo.trim()] || 0) + 1;
     }
   });
   
@@ -1024,10 +1023,7 @@ function processarDados(data, container) {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
   
-  // Média de inspeções por fiscal
   const mediaPorFiscal = totalFiscais > 0 ? Math.round(totalInspecoes / totalFiscais) : 0;
-  
-  // Taxa de autos
   const taxaAutos = totalInspecoes > 0 ? ((autos / totalInspecoes) * 100).toFixed(1) : 0;
   
   renderizarIndicadores(container, {
@@ -1043,60 +1039,61 @@ function processarDados(data, container) {
 
 function renderizarIndicadores(container, dados) {
   const html = `
-    <div class="indicadores-grid">
-      <div class="indicador-card">
-        <div class="indicador-icon">📊</div>
-        <div class="indicador-numero">${dados.totalInspecoes}</div>
-        <div class="indicador-label">Inspeções Realizadas</div>
-        <div class="indicador-detalhe">Média de ${dados.mediaPorFiscal} por fiscal</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-numero">${dados.totalInspecoes}</div>
+        <div class="stat-label">Inspeções</div>
+        <div class="stat-detalhe">Média ${dados.mediaPorFiscal}/fiscal</div>
       </div>
       
-      <div class="indicador-card">
-        <div class="indicador-icon">📋</div>
-        <div class="indicador-numero">${dados.autos}</div>
-        <div class="indicador-label">Autos Lavrados</div>
-        <div class="indicador-detalhe">Taxa de ${dados.taxaAutos}% das inspeções</div>
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-numero">${dados.autos}</div>
+        <div class="stat-label">Autos</div>
+        <div class="stat-detalhe">Taxa ${dados.taxaAutos}%</div>
       </div>
       
-      <div class="indicador-card">
-        <div class="indicador-icon">👥</div>
-        <div class="indicador-numero">${dados.totalFiscais}</div>
-        <div class="indicador-label">Fiscais Ativos</div>
-        <div class="indicador-detalhe">Equipe em campo</div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-numero">${dados.totalFiscais}</div>
+        <div class="stat-label">Fiscais</div>
+        <div class="stat-detalhe">Equipe ativa</div>
       </div>
     </div>
     
-    <div class="tipos-docs">
-      <h4>📄 Tipos de Documentos Emitidos</h4>
-      ${dados.topTipos.map(item => {
-        const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
-        let nomeSimples = item[0];
-        if (nomeSimples.length > 25) {
-          nomeSimples = nomeSimples.substring(0, 22) + '...';
-        }
-        return `
-          <div class="tipo-item">
-            <div class="tipo-barra-container">
-              <div class="tipo-barra" style="width: ${porcentagem}%;">
-                <span class="tipo-nome">${nomeSimples}</span>
-              </div>
-            </div>
-            <div class="tipo-count">${item[1]}</div>
-          </div>
-        `;
-      }).join('')}
+    <div class="tipos-table-container">
+      <h4>📄 Tipos de Documentos</h4>
+      <table class="tipos-table">
+        ${dados.topTipos.map(item => {
+          const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
+          let nome = item[0];
+          if (nome.length > 30) nome = nome.substring(0, 27) + '...';
+          
+          return `
+            <tr>
+              <td>
+                ${nome}
+                <div class="tipo-barra">
+                  <div class="tipo-barra-fill" style="width: ${porcentagem}%;"></div>
+                </div>
+              </td>
+              <td>${item[1]}</td>
+            </tr>
+          `;
+        }).join('')}
+      </table>
     </div>
     
     <div class="update-info">
-      📅 Dados: ${dados.periodoTexto}<br>
-      🔄 Atualizado ao carregar a página
+      📅 ${dados.periodoTexto} • 🔄 Atualizado ao carregar
     </div>
   `;
   
   container.innerHTML = html;
 }
 
-// Executar quando a página carregar
+// Executar ao carregar
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', carregarIndicadores);
 } else {
