@@ -876,20 +876,18 @@ function processarDados(data, container) {
   renderizarIndicadores(container, {totalInspecoes, autos, totalFiscais, mediaPorFiscal, taxaAutos, topTipos, periodoTexto});
 }
 
+  `;
 function renderizarIndicadores(container, dados) {
   container.innerHTML = `
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">📊</div>
-        <div><div class="stat-numero">${dados.totalInspecoes}</div><div class="stat-label">Inspeções</div><div class="stat-detalhe">Média ${dados.mediaPorFiscal}/fiscal</div></div>
+        📊 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.totalInspecoes}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Inspeções</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Média ${dados.mediaPorFiscal}/fiscal</span>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">📋</div>
-        <div><div class="stat-numero">${dados.autos}</div><div class="stat-label">Autos</div><div class="stat-detalhe">Taxa ${dados.taxaAutos}%</div></div>
+        📋 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.autos}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Autos</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Taxa ${dados.taxaAutos}%</span>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">👥</div>
-        <div><div class="stat-numero">${dados.totalFiscais}</div><div class="stat-label">Fiscais</div><div class="stat-detalhe">Ativos</div></div>
+        👥 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.totalFiscais}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Fiscais</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Ativos</span>
       </div>
     </div>
     <div class="tipos-table-container">
@@ -905,6 +903,7 @@ function renderizarIndicadores(container, dados) {
     </div>
     <div class="update-info">📅 ${dados.periodoTexto} • 🔄 Atualizado</div>
   `;
+}
 }
 
 if (document.readyState === 'loading') {
