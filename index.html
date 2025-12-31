@@ -335,8 +335,6 @@ header h2{
 .indicadores-loading{text-align:center;padding:20px;color:var(--muted);font-size:0.9rem;background:#f8f9fb;border-radius:8px;}
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;}
-.stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;}
-.stat-icon{font-size:1.6rem;flex-shrink:0;}
 .stat-icon{font-size:1.6rem;flex-shrink:0;}
 .stat-numero{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:4px 0;}
 .stat-label{font-size:0.75rem;color:var(--text);font-weight:700;margin:2px 0;}
@@ -351,7 +349,7 @@ header h2{
 .tipo-barra{height:5px;background:#e8edf3;border-radius:3px;margin-top:3px;overflow:hidden;}
 .tipo-barra-fill{height:100%;background:linear-gradient(90deg,var(--brand1),var(--brand2));transition:width 0.6s ease;}
 .update-info{text-align:center;font-size:0.7rem;color:var(--muted);margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.05);}
-@media(max-width:400px){.stats-grid{grid-template-columns:1fr !important;gap:8px;}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr;gap:8px;}}.stat-card{display:flex;align-items:center;gap:12px;text-align:left;}.stat-icon{font-size:2rem;}.stat-numero{font-size:1.5rem;}}
   }
 }
 
@@ -565,7 +563,7 @@ header h2{
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>  
+  
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -876,36 +874,25 @@ function processarDados(data, container) {
   renderizarIndicadores(container, {totalInspecoes, autos, totalFiscais, mediaPorFiscal, taxaAutos, topTipos, periodoTexto});
 }
 
-  `;
-function renderizarIndicadores(container, dados) {
-  container.innerHTML = `
-    <div class="stats-grid">
-      <div class="stat-card">
-        📊 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.totalInspecoes}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Inspeções</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Média ${dados.mediaPorFiscal}/fiscal</span>
-      </div>
-      <div class="stat-card">
-        📋 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.autos}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Autos</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Taxa ${dados.taxaAutos}%</span>
-      </div>
-      <div class="stat-card">
-        👥 <strong style="font-size:1.8rem;margin:0 8px;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${dados.totalFiscais}</strong> <span style="font-size:0.9rem;color:var(--text);font-weight:700;">Fiscais</span> <span style="font-size:0.75rem;color:var(--muted);display:block;">Ativos</span>
-      </div>
-    </div>
-    <div class="tipos-table-container">
-      <h4>📄 Tipos de Documentos</h4>
-      <table class="tipos-table">
-        ${dados.topTipos.map(item => {
-          const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
-          let nome = item[0];
-          if (nome.length > 28) nome = nome.substring(0, 25) + '...';
-          return `<tr><td>${nome}<div class="tipo-barra"><div class="tipo-barra-fill" style="width: ${porcentagem}%;"></div></div></td><td>${item[1]}</td></tr>`;
-        }).join('')}
-      </table>
-    </div>
-    <div class="update-info">📅 ${dados.periodoTexto} • 🔄 Atualizado</div>
-  `;
-}
-}
 
+function renderizarIndicadores(container, dados) {
+  const html = '<div class="stats-grid">' +
+    '<div class="stat-card">📊 <strong style="font-size:1.8rem;margin:0 8px">' + dados.totalInspecoes + '</strong> <span style="font-size:0.9rem">Inspeções</span><br><small style="color:var(--muted)">Média ' + dados.mediaPorFiscal + '/fiscal</small></div>' +
+    '<div class="stat-card">📋 <strong style="font-size:1.8rem;margin:0 8px">' + dados.autos + '</strong> <span style="font-size:0.9rem">Autos</span><br><small style="color:var(--muted)">Taxa ' + dados.taxaAutos + '%</small></div>' +
+    '<div class="stat-card">👥 <strong style="font-size:1.8rem;margin:0 8px">' + dados.totalFiscais + '</strong> <span style="font-size:0.9rem">Fiscais</span><br><small style="color:var(--muted)">Ativos</small></div>' +
+    '</div>' +
+    '<div class="tipos-table-container"><h4>📄 Tipos de Documentos</h4><table class="tipos-table">';
+  
+  dados.topTipos.forEach(function(item) {
+    const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
+    let nome = item[0];
+    if (nome.length > 28) nome = nome.substring(0, 25) + '...';
+    html += '<tr><td>' + nome + '<div class="tipo-barra"><div class="tipo-barra-fill" style="width:' + porcentagem + '%;"></div></div></td><td>' + item[1] + '</td></tr>';
+  });
+  
+  html += '</table></div><div class="update-info">📅 ' + dados.periodoTexto + ' • 🔄 Atualizado</div>';
+  container.innerHTML = html;
+}
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', carregarIndicadores);
 } else {
