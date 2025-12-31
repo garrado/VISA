@@ -334,8 +334,8 @@ header h2{
 .indicadores-section h3{margin:0 0 16px 0;color:var(--brand1);padding-left:10px;border-left:6px solid var(--brand1);font-size:1.05rem;}
 .indicadores-loading{text-align:center;padding:20px;color:var(--muted);font-size:0.9rem;background:#f8f9fb;border-radius:8px;}
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;text-align:center;}
-.stat-icon{font-size:1.4rem;margin-bottom:4px;}
+.stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;}
+.stat-icon{font-size:1.6rem;flex-shrink:0;}
 .stat-numero{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:4px 0;}
 .stat-label{font-size:0.75rem;color:var(--text);font-weight:700;margin:2px 0;}
 .stat-detalhe{font-size:0.7rem;color:var(--muted);}
@@ -453,7 +453,11 @@ header h2{
   <div class="spinner"></div>
   <div style="color:var(--brand1); font-weight:600">Verificando acesso...</div>
 </div>
-  
+
+  <p>📊 <strong>Indicadores em Tempo Real</strong><br></p>
+ <br>
+  <p>Dados do mês carregados automaticamente: inspeções, autos, fiscais e tipos de documentos.</p>
+ <br>
 <div id="login">
   <div class="loginCard">
     <h2>Área Restrita</h2>
@@ -496,7 +500,7 @@ header h2{
       <p>
                              Supervisor de Vigilância Sanitária
        </p>
-       <br> 
+         
     <div class="indicadores-section"><h3>📊 Indicadores do Mês</h3><div id="indicadores-content"><div class="indicadores-loading">📊 Carregando...</div></div></div>
 </div>
 
@@ -905,4 +909,3 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
-
