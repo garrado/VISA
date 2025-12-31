@@ -256,10 +256,6 @@ header h2{
   color: #66728a;
 }
 
-.actionsRow{
-  display:flex;
-  justify-content:flex-end;
-  margin-top: 10px;
 }
 
 /* iOS/telas pequenas: botão "ABRIR WebCVS" com toque melhor e largura total */
@@ -285,7 +281,7 @@ header h2{
   .links-section ul {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 14px;
     padding: 0;
     margin: 0;
   }
@@ -299,24 +295,31 @@ header h2{
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px 12px;
-    min-height: 140px;
-    gap: 8px;
+    padding: 18px 10px;
+    height: 150px; /* Altura fixa para uniformidade */
+    gap: 10px;
     border-radius: 16px;
     box-shadow: var(--shadow2);
   }
   
   .linkPill .arrow {
     order: -1;
-    width: 42px;
-    height: 42px;
-    margin-bottom: 4px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--brand1), var(--brand2));
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
   }
   
   .linkPill small {
-    font-size: 0.85rem;
-    line-height: 1.3;
+    font-size: 0.82rem;
+    line-height: 1.25;
     display: block;
+    margin-top: -2px;
   }
   
   .linkPill:active {
@@ -489,20 +492,16 @@ header h2{
     <div class="card links-section">
       <h3>Acessos Rápidos</h3>
       <ul>
-        <li><a class="linkPill" href="RPF\RPF2-PERFEITO-AUTH-DROPDOWN.html"><div>Relatório de Inspeções por Período<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="legislacao.html"><div>Legislação Sanitária<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="check.html"><div>Check List Fiscalização<br><small>Rotinas e conferência</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="Escala_Ferias_Janeiro_2026_APP"><div>Escala de Férias — janeiro<br><small>Logística</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="Escala_Veiculos_Janeiro_2026_APP.html"><div>Escala de Veículos — janeiro<br><small>Logística</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="Escala_Plantao_Janeiro_2026"><div>Escala de Plantão — janeiro<br><small>Organização mensal</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Relatório Plantão Fiscal<br><small>Indicadores e relatório</small></div><div class="arrow">➡</div></a></li>
-        <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs por Equipe<br><small>Distribuição por área</small></div><div class="arrow">➡</div></a></li>
+        <li><a class="linkPill" href="RPF\RPF2-PERFEITO-AUTH-DROPDOWN.html"><div>Relatório de Inspeções por Período<br><small>Rotinas e conferência</small></div><div class="arrow">📊</div></a></li>
+        <li><a class="linkPill" href="legislacao.html"><div>Legislação Sanitária<br><small>Rotinas e conferência</small></div><div class="arrow">📜</div></a></li>
+        <li><a class="linkPill" href="check.html"><div>Check List Fiscalização<br><small>Rotinas e conferência</small></div><div class="arrow">✓</div></a></li>
+        <li><a class="linkPill" href="Escala_Ferias_Janeiro_2026_APP"><div>Escala de Férias — janeiro<br><small>Logística</small></div><div class="arrow">🏖️</div></a></li>
+        <li><a class="linkPill" href="Escala_Veiculos_Janeiro_2026_APP.html"><div>Escala de Veículos — janeiro<br><small>Logística</small></div><div class="arrow">🚗</div></a></li>
+        <li><a class="linkPill" href="Escala_Plantao_Janeiro_2026"><div>Escala de Plantão — janeiro<br><small>Organização mensal</small></div><div class="arrow">📅</div></a></li>
+        <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Relatório Plantão Fiscal<br><small>Indicadores e relatório</small></div><div class="arrow">📈</div></a></li>
+        <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs por Equipe<br><small>Distribuição por área</small></div><div class="arrow">👥</div></a></li>
       </ul>
 
-      <div class="actionsRow">
-        <button class="btn" onclick="logout()">Encerrar sessão</button>
-      </div>
-    </div>
   </div>
 
   <div class="card">
@@ -516,6 +515,10 @@ header h2{
     </p>
   </div>
 
+</div>
+
+<div style="text-align: center; padding: 20px 16px;">
+  <button class="btn" onclick="logout()">Encerrar sessão</button>
 </div>
 
 <div class="footer">
@@ -792,5 +795,9 @@ window.logout = function(){
 
 </script>
 
+
+  
+
 </body>
 </html>
+
