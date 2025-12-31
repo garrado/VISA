@@ -331,7 +331,7 @@ header h2{
 
 /* === WIDGET DE INDICADORES (DESKTOP ONLY) === */
 .indicadores-widget {
-  display: none; /* Escondido por padrão (mobile) */
+  display: none;
 }
 
 @media (min-width: 921px) {
@@ -344,7 +344,6 @@ header h2{
     border: 1px solid var(--line);
     box-shadow: var(--shadow2);
   }
-  
   .indicadores-widget h3 {
     margin: 0 0 16px 0;
     color: var(--brand1);
@@ -352,19 +351,16 @@ header h2{
     border-left: 6px solid var(--brand1);
     font-size: 1.1rem;
   }
-  
   .indicadores-loading {
     text-align: center;
     padding: 30px 20px;
     color: var(--muted);
   }
-  
   .indicadores-grid {
     display: grid;
     gap: 14px;
     margin-bottom: 18px;
   }
-  
   .indicador-card {
     background: #fff;
     border-radius: 12px;
@@ -372,12 +368,10 @@ header h2{
     border: 1px solid rgba(44, 90, 160, 0.12);
     transition: all 0.2s ease;
   }
-  
   .indicador-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(44, 90, 160, 0.15);
   }
-  
   .indicador-numero {
     font-size: 2rem;
     font-weight: 900;
@@ -388,7 +382,6 @@ header h2{
     margin: 8px 0 4px 0;
     line-height: 1;
   }
-  
   .indicador-label {
     font-size: 0.88rem;
     color: var(--muted);
@@ -396,12 +389,10 @@ header h2{
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
   .indicador-icon {
     font-size: 1.8rem;
     opacity: 0.9;
   }
-  
   .indicador-detalhe {
     font-size: 0.82rem;
     color: var(--muted);
@@ -409,65 +400,6 @@ header h2{
     padding-top: 8px;
     border-top: 1px solid rgba(0,0,0,0.06);
   }
-  
-  /* Seção de Top Fiscais */
-  .top-fiscais {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(44, 90, 160, 0.12);
-  }
-  
-  .top-fiscais h4 {
-    margin: 0 0 12px 0;
-    font-size: 0.9rem;
-    color: var(--brand1);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .fiscal-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.04);
-  }
-  
-  .fiscal-item:last-child {
-    border-bottom: none;
-  }
-  
-  .fiscal-nome {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .fiscal-badge {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand1), var(--brand2));
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 900;
-  }
-  
-  .fiscal-count {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: var(--brand1);
-  }
-  
-  /* Seção de Tipos de Documentos */
   .tipos-docs {
     background: #fff;
     border-radius: 12px;
@@ -475,7 +407,6 @@ header h2{
     border: 1px solid rgba(44, 90, 160, 0.12);
     margin-top: 14px;
   }
-  
   .tipos-docs h4 {
     margin: 0 0 12px 0;
     font-size: 0.9rem;
@@ -484,27 +415,19 @@ header h2{
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
   .tipo-item {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
   }
-  
-  .tipo-item:last-child {
-    margin-bottom: 0;
-  }
-  
   .tipo-barra-container {
     flex: 1;
     background: #f0f2f5;
     border-radius: 8px;
     height: 28px;
-    position: relative;
     overflow: hidden;
   }
-  
   .tipo-barra {
     height: 100%;
     background: linear-gradient(90deg, var(--brand1), var(--brand2));
@@ -514,7 +437,6 @@ header h2{
     align-items: center;
     padding: 0 10px;
   }
-  
   .tipo-nome {
     font-size: 0.8rem;
     font-weight: 700;
@@ -523,7 +445,6 @@ header h2{
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
   .tipo-count {
     font-size: 0.85rem;
     font-weight: 900;
@@ -531,7 +452,6 @@ header h2{
     min-width: 35px;
     text-align: right;
   }
-  
   .update-info {
     text-align: center;
     font-size: 0.75rem;
@@ -663,27 +583,19 @@ header h2{
 <div class="container">
 
   <div class="grid">
-    <!-- Widget de Indicadores (Desktop Only) -->
-    <div class="indicadores-widget">
-      <h3>📊 Indicadores do Mês</h3>
-      <div id="indicadores-content">
-        <div class="indicadores-loading">📊 Carregando dados...</div>
-      </div>
-    </div>
-
     <div class="card avisos">
      
       <h3>Novidades no Aplicativo</h3>
 
   <p>
-  <p>
     📊 <strong>Indicadores em Tempo Real</strong> (Computador)<br>
   </p>
  <br>
       <p>
-      Agora a versão para computador (desktop) exibe indicadores do mês em tempo real: total de inspeções, autos lavrados, fiscais ativos, ranking dos top fiscais e tipos de documentos mais emitidos. Os dados são carregados automaticamente do sistema e atualizados sempre que você acessa a página. Esta funcionalidade está disponível apenas na versão desktop para melhor visualização.
+      Agora a versão para computador (desktop) exibe indicadores do mês em tempo real: total de inspeções, autos lavrados, fiscais ativos e tipos de documentos mais emitidos. Os dados são carregados automaticamente e atualizados sempre que você acessa a página. Esta funcionalidade está disponível apenas na versão desktop para melhor visualização.
       </p>
  <br>
+  <p>
     📚 <strong>Inspeções por Período</strong><br>
   </p>
  <br>
@@ -705,6 +617,13 @@ header h2{
        </p>
          
     </div>
+    <!-- Widget de Indicadores (Desktop Only) -->
+    <div class="indicadores-widget">
+      <h3>📊 Indicadores do Mês</h3>
+      <div id="indicadores-content">
+        <div class="indicadores-loading">📊 Carregando dados...</div>
+      </div>
+    </div>
 
     <div class="card links-section">
       <h3>Central de Trabalho</h3>
@@ -718,7 +637,7 @@ header h2{
         <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Ocorrências<br><small>Relatório do plantão fiscal</small></div><div class="arrow">📈</div></a></li>
         <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs<br><small>Distribuição por área</small></div><div class="arrow">👥</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
-        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#9ee8f7edffdefff0ffeef1f2f7edb0f9f1b0f9f1e8b0fcec"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
+        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#9aecf3e9fbdafbf4fbeaf5f6f3e9b4fdf5b4fdf5ecb4f8e8"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
       </ul>
 
   </div>
@@ -760,7 +679,7 @@ header h2{
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="./js/platform-detector.js"></script>  
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>  
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -1014,7 +933,7 @@ window.logout = function(){
 
 </script>
 
-<!-- Papa Parse para processar CSV -->
+<!-- Papa Parse CDN para processar CSV -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <!-- Script dos Indicadores -->
@@ -1038,7 +957,7 @@ function carregarIndicadores() {
       processarDados(results.data, container);
     },
     error: function(error) {
-      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro ao carregar dados</div>';
+      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro ao carregar dados. Verifique se o arquivo RPF/inspecoes.cvs existe.</div>';
       console.error('Erro ao carregar CSV:', error);
     }
   });
@@ -1055,90 +974,68 @@ function processarDados(data, container) {
     return data && data.includes(mesAtual);
   });
   
-  // Se não houver dados de Janeiro 2026, usar Dezembro 2025 ou últimos 30 dias
+  // Se não houver dados de Janeiro 2026, usar Dezembro 2025 ou últimos registros
   let inspecoesFiltradas = inspecoesJaneiro;
   let periodoTexto = 'Janeiro 2026';
   
   if (inspecoesJaneiro.length === 0) {
-    // Tentar Dezembro 2025
     inspecoesFiltradas = rows.filter(row => {
       const data = row[2];
       return data && data.includes('12.2025');
     });
     periodoTexto = 'Dezembro 2025';
     
-    // Se ainda não houver, pegar últimos 1000 registros como amostra
     if (inspecoesFiltradas.length === 0) {
       inspecoesFiltradas = rows.slice(-1000);
-      periodoTexto = 'Últimos registros';
+      periodoTexto = 'Últimos 1000 registros';
     }
   }
   
   // CÁLCULOS DOS INDICADORES
-  
-  // 1. Total de inspeções
   const totalInspecoes = inspecoesFiltradas.length;
   
-  // 2. Autos lavrados (AUTO DE IMPOSIÇÃO DE PENALIDADE)
+  // Autos lavrados
   const autos = inspecoesFiltradas.filter(row => {
-    const tipo = row[6]; // Coluna TIPO
+    const tipo = row[6];
     return tipo && tipo.includes('AUTO DE IMPOSIÇÃO');
   }).length;
   
-  // 3. Fiscais únicos ativos
+  // Fiscais únicos ativos
   const fiscaisSet = new Set();
   inspecoesFiltradas.forEach(row => {
-    const fiscal1 = row[17]; // Coluna Fiscal1
+    const fiscal1 = row[17];
     if (fiscal1 && fiscal1.trim() !== '') {
       fiscaisSet.add(fiscal1.trim());
     }
   });
   const totalFiscais = fiscaisSet.size;
   
-  // 4. Contagem por fiscal (para ranking)
-  const contagemFiscais = {};
-  inspecoesFiltradas.forEach(row => {
-    const fiscal = row[17];
-    if (fiscal && fiscal.trim() !== '') {
-      const nome = fiscal.trim();
-      contagemFiscais[nome] = (contagemFiscais[nome] || 0) + 1;
-    }
-  });
-  
-  // Top 5 fiscais
-  const topFiscais = Object.entries(contagemFiscais)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-  
-  // 5. Tipos de documentos mais comuns
+  // Tipos de documentos mais comuns
   const tiposDocumentos = {};
   inspecoesFiltradas.forEach(row => {
-    const tipo = row[6]; // Coluna TIPO
+    const tipo = row[6];
     if (tipo && tipo.trim() !== '') {
       const tipoLimpo = tipo.trim();
       tiposDocumentos[tipoLimpo] = (tiposDocumentos[tipoLimpo] || 0) + 1;
     }
   });
   
-  // Top 5 tipos de documentos
   const topTipos = Object.entries(tiposDocumentos)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
   
-  // 6. Média de inspeções por fiscal
+  // Média de inspeções por fiscal
   const mediaPorFiscal = totalFiscais > 0 ? Math.round(totalInspecoes / totalFiscais) : 0;
   
-  // 7. Taxa de autos (porcentagem)
+  // Taxa de autos
   const taxaAutos = totalInspecoes > 0 ? ((autos / totalInspecoes) * 100).toFixed(1) : 0;
   
-  // RENDERIZAR HTML
   renderizarIndicadores(container, {
     totalInspecoes,
     autos,
     totalFiscais,
     mediaPorFiscal,
     taxaAutos,
-    topFiscais,
     topTipos,
     periodoTexto
   });
@@ -1147,7 +1044,6 @@ function processarDados(data, container) {
 function renderizarIndicadores(container, dados) {
   const html = `
     <div class="indicadores-grid">
-      <!-- Card 1: Total de Inspeções -->
       <div class="indicador-card">
         <div class="indicador-icon">📊</div>
         <div class="indicador-numero">${dados.totalInspecoes}</div>
@@ -1155,7 +1051,6 @@ function renderizarIndicadores(container, dados) {
         <div class="indicador-detalhe">Média de ${dados.mediaPorFiscal} por fiscal</div>
       </div>
       
-      <!-- Card 2: Autos Lavrados -->
       <div class="indicador-card">
         <div class="indicador-icon">📋</div>
         <div class="indicador-numero">${dados.autos}</div>
@@ -1163,7 +1058,6 @@ function renderizarIndicadores(container, dados) {
         <div class="indicador-detalhe">Taxa de ${dados.taxaAutos}% das inspeções</div>
       </div>
       
-      <!-- Card 3: Fiscais Ativos -->
       <div class="indicador-card">
         <div class="indicador-icon">👥</div>
         <div class="indicador-numero">${dados.totalFiscais}</div>
@@ -1172,30 +1066,10 @@ function renderizarIndicadores(container, dados) {
       </div>
     </div>
     
-    //     <!-- Top Fiscais -->
-    //     <div class="top-fiscais">
-    //       <h4>🏆 Top 5 Fiscais do Período</h4>
-    //       ${dados.topFiscais.map((item, index) => {
-    //         const primeiroNome = item[0].split(' ')[0];
-    //         const iniciais = item[0].split(' ').map(n => n[0]).join('').substring(0, 2);
-    //         return `
-    //           <div class="fiscal-item">
-    //             <div class="fiscal-nome">
-    //               <div class="fiscal-badge">${index + 1}</div>
-    //               <span title="${item[0]}">${primeiroNome}</span>
-    //             </div>
-    //             <div class="fiscal-count">${item[1]}</div>
-    //           </div>
-    //         `;
-    //       }).join('')}
-    //     </div>
-    
-    <!-- Tipos de Documentos -->
     <div class="tipos-docs">
       <h4>📄 Tipos de Documentos Emitidos</h4>
       ${dados.topTipos.map(item => {
         const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
-        // Simplificar nome do tipo
         let nomeSimples = item[0];
         if (nomeSimples.length > 25) {
           nomeSimples = nomeSimples.substring(0, 22) + '...';
@@ -1214,8 +1088,8 @@ function renderizarIndicadores(container, dados) {
     </div>
     
     <div class="update-info">
-      📅 Dados referentes a: ${dados.periodoTexto}<br>
-      🔄 Atualizado automaticamente ao carregar a página
+      📅 Dados: ${dados.periodoTexto}<br>
+      🔄 Atualizado ao carregar a página
     </div>
   `;
   
