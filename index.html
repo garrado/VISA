@@ -329,169 +329,170 @@ header h2{
   .linkPill:active {
     transform: scale(0.97);
 
-/* === WIDGET DE INDICADORES - FORMATO TABELA (DESKTOP ONLY) === */
+/* === INDICADORES - SEMPRE VISÍVEL === */
 .indicadores-section {
-  display: none;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 2px solid var(--line);
 }
 
-@media (min-width: 921px) {
-  .indicadores-section {
-    display: block;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 2px solid var(--line);
-  }
-  
-  .indicadores-section h3 {
-    margin: 0 0 16px 0;
-    color: var(--brand1);
-    padding-left: 10px;
-    border-left: 6px solid var(--brand1);
-    font-size: 1.05rem;
-  }
-  
-  .indicadores-loading {
-    text-align: center;
-    padding: 30px 20px;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-  
-  /* Grid de cards principais */
+.indicadores-section h3 {
+  margin: 0 0 16px 0;
+  color: var(--brand1);
+  padding-left: 10px;
+  border-left: 6px solid var(--brand1);
+  font-size: 1.05rem;
+}
+
+.indicadores-loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  background: #f8f9fb;
+  border-radius: 8px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f8f9fb, #ffffff);
+  border: 1px solid rgba(44, 90, 160, 0.15);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+
+.stat-icon {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.stat-numero {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--brand1), var(--brand2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text);
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.stat-detalhe {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.tipos-table-container h4 {
+  margin: 16px 0 10px 0;
+  font-size: 0.85rem;
+  color: var(--brand1);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tipos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.tipos-table tr {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.tipos-table tr:last-child {
+  border-bottom: none;
+}
+
+.tipos-table td {
+  padding: 8px 4px;
+}
+
+.tipos-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tipos-table td:last-child {
+  text-align: right;
+  font-weight: 900;
+  color: var(--brand1);
+  font-size: 0.9rem;
+  width: 50px;
+}
+
+.tipo-barra {
+  height: 5px;
+  background: #e8edf3;
+  border-radius: 3px;
+  margin-top: 3px;
+  overflow: hidden;
+}
+
+.tipo-barra-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand1), var(--brand2));
+  transition: width 0.6s ease;
+}
+
+.update-info {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  <p>
+    📊 <strong>Indicadores em Tempo Real</strong><br>
+  </p>
+ <br>
+  <p>
+  Dados do mês carregados automaticamente: inspeções, autos, fiscais e tipos de documentos.
+  </p>
+ <br>
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Responsivo para mobile */
+@media (max-width: 600px) {
   .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 18px;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
   
   .stat-card {
-    background: linear-gradient(135deg, #f8f9fb, #ffffff);
-    border: 1px solid rgba(44, 90, 160, 0.15);
-    border-radius: 12px;
-    padding: 14px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-  
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.12);
-  }
-  
-  .stat-icon {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
-  }
-  
-  .stat-numero {
-    font-size: 2.2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--brand1), var(--brand2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin: 6px 0;
-  }
-  
-  .stat-label {
-    font-size: 0.82rem;
-    color: var(--text);
-    font-weight: 700;
-    margin: 4px 0;
-  }
-  
-  .stat-detalhe {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  
-  /* Tabela de tipos de documentos */
-  .tipos-table-container {
-    margin-top: 16px;
-  }
-  
-  .tipos-table-container h4 {
-    margin: 0 0 12px 0;
-    font-size: 0.88rem;
-    color: var(--brand1);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .tipos-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-  }
-  
-  .tipos-table tr {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  
-  .tipos-table tr:last-child {
-    border-bottom: none;
-  }
-  
-  .tipos-table td {
-    padding: 10px 8px;
-  }
-  
-  .tipos-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     text-align: left;
-    color: var(--text);
-    font-weight: 600;
-    padding-left: 0;
   }
   
-  .tipos-table td:last-child {
-    text-align: right;
-    font-weight: 900;
-    color: var(--brand1);
-    font-size: 1rem;
-    padding-right: 0;
-  }
-  <p>
-    📊 <strong>Indicadores em Tempo Real</strong> (Computador)<br>
-  </p>
- <br>
-      <p>
-      Agora a versão desktop exibe indicadores do mês: inspeções, autos, fiscais ativos e tipos de documentos. Dados atualizados automaticamente ao carregar a página.
-      </p>
- <br>
-  
-  .tipo-barra {
-    height: 6px;
-    background: #e8edf3;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 4px;
-  }
-  
-  .tipo-barra-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--brand1), var(--brand2));
-    border-radius: 3px;
-    transition: width 0.6s ease;
-  }
-  
-  .update-info {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--muted);
-      <!-- Indicadores (Desktop Only) -->
       <div class="indicadores-section">
         <h3>📊 Indicadores do Mês</h3>
         <div id="indicadores-content">
-          <div class="indicadores-loading">📊 Carregando...</div>
+          <div class="indicadores-loading">📊 Carregando dados...</div>
         </div>
       </div>
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(0,0,0,0.06);
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-numero {
+    font-size: 1.5rem;
   }
 }
   }
@@ -655,7 +656,7 @@ header h2{
         <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Ocorrências<br><small>Relatório do plantão fiscal</small></div><div class="arrow">📈</div></a></li>
         <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs<br><small>Distribuição por área</small></div><div class="arrow">👥</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
-        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#16607f65775677787766797a7f6538717938717960387464"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
+        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#25534c564465444b44554a494c560b424a0b424a530b4757"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
       </ul>
 
   </div>
@@ -949,18 +950,17 @@ window.logout = function(){
 })();
 </script>
 
-<!-- Papa Parse CDN -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-<!-- Script Indicadores -->
 <script>
-// === SISTEMA DE INDICADORES - LAYOUT TABELA ===
-
 function carregarIndicadores() {
   const container = document.getElementById('indicadores-content');
-  if (!container) return;
+  if (!container) {
+    console.error('❌ Container não encontrado!');
+    return;
+  }
   
-  container.innerHTML = '<div class="indicadores-loading">📊 Carregando dados...</div>';
+  console.log('📂 Carregando RPF/inspecoes.cvs...');
   
   Papa.parse('RPF/inspecoes.cvs', {
     download: true,
@@ -968,11 +968,12 @@ function carregarIndicadores() {
     delimiter: ';',
     skipEmptyLines: true,
     complete: function(results) {
+      console.log('✅ CSV carregado:', results.data.length, 'linhas');
       processarDados(results.data, container);
     },
     error: function(error) {
+      console.error('❌ Erro CSV:', error);
       container.innerHTML = '<div class="indicadores-loading">⚠️ Erro: Arquivo RPF/inspecoes.cvs não encontrado</div>';
-      console.error('Erro CSV:', error);
     }
   });
 }
@@ -980,23 +981,19 @@ function carregarIndicadores() {
 function processarDados(data, container) {
   const rows = data.slice(1);
   
-  // Filtrar Janeiro 2026
   let inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('01.2026'));
   let periodoTexto = 'Janeiro 2026';
   
-  // Fallback para Dezembro 2025
   if (inspecoesFiltradas.length === 0) {
     inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('12.2025'));
     periodoTexto = 'Dezembro 2025';
   }
   
-  // Fallback para últimos 1000
   if (inspecoesFiltradas.length === 0) {
     inspecoesFiltradas = rows.slice(-1000);
     periodoTexto = 'Últimos 1000 registros';
   }
   
-  // Cálculos
   const totalInspecoes = inspecoesFiltradas.length;
   
   const autos = inspecoesFiltradas.filter(row => {
@@ -1026,6 +1023,8 @@ function processarDados(data, container) {
   const mediaPorFiscal = totalFiscais > 0 ? Math.round(totalInspecoes / totalFiscais) : 0;
   const taxaAutos = totalInspecoes > 0 ? ((autos / totalInspecoes) * 100).toFixed(1) : 0;
   
+  console.log('📊 Processados:', totalInspecoes, 'inspeções');
+  
   renderizarIndicadores(container, {
     totalInspecoes,
     autos,
@@ -1042,23 +1041,29 @@ function renderizarIndicadores(container, dados) {
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon">📊</div>
-        <div class="stat-numero">${dados.totalInspecoes}</div>
-        <div class="stat-label">Inspeções</div>
-        <div class="stat-detalhe">Média ${dados.mediaPorFiscal}/fiscal</div>
+        <div>
+          <div class="stat-numero">${dados.totalInspecoes}</div>
+          <div class="stat-label">Inspeções</div>
+          <div class="stat-detalhe">Média ${dados.mediaPorFiscal}/fiscal</div>
+        </div>
       </div>
       
       <div class="stat-card">
         <div class="stat-icon">📋</div>
-        <div class="stat-numero">${dados.autos}</div>
-        <div class="stat-label">Autos</div>
-        <div class="stat-detalhe">Taxa ${dados.taxaAutos}%</div>
+        <div>
+          <div class="stat-numero">${dados.autos}</div>
+          <div class="stat-label">Autos</div>
+          <div class="stat-detalhe">Taxa ${dados.taxaAutos}%</div>
+        </div>
       </div>
       
       <div class="stat-card">
         <div class="stat-icon">👥</div>
-        <div class="stat-numero">${dados.totalFiscais}</div>
-        <div class="stat-label">Fiscais</div>
-        <div class="stat-detalhe">Equipe ativa</div>
+        <div>
+          <div class="stat-numero">${dados.totalFiscais}</div>
+          <div class="stat-label">Fiscais</div>
+          <div class="stat-detalhe">Ativos</div>
+        </div>
       </div>
     </div>
     
@@ -1068,7 +1073,7 @@ function renderizarIndicadores(container, dados) {
         ${dados.topTipos.map(item => {
           const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
           let nome = item[0];
-          if (nome.length > 30) nome = nome.substring(0, 27) + '...';
+          if (nome.length > 28) nome = nome.substring(0, 25) + '...';
           
           return `
             <tr>
@@ -1091,9 +1096,9 @@ function renderizarIndicadores(container, dados) {
   `;
   
   container.innerHTML = html;
+  console.log('✅ Indicadores renderizados!');
 }
 
-// Executar ao carregar
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', carregarIndicadores);
 } else {
