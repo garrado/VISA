@@ -335,6 +335,8 @@ header h2{
 .indicadores-loading{text-align:center;padding:20px;color:var(--muted);font-size:0.9rem;background:#f8f9fb;border-radius:8px;}
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;}
+.stat-card{background:linear-gradient(135deg,#f8f9fb,#ffffff);border:1px solid rgba(44,90,160,0.15);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;}
+.stat-icon{font-size:1.6rem;flex-shrink:0;}
 .stat-icon{font-size:1.6rem;flex-shrink:0;}
 .stat-numero{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--brand1),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:4px 0;}
 .stat-label{font-size:0.75rem;color:var(--text);font-weight:700;margin:2px 0;}
@@ -349,7 +351,7 @@ header h2{
 .tipo-barra{height:5px;background:#e8edf3;border-radius:3px;margin-top:3px;overflow:hidden;}
 .tipo-barra-fill{height:100%;background:linear-gradient(90deg,var(--brand1),var(--brand2));transition:width 0.6s ease;}
 .update-info{text-align:center;font-size:0.7rem;color:var(--muted);margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.05);}
-@media(max-width:480px){.stats-grid{grid-template-columns:1fr;gap:8px;}}.stat-card{display:flex;align-items:center;gap:12px;text-align:left;}.stat-icon{font-size:2rem;}.stat-numero{font-size:1.5rem;}}
+@media(max-width:400px){.stats-grid{grid-template-columns:1fr !important;gap:8px;}}
   }
 }
 
@@ -521,7 +523,7 @@ header h2{
         <li><a class="linkPill" href="relatorio_plantao_fiscal.html"><div>Ocorrências<br><small>Relatório do plantão fiscal</small></div><div class="arrow">📈</div></a></li>
         <li><a class="linkPill" href="cadastro_economico_por_equipe_colorido.html"><div>CNAEs<br><small>Distribuição por área</small></div><div class="arrow">👥</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
-        <li><a class="linkPill" href="/cdn-cgi/l/email-protection#493f203a2809282728392625203a672e26672e263f672b3b"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
+        <li><a class="linkPill" href="mailto:visa@anapolis.go.gov.br"><div>Sugestões<br><small>Envie sua ideia</small></div><div class="arrow">💡</div></a></li>
       </ul>
 
   </div>
@@ -563,7 +565,7 @@ header h2{
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="./js/platform-detector.js"></script>  
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>  
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
