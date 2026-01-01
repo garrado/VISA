@@ -1,10 +1,11 @@
 /**
- * DESIGN TOKENS - VISA ANÁPOLIS
- * Sistema de variáveis CSS adaptativas para iOS, Android e Web
+ * DESIGN TOKENS - VISA ANÁPOLIS (VERSÃO 3.0)
+ * Sistema completo com Dark Mode para Android, iOS e Web
+ * Suporte: Material Design 3, iOS Human Interface Guidelines
  */
 
 :root {
-  /* === CORES PRINCIPAIS === */
+  /* === CORES PRINCIPAIS (LIGHT MODE) === */
   --primary: #2c5aa0;
   --primary-dark: #1e3f70;
   --primary-light: #4a7bc8;
@@ -24,6 +25,12 @@
   --text-tertiary: #718096;
   --text-disabled: #a0aec0;
   
+  /* === HEADER ADAPTATIVO === */
+  --header-bg-start: #5b8fd9;
+  --header-bg-end: #7ba7e3;
+  --header-text: #1a202c;
+  --header-text-secondary: rgba(26, 32, 44, 0.85);
+  
   /* === BORDAS === */
   --border-primary: rgba(0, 0, 0, 0.12);
   --border-secondary: rgba(0, 0, 0, 0.08);
@@ -35,6 +42,13 @@
   --input-focus: #2c5aa0;
   --input-text: #1a202c;
   --input-placeholder: #a0aec0;
+  
+  /* === CARDS E INDICADORES === */
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.12);
+  --indicator-loading-bg: #f8f9fb;
+  --warning-bg: #fff7dd;
+  --warning-border: #d1a000;
   
   /* === ESTADOS === */
   --success: #38a169;
@@ -49,21 +63,13 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   
   /* === ESPAÇAMENTOS === */
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-5: 1.25rem;  /* 20px */
-  --space-6: 1.5rem;   /* 24px */
-  --space-8: 2rem;     /* 32px */
-  --space-10: 2.5rem;  /* 40px */
-  --space-12: 3rem;    /* 48px */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-5: 1.25rem;  --space-6: 1.5rem;
+  --space-8: 2rem;     --space-10: 2.5rem;  --space-12: 3rem;
   
   /* === RAIO DE BORDA === */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-sm: 4px;    --radius-md: 8px;
+  --radius-lg: 12px;   --radius-xl: 16px;
   --radius-full: 9999px;
   
   /* === TRANSIÇÕES === */
@@ -76,95 +82,263 @@
                'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
   
-  --text-xs: 0.75rem;    /* 12px */
-  --text-sm: 0.875rem;   /* 14px */
-  --text-base: 1rem;     /* 16px */
-  --text-lg: 1.125rem;   /* 18px */
-  --text-xl: 1.25rem;    /* 20px */
-  --text-2xl: 1.5rem;    /* 24px */
-  --text-3xl: 1.875rem;  /* 30px */
+  --text-xs: 0.75rem;    --text-sm: 0.875rem;   --text-base: 1rem;
+  --text-lg: 1.125rem;   --text-xl: 1.25rem;    --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
   
   /* === Z-INDEX === */
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
-  --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
+  --z-dropdown: 1000;   --z-sticky: 1020;    --z-fixed: 1030;
+  --z-modal-backdrop: 1040;  --z-modal: 1050;  --z-popover: 1060;
   --z-tooltip: 1070;
 }
 
-/* === MODO ESCURO === */
+/* ===================================================================
+   DARK MODE - WEB/DESKTOP
+   ================================================================ */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #1a202c;
-    --bg-secondary: #2d3748;
-    --surface: #2d3748;
-    --surface-variant: #374151;
+  :root:not(.platform-ios):not(.platform-android) {
+    /* Superfícies */
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a202c;
+    --surface: #1a202c;
+    --surface-variant: #2d3748;
     
+    /* Texto */
     --text-primary: #f7fafc;
     --text-secondary: #e2e8f0;
     --text-tertiary: #cbd5e0;
     --text-disabled: #718096;
     
+    /* Header escuro */
+    --header-bg-start: #1e3f70;
+    --header-bg-end: #2c5aa0;
+    --header-text: #e2e8f0;
+    --header-text-secondary: rgba(226, 232, 240, 0.85);
+    
+    /* Bordas */
     --border-primary: rgba(255, 255, 255, 0.12);
     --border-secondary: rgba(255, 255, 255, 0.08);
+    --border-focus: #4a7bc8;
     
+    /* Inputs */
     --input-bg: #2d3748;
     --input-border: rgba(255, 255, 255, 0.23);
     --input-text: #f7fafc;
     --input-placeholder: #718096;
+    --input-focus: #4a7bc8;
+    
+    /* Cards */
+    --card-bg: #1a202c;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --indicator-loading-bg: #2d3748;
+    --warning-bg: #3d2e00;
+    --warning-border: #d1a000;
+    
+    /* Cores primárias mais claras para contraste */
+    --primary: #4a7bc8;
+    --primary-light: #6b9adc;
+    
+    /* Sombras mais suaves */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   }
 }
 
-/* === OTIMIZAÇÕES iOS === */
+/* ===================================================================
+   iOS - LIGHT MODE
+   ================================================================ */
 @supports (-webkit-touch-callout: none) {
   :root {
-    /* iOS usa San Francisco como fonte padrão */
+    /* San Francisco como fonte padrão */
     --font-sans: -apple-system, BlinkMacSystemFont, sans-serif;
     
-    /* iOS prefere bordas mais arredondadas */
+    /* Bordas mais arredondadas */
     --radius-md: 10px;
     --radius-lg: 14px;
     --radius-xl: 18px;
     
-    /* iOS usa cores mais vibrantes */
+    /* Cores iOS */
     --primary: #007AFF;
     --success: #34C759;
     --warning: #FF9500;
     --error: #FF3B30;
     --info: #5AC8FA;
     
+    /* Header iOS */
+    --header-bg-start: #5b8fd9;
+    --header-bg-end: #7ba7e3;
+    --header-text: #1a202c;
+    
     /* Inputs iOS */
     --input-border: rgba(0, 0, 0, 0.15);
     --input-focus: #007AFF;
+    --border-focus: #007AFF;
   }
 }
 
-/* === OTIMIZAÇÕES ANDROID === */
-@media (min-width: 0) and (max-width: 9999px) {
+/* ===================================================================
+   iOS - DARK MODE ⭐
+   ================================================================ */
+@supports (-webkit-touch-callout: none) {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Superfícies iOS Dark */
+      --bg-primary: #000000;
+      --bg-secondary: #1c1c1e;
+      --surface: #1c1c1e;
+      --surface-variant: #2c2c2e;
+      
+      /* Texto iOS Dark */
+      --text-primary: #ffffff;
+      --text-secondary: #ebebf5;
+      --text-tertiary: #aeaeb2;
+      --text-disabled: #8e8e93;
+      
+      /* Header iOS Dark */
+      --header-bg-start: #1c1c1e;
+      --header-bg-end: #2c2c2e;
+      --header-text: #ffffff;
+      --header-text-secondary: rgba(255, 255, 255, 0.85);
+      
+      /* Bordas iOS Dark */
+      --border-primary: rgba(255, 255, 255, 0.15);
+      --border-secondary: rgba(255, 255, 255, 0.10);
+      
+      /* Inputs iOS Dark */
+      --input-bg: #1c1c1e;
+      --input-border: rgba(255, 255, 255, 0.15);
+      --input-text: #ffffff;
+      --input-placeholder: #8e8e93;
+      
+      /* Cards iOS Dark */
+      --card-bg: #1c1c1e;
+      --card-border: rgba(255, 255, 255, 0.15);
+      --indicator-loading-bg: #2c2c2e;
+      --warning-bg: #3d2e00;
+      
+      /* Cores iOS Dark (mais vibrantes) */
+      --primary: #0A84FF;
+      --success: #32D74B;
+      --warning: #FF9F0A;
+      --error: #FF453A;
+      --info: #64D2FF;
+      
+      /* Sombras iOS Dark */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+/* ===================================================================
+   ANDROID - LIGHT MODE (Material Design 3)
+   ================================================================ */
+html.platform-android {
+  /* Roboto como fonte padrão */
+  --font-sans: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Bordas Material Design */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  
+  /* Cores Material You */
+  --primary: #1976d2;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --error: #f44336;
+  --info: #2196f3;
+  
+  /* Header Android */
+  --header-bg-start: #1976d2;
+  --header-bg-end: #1565c0;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.87);
+  
+  /* Inputs Material */
+  --input-border: rgba(0, 0, 0, 0.42);
+  --input-focus: #1976d2;
+  --border-focus: #1976d2;
+}
+
+/* ===================================================================
+   ANDROID - DARK MODE ⭐ (Material Design 3)
+   ================================================================ */
+@media (prefers-color-scheme: dark) {
   html.platform-android {
-    /* Android usa Roboto */
-    --font-sans: Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Superfícies Material Dark */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --surface: #1e1e1e;
+    --surface-variant: #2c2c2c;
     
-    /* Material Design prefere bordas menos arredondadas */
-    --radius-md: 4px;
-    --radius-lg: 8px;
-    --radius-xl: 12px;
+    /* Texto Material Dark */
+    --text-primary: #e1e1e1;
+    --text-secondary: #b3b3b3;
+    --text-tertiary: #8a8a8a;
+    --text-disabled: #666666;
     
-    /* Cores Material Design */
-    --primary: #1976d2;
-    --success: #4caf50;
-    --warning: #ff9800;
-    --error: #f44336;
-    --info: #2196f3;
+    /* Header Material Dark */
+    --header-bg-start: #1e1e1e;
+    --header-bg-end: #2c2c2c;
+    --header-text: #e1e1e1;
+    --header-text-secondary: rgba(225, 225, 225, 0.87);
+    
+    /* Bordas Material Dark */
+    --border-primary: rgba(255, 255, 255, 0.12);
+    --border-secondary: rgba(255, 255, 255, 0.08);
+    
+    /* Inputs Material Dark */
+    --input-bg: #1e1e1e;
+    --input-border: rgba(255, 255, 255, 0.42);
+    --input-text: #e1e1e1;
+    --input-placeholder: #8a8a8a;
+    
+    /* Cards Material Dark */
+    --card-bg: #1e1e1e;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --indicator-loading-bg: #2c2c2c;
+    --warning-bg: #3d2e00;
+    
+    /* Cores Material Dark (tons M3) */
+    --primary: #90CAF9;        /* Azul claro */
+    --primary-light: #BBDEFB;
+    --success: #81C784;
+    --warning: #FFB74D;
+    --error: #E57373;
+    --info: #64B5F6;
+    
+    /* Sombras Material Dark (mais fortes) */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
   }
 }
 
-/* === SAFE AREAS === */
+/* ===================================================================
+   SAFE AREAS (iOS notch, Android gestures)
+   ================================================================ */
 :root {
   --safe-area-inset-top: env(safe-area-inset-top, 0px);
   --safe-area-inset-right: env(safe-area-inset-right, 0px);
   --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
   --safe-area-inset-left: env(safe-area-inset-left, 0px);
+}
+
+/* ===================================================================
+   VARIÁVEIS EXTRAS PARA COMPATIBILIDADE
+   (index.html ainda usa --brand1, --brand2, etc)
+   ================================================================ */
+:root {
+  --brand1: var(--primary);
+  --brand2: var(--primary-dark);
+  --bg: var(--bg-primary);
+  --text: var(--text-primary);
+  --muted: var(--text-tertiary);
+  --card: var(--card-bg);
+  --line: var(--border-primary);
+  --warnBg: var(--warning-bg);
+  --warnLine: var(--warning-border);
 }
