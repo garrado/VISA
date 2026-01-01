@@ -877,9 +877,9 @@ function processarDados(data, container) {
 
 function renderizarIndicadores(container, dados) {
   let html = '<div class="stats-grid">' +
-    '<div class="stat-card">📊 <strong style="font-size:1.3rem;margin:0 6px">' + dados.totalInspecoes + '</strong> <span style="font-size:0.9rem">Inspeções</span><br><small style="color:var(--muted)">Média ' + dados.mediaPorFiscal + '/fiscal</small></div>' +
-    '<div class="stat-card">📋 <strong style="font-size:1.3rem;margin:0 6px">' + dados.autos + '</strong> <span style="font-size:0.9rem">Autos</span><br><small style="color:var(--muted)">Taxa ' + dados.taxaAutos + '%</small></div>' +
-    '<div class="stat-card">👥 <strong style="font-size:1.3rem;margin:0 6px">' + dados.totalFiscais + '</strong> <span style="font-size:0.9rem">Fiscais</span><br><small style="color:var(--muted)">Ativos</small></div>' +
+    '<div class="stat-card">📊 <strong style="font-size:1.3rem !important;margin:0 6px">' + dados.totalInspecoes + '</strong> <span style="font-size:0.9rem">Inspeções</span><br><small style="color:var(--muted)">Média ' + dados.mediaPorFiscal + '/fiscal</small></div>' +
+    '<div class="stat-card">📋 <strong style="font-size:1.3rem !important;margin:0 6px">' + dados.autos + '</strong> <span style="font-size:0.9rem">Autos</span><br><small style="color:var(--muted)">Taxa ' + dados.taxaAutos + '%</small></div>' +
+    '<div class="stat-card">👥 <strong style="font-size:1.3rem !important;margin:0 6px">' + dados.totalFiscais + '</strong> <span style="font-size:0.9rem">Fiscais</span><br><small style="color:var(--muted)">Ativos</small></div>' +
     '</div>' +
     '<div class="tipos-table-container"><h4>📄 Tipos de Documentos</h4><table class="tipos-table">';
   
@@ -887,7 +887,7 @@ function renderizarIndicadores(container, dados) {
     const porcentagem = ((item[1] / dados.totalInspecoes) * 100).toFixed(0);
     let nome = item[0];
     if (nome.length > 28) nome = nome.substring(0, 25) + '...';
-    html += '<tr><td>' + nome + '<div class="tipo-barra"><div class="tipo-barra-fill" style="width:' + porcentagem + '%;"></div></div></td><td style="padding-left:15px">' + item[1] + '</td></tr>';
+    html += '<tr><td>' + nome + '<div class="tipo-barra"><div class="tipo-barra-fill" style="width:' + porcentagem + '%;"></div></div></td><td style="padding-left:15px !important">' + item[1] + '</td></tr>';
   });
   
   html += '</table></div><div class="update-info">📅 ' + dados.periodoTexto + ' • 🔄 Atualizado</div>';
@@ -902,6 +902,7 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
+
 
 
 
