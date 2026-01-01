@@ -381,6 +381,12 @@ header h2{
   margin-top:12px;
 }
 .modalActions .btn{ width:auto; }
+
+/* Card que ocupa as duas colunas da grid */
+.grid-span-2{
+  grid-column: 1 / -1;
+}
+
 </style>
 
   <!-- Sistema de Design - VISA Anápolis -->
@@ -446,39 +452,24 @@ header h2{
     }
   </style>
 
-  <style>
-/* === MENSAGEM INSTITUCIONAL EM LARGURA TOTAL (DESKTOP) ===
-   O bloco (card) ocupa 100% da largura da viewport.
-   O conteúdo interno (título e parágrafos) fica com largura confortável. */
-@media (min-width: 921px){
-  .institucional-full{
-    width: 100%;
-    background: var(--bg);
-    padding: 18px 0 26px; /* sem “encaixar” no container central */
-  }
+<style>
+/* === MENSAGEM INSTITUCIONAL FULL WIDTH (apenas versão web) === */
+.institucional-full{
+  width: 100%;
+  background: var(--bg);
+  padding: 24px 16px 32px;
+}
 
-  /* o CARD agora fica full-width */
-  .institucional-inner{
-    width: 100%;
-    max-width: none;
-    margin: 0;
-  }
+.institucional-inner{
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
-  /* mantém leitura confortável (sem linhas gigantes) */
-  .institucional-inner.card > h3,
-  .institucional-inner.card > p{
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .institucional-inner p{
-    text-align: justify;
-    text-justify: inter-word;
-  }
+.institucional-inner p{
+  text-align: justify;
+  text-justify: inter-word;
 }
 </style>
-
   
 </head>
 
@@ -565,8 +556,8 @@ header h2{
 
 </div>
   
-  <div class="institucional-full">
-    <div class="institucional-inner card">
+  
+    <div class="card grid-span-2">
     <h3>Mensagem Institucional</h3>
     <p>
       Esta página interna da Gerência de Vigilância Sanitária reúne informações, links e comunicados destinados aos servidores, com o objetivo de apoiar as atividades de fiscalização sanitária, promovendo a qualidade das ações fiscalizatórias e a melhor organização da comunicação e do acesso a dados operacionais.
@@ -600,8 +591,7 @@ header h2{
     <div class="modalActions">
       <button class="btn btnPrimary" onclick="fecharModalNaoAutorizado()">Entendi</button>
     </div>
-  </div>
-</div>
+  
 
   
 <script type="module">
@@ -1013,19 +1003,3 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
