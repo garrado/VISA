@@ -859,41 +859,112 @@ function carregarIndicadores() {
 
 function processarDados(data, container) {
   const rows = data.slice(1);
-  let inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('01.2026'));
-  let periodoTexto = 'Janeiro 2026';
-  
-  if (inspecoesFiltradas.length === 0) {
-    inspecoesFiltradas = rows.filter(row => row[2] && row[2].includes('12.2025'));
-    periodoTexto = 'Dezembro 2025';
+
+  // ===== Helpers =====
+  const mesesPt = [
+    'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
+  ];
+
+  const pad2 = (n) => String(n).padStart(2, '0');
+
+  // Extrai {day, month, year} de "DD.MM.YYYY" ou "DD/MM/YYYY" (ou com "-")
+  function parseDMY(str) {
+    if (!str) return null;
+    const m = String(str).trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})/);
+    if (!m) return null;
+    const day = parseInt(m[1], 10);
+    const month = parseInt(m[2], 10);
+    let year = parseInt(m[3], 10);
+    if (year < 100) year += 2000; // caso venha "26" em vez de "2026"
+    if (!(day >= 1 && day <= 31 && month >= 1 && month <= 12)) return null;
+    return { day, month, year };
   }
-  
-  if (inspecoesFiltradas.length === 0) {
+
+  function labelMesAno(month, year) {
+    return `${mesesPt[month - 1]} ${year}`;
+  }
+
+  function prevMesAno(month, year) {
+    if (month === 1) return { month: 12, year: year - 1 };
+    return { month: month - 1, year };
+  }
+
+  function keyMesAno(month, year) {
+    return `${pad2(month)}.${year}`; // ex: "01.2026"
+  }
+
+  // ===== Regra do mês avaliado =====
+  const hoje = new Date(); // data do dispositivo (web/pwa)
+  const hojeDia = hoje.getDate();
+  const mesAtual = hoje.getMonth() + 1; // 1..12
+  const anoAtual = hoje.getFullYear();
+
+  const atualKey = keyMesAno(mesAtual, anoAtual);
+  const anterior = prevMesAno(mesAtual, anoAtual);
+  const anteriorKey = keyMesAno(anterior.month, anterior.year);
+
+  // Filtra linhas do mês atual e do mês anterior (baseado no "MM.AAAA" presente na data)
+  const rowsMesAtual = rows.filter(row => row[2] && String(row[2]).includes(atualKey));
+  const rowsMesAnterior = rows.filter(row => row[2] && String(row[2]).includes(anteriorKey));
+
+  // Verifica se no mês atual já existem inspeções "a partir do dia 25" (>= 25)
+  const existeDia25ouMaisNoMesAtual = rowsMesAtual.some(row => {
+    const dmy = parseDMY(row[2]);
+    return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 25;
+  });
+
+  // === Decisão final ===
+  // 1) Enquanto NÃO chegar no dia 25 do mês corrente, mostra mês anterior.
+  // 2) Depois do dia 25, só troca para o mês corrente se já existirem inspeções com dia >= 25 nesse mês.
+  let inspecoesFiltradas;
+  let periodoTexto;
+
+  if (hojeDia < 25) {
+    inspecoesFiltradas = rowsMesAnterior;
+    periodoTexto = labelMesAno(anterior.month, anterior.year);
+  } else {
+    if (existeDia25ouMaisNoMesAtual) {
+      inspecoesFiltradas = rowsMesAtual;
+      periodoTexto = labelMesAno(mesAtual, anoAtual);
+    } else {
+      inspecoesFiltradas = rowsMesAnterior;
+      periodoTexto = labelMesAno(anterior.month, anterior.year);
+    }
+  }
+
+  // Fallback final: se não achou nada no mês anterior (muito raro), pega últimos 1000
+  if (!inspecoesFiltradas || inspecoesFiltradas.length === 0) {
     inspecoesFiltradas = rows.slice(-1000);
     periodoTexto = 'Últimos 1000';
   }
-  
+
+  // ===== segue seu cálculo original =====
   const totalInspecoes = inspecoesFiltradas.length;
   const autos = inspecoesFiltradas.filter(row => row[6] && row[6].includes('AUTO DE IMPOSIÇÃO')).length;
-  
+
   const fiscaisSet = new Set();
   inspecoesFiltradas.forEach(row => {
     if (row[17] && row[17].trim()) fiscaisSet.add(row[17].trim());
   });
   const totalFiscais = fiscaisSet.size;
-  
+
   const tiposDocumentos = {};
   inspecoesFiltradas.forEach(row => {
     if (row[6] && row[6].trim()) {
       tiposDocumentos[row[6].trim()] = (tiposDocumentos[row[6].trim()] || 0) + 1;
     }
   });
-  
+
   const topTipos = Object.entries(tiposDocumentos).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const mediaPorFiscal = totalFiscais > 0 ? Math.round(totalInspecoes / totalFiscais) : 0;
   const taxaAutos = totalInspecoes > 0 ? ((autos / totalInspecoes) * 100).toFixed(1) : 0;
-  
-  renderizarIndicadores(container, {totalInspecoes, autos, totalFiscais, mediaPorFiscal, taxaAutos, topTipos, periodoTexto});
+
+  renderizarIndicadores(container, {
+    totalInspecoes, autos, totalFiscais, mediaPorFiscal, taxaAutos, topTipos, periodoTexto
+  });
 }
+
 
 
 function renderizarIndicadores(container, dados) {
@@ -923,6 +994,7 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
+
 
 
 
