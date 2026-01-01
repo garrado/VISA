@@ -451,6 +451,26 @@ header h2{
       text-justify: inter-word;
     }
   </style>
+
+<style>
+/* === MENSAGEM INSTITUCIONAL FULL WIDTH (apenas versão web) === */
+.institucional-full{
+  width: 100%;
+  background: var(--bg);
+  padding: 24px 16px 32px;
+}
+
+.institucional-inner{
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.institucional-inner p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+</style>
+  
 </head>
 
 <body>
@@ -518,7 +538,20 @@ header h2{
     <div class="card links-section">
       <h3>Central de Trabalho</h3>
       <ul>
-        <li><a class="linkPill" href="RPF\RPF2-PERFEITO-AUTH-DROPDOWN.html"><div>Inspeções<br><small>Relatório por fiscal e período</small></div><div class="arrow">📊</div></a></li>
+        <li><a class="linkPill" href="RPF\RPF2-PERFEITO-AUTH-DROPDOWN.html"><div>Inspeções<br><small>Relatório por fiscal e período</small></div>
+
+<div class="card grid-span-2">
+    <h3>Mensagem Institucional</h3>
+    <p>
+      Esta página interna da Gerência de Vigilância Sanitária reúne informações, links e comunicados destinados aos servidores, com o objetivo de apoiar as atividades de fiscalização sanitária, promovendo a qualidade das ações fiscalizatórias e a melhor organização da comunicação e do acesso a dados operacionais.
+    </p>
+    <br>
+    <p class="small">
+      📄 <a href="README.html" target="_blank" rel="noopener">Consulte aqui o Aviso Institucional e as regras de uso da plataforma</a>
+    </p>
+  </div>
+
+<div class="arrow">📊</div></a></li>
         <li><a class="linkPill" href="legislacao.html"><div>Legislação<br><small>Consulta normativa</small></div><div class="arrow">📜</div></a></li>
         <li><a class="linkPill" href="check.html"><div>Check List<br><small>Roteiro de inspeção</small></div><div class="arrow">✓</div></a></li>
         <li><a class="linkPill" href="Escala_Ferias_Janeiro_2026_APP"><div>Férias<br><small>Escala de férias de janeiro</small></div><div class="arrow">🏖️</div></a></li>
@@ -532,25 +565,10 @@ header h2{
 
   </div>
 
-
-  
-  
-    <div class="card grid-span-2">
-    <h3>Mensagem Institucional</h3>
-    <p>
-      Esta página interna da Gerência de Vigilância Sanitária reúne informações, links e comunicados destinados aos servidores, com o objetivo de apoiar as atividades de fiscalização sanitária, promovendo a qualidade das ações fiscalizatórias e a melhor organização da comunicação e do acesso a dados operacionais.
-    </p>
-    <br>
-    <p class="small">
-      📄 <a href="README.html" target="_blank" rel="noopener">Consulte aqui o Aviso Institucional e as regras de uso da plataforma</a>
-    </p>
-  </div>
-
-
-
 </div>
 
-</div></div>
+</div>
+</div>
 
 <div style="text-align: center; padding: 20px 16px;">
   <button class="btn" onclick="logout()">Encerrar sessão</button>
