@@ -910,7 +910,7 @@ function renderizarIndicadores(container, dados) {
     if (nome.length > 28) nome = nome.substring(0, 25) + '...';
     html += '<tr><td>' + nome + '<div class="tipo-barra"><div class="tipo-barra-fill" style="width:' + porcentagem + '%;"></div></div></td><td style="padding-left:15px !important">' + item[1] + '</td></tr>';
   });
-  
+  <br>
   html += '</table></div><div class="update-info">📅 ' + dados.periodoTexto + ' • 🔄 Atualizado</div>';
   container.innerHTML = html;
 }
@@ -923,6 +923,7 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
+
 
 
 
