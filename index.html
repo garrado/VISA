@@ -911,7 +911,7 @@ function renderizarIndicadores(container, dados) {
     html += '<tr><td>' + nome + '<div class="tipo-barra"><div class="tipo-barra-fill" style="width:' + porcentagem + '%;"></div></div></td><td style="padding-left:15px !important">' + item[1] + '</td></tr>';
   });
   
-  html += '</table></div><div class="update-info">📅 ' + dados.periodoTexto + ' • 🔄 Atualizado</div>';
+  html += '<br></table></div><div class="update-info">📅 ' + dados.periodoTexto + ' • 🔄 Atualizado</div>';
   container.innerHTML = html;
 }
 if (document.readyState === 'loading') {
@@ -923,6 +923,7 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
+
 
 
 
