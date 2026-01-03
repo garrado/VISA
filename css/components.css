@@ -749,3 +749,55 @@
     display: none !important;
   }
 }
+/* ===================================================================
+   ADICIONAR NO COMPONENTS.CSS - MENSAGEM INSTITUCIONAL
+   ================================================================ */
+
+/* Grid com 2 colunas em desktop */
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Card que ocupa 2 colunas (largura total) */
+.grid-span-2 {
+  grid-column: 1 / -1;  /* Ocupa todas as colunas */
+}
+
+/* Mensagem institucional com texto justificado */
+.grid-span-2 p {
+  text-align: justify;
+  text-justify: inter-word;
+  max-width: 100%;  /* Remove limitação de 65ch do base.css */
+  line-height: 1.6;
+}
+
+/* ===================================================================
+   ALTERNATIVA: Classe específica para mensagem institucional
+   ================================================================ */
+
+.mensagem-institucional {
+  grid-column: 1 / -1;  /* Largura total */
+  max-width: 900px;     /* Limita apenas se for MUITO largo */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mensagem-institucional p {
+  text-align: justify;
+  text-justify: inter-word;
+  max-width: none;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.mensagem-institucional h3 {
+  text-align: left;  /* Título à esquerda */
+}
