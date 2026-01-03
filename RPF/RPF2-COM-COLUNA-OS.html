@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Inspeções por Fiscal - VISAM Anápolis</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- DataTables CSS e JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <!-- PapaParse para ler CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <!-- Biblioteca para SHA-256 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Modal de Autenticação */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .auth-modal {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .auth-modal h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .auth-modal p {
+            color: #6c757d;
+            margin-bottom: 25px;
+        }
+
+        .auth-modal input,
+        .auth-modal select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .auth-modal input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .auth-modal button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .auth-modal button:hover {
+            transform: translateY(-2px);
+        }
+
+        .auth-error {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .main-content {
+            display: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .filters {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 150px;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+            font-size: 0.95em;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-search {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-search:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            padding: 30px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .info-box.warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+
+        .info-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse;
+        }
+
+        table.dataTable thead th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+        }
+
+        table.dataTable tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* === COLUNA OS - Número em destaque === */
+        .os-cell {
+            text-align: center;
+            line-height: 1.2;
+            padding: 6px 4px !important;
+        }
+
+        .os-numero {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .os-modalidade {
+            font-size: 0.7em;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Ajustar larguras das colunas para caber tudo */
+        table.dataTable thead th:nth-child(1) { width: 85px; min-width: 85px; }   /* Data */
+        table.dataTable thead th:nth-child(2) { width: 75px; min-width: 75px; text-align: center; }   /* OS */
+        table.dataTable thead th:nth-child(3) { width: 135px; min-width: 135px; } /* Tipo Doc */
+        table.dataTable thead th:nth-child(4) { width: 75px; min-width: 75px; }   /* Nº Doc */
+        table.dataTable thead th:nth-child(5) { width: auto; }                     /* Razão */
+        table.dataTable thead th:nth-child(6) { width: 80px; min-width: 80px; }   /* CNAE */
+        table.dataTable thead th:nth-child(7) { width: 90px; min-width: 90px; }   /* Complexidade */
+
+        .dataTables_wrapper {
+            padding: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+        /* === BOTÕES DE EXPORTAÇÃO === */
+        .export-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .export-section h3 {
+            color: #333;
+            font-size: 1em;
+            margin-bottom: 12px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-pdf { background: #dc3545; }
+        .btn-excel { background: #28a745; }
+        .btn-word { background: #007bff; }
+        .btn-html { background: #fd7e14; }
+
+        /* === RESPONSIVO COMPLETO === */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            #tabelaInspecoes {
+                min-width: 700px;
+            }
+            .filter-row {
+                flex-direction: column !important;
+                gap: 12px;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px;
+            }
+            .btn-search {
+                width: 100%;
+                padding: 14px;
+            }
+        }
+
+        /* === BOTÃO VOLTAR MOBILE === */
+        #backButtonContainer {
+            display: none;
+            justify-content: flex-end;
+            margin-top: 10px;
+            padding: 8px 0;
+        }
+
+        .back-btn {
+            padding: 10px 18px;
+            border-radius: 25px;
+            border: none;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .back-android {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .back-android:hover {
+            background: #dee2e6;
+            transform: translateY(-1px);
+        }
+
+        .back-ios {
+            background: transparent;
+            color: #28a745;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            #backButtonContainer {
+                display: flex;
+            }
+        }
+</style>
+    <!-- Bibliotecas de Exportação -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.4/pizzip.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.iife.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+        
+</head>
+<body>
+    <!-- Modal de Autenticação -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal">
+            <h2>🔒 Acesso Restrito</h2>
+            <p>Selecione seu nome e digite a senha</p>
+            <select id="usuarioSelect"></select>
+            <input type="password" id="senhaInput" placeholder="Senha" autocomplete="current-password" onkeypress="if(event.key==='Enter') verificarLogin()">
+            <button onclick="verificarLogin()">Entrar</button>
+            <div class="auth-error" id="authError">❌ Usuário ou senha inválidos.</div>
+            <div class="auth-error" id="authErrorPerm" style="display:none;">⛔ Não autorizado para este relatório.</div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <div class="header">
+                <h1>🏥 Relatório de Inspeções por Período</h1>
+                <p>Vigilância Sanitária - Anápolis/GO</p>
+                <div id="backButtonContainer"></div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="fiscal">Fiscal Sanitário:</label>
+                        <select id="fiscal">
+                            <option value="">-- Selecione um fiscal --</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dataInicial">Data Inicial:</label>
+                        <input type="date" id="dataInicial" min="2018-01-01" max="2026-12-31">
+                    </div>
+                    <div class="filter-group">
+                        <label for="dataFinal">Data Final:</label>
+                        <input type="date" id="dataFinal" min="2018-01-01" max="2026-12-31">
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn-search" onclick="buscarInspecoes()">
+                            🔍 Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Botões de Exportação -->
+            <div class="export-section" id="exportSection">
+                <h3>📤 Exportar Resultados</h3>
+                <div class="export-buttons">
+                    <button class="btn-export btn-pdf" onclick="exportarPDF()">📄 PDF</button>
+                    <button class="btn-export btn-excel" onclick="exportarExcel()">📊 Excel</button>
+                    <button class="btn-export btn-word" onclick="exportarWord()">📝 Word</button>
+                    <button class="btn-export btn-html" onclick="exportarHTML()">🌐 HTML</button>
+                </div>
+            </div>
+
+<div class="results">
+                <div id="infoBox"></div>
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    Processando dados...
+                </div>
+                
+            <div class="table-responsive">
+                <table id="tabelaInspecoes" class="display" style="display: none; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>OS</th>
+                            <th>Tipo de Documento</th>
+                            <th>Nº Doc</th>
+                            <th>Razão Social</th>
+                            <th>CNAE</th>
+                            <th>Complexidade</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== AUTENTICAÇÃO POR USUÁRIO (login.csv) ==========
+        const LOGIN_CSV_URL = 'login.csv'; // Na mesma pasta do HTML (RPF/)
+        let loginDB = [];
+        let usuarioLogado = null;
+
+        function normalizarTexto(s) {
+            return String(s || '').trim().toUpperCase();
+        }
+
+        function limparAcentos(str) {
+            return normalizarTexto(str)
+                .normalize('NFD')
+                .replace(/[̀-ͯ]/g, '');
+        }
+
+        function carregarLoginDB() {
+            return new Promise((resolve, reject) => {
+                Papa.parse(LOGIN_CSV_URL, {
+                    download: true,
+                    header: true,
+                    delimiter: ';',
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        loginDB = (results.data || []).map(r => ({
+                            UsuarioOriginal: String(r.Usuario || '').trim(),
+                            Usuario: limparAcentos(r.Usuario),
+                            Grupo: normalizarTexto(r.Grupo),
+                            Senha: String(r.Senha || '').trim(),
+                            Senha2: String(r.Senha2 || '').trim(),
+                            Senha3: String(r.Senha3 || '').trim()
+                        }));
+                        resolve();
+                    },
+                    error: function(err) {
+                        reject(err);
+                    }
+                });
+            });
+        }
+
+        function popularUsuariosLogin() {
+            const sel = document.getElementById('usuarioSelect');
+            if (!sel) return;
+
+            sel.innerHTML = '';
+            const opt0 = document.createElement('option');
+            opt0.value = '';
+            opt0.textContent = '-- Selecione seu nome --';
+            sel.appendChild(opt0);
+
+            const regs = (loginDB || [])
+                .filter(r => r.UsuarioOriginal && r.UsuarioOriginal.length > 0)
+                .sort((a,b) => a.UsuarioOriginal.localeCompare(b.UsuarioOriginal, 'pt-BR'));
+
+            regs.forEach(r => {
+                const o = document.createElement('option');
+                o.value = r.Usuario; // normalizado
+                o.textContent = r.UsuarioOriginal;
+                sel.appendChild(o);
+            });
+        }
+
+        async function prepararLoginUI() {
+            try {
+                await carregarLoginDB();
+                popularUsuariosLogin();
+            } catch(e) {
+                console.error('Erro ao carregar login.csv:', e);
+                document.getElementById('authError').style.display = 'block';
+            }
+        }
+
+        window.addEventListener('load', prepararLoginUI);
+
+        function aplicarRestricaoFiscal() {
+            const sel = document.getElementById('fiscal');
+            if (!sel || !usuarioLogado) return;
+
+            if (usuarioLogado.grupo === 'ADM') {
+                sel.disabled = false;
+                return;
+            }
+
+            if (usuarioLogado.grupo === 'FIS') {
+                const alvo = usuarioLogado.nome;
+                let achou = false;
+                for (let i = 0; i < sel.options.length; i++) {
+                    const opt = limparAcentos(sel.options[i].text);
+                    if (opt === alvo) {
+                        sel.selectedIndex = i;
+                        achou = true;
+                        break;
+                    }
+                }
+                sel.disabled = true;
+                if (!achou) alert('⛔ Seu usuário não foi encontrado na lista de fiscais.');
+            }
+        }
+
+        async function verificarLogin() {
+            try {
+                document.getElementById('authError').style.display = 'none';
+                document.getElementById('authErrorPerm').style.display = 'none';
+
+                const usuario = limparAcentos(document.getElementById('usuarioSelect').value);
+                const senha = String(document.getElementById('senhaInput').value || '').trim();
+
+                if (!usuario || !senha) {
+                    document.getElementById('authError').style.display = 'block';
+                    return;
+                }
+
+                if (!loginDB || loginDB.length === 0) {
+                    await carregarLoginDB();
+                }
+
+                const reg = loginDB.find(r => r.Usuario === usuario);
+                if (!reg) {
+                    document.getElementById('authError').style.display = 'block';
+                    return;
+                }
+
+                const senhasValidas = [reg.Senha, reg.Senha2, reg.Senha3].filter(x => x && x.length > 0);
+                if (!senhasValidas.includes(senha)) {
+                    document.getElementById('authError').style.display = 'block';
+                    document.getElementById('senhaInput').value = '';
+                    document.getElementById('usuarioSelect').focus();
+                    return;
+                }
+
+                if (reg.Grupo !== 'ADM' && reg.Grupo !== 'FIS') {
+                    document.getElementById('authErrorPerm').style.display = 'block';
+                    setTimeout(() => window.location.href = 'index.html', 1200);
+                    return;
+                }
+
+                usuarioLogado = { nome: reg.Usuario, grupo: reg.Grupo };
+
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+
+                popularFiscais();
+                carregarArquivos();
+                aplicarRestricaoFiscal();
+
+                if (typeof criarBotaoVoltar === 'function') setTimeout(criarBotaoVoltar, 300);
+            } catch (e) {
+                console.error('Erro no login:', e);
+                alert('Erro ao validar login. Veja o console.');
+            }
+        }
+
+
+        // ========== SISTEMA PRINCIPAL ==========
+
+        // Lista oficial de fiscais da VISAM Anápolis
+        const fiscaisOficiais = [
+            "ACADIA DE SOUZA VIEIRA SILVA",
+            "ADRIANA CRHISTINA DE REZENDE CARNEIRO",
+            "ADRIANE PEREIRA GUIMARÃES",
+            "ALINE CASTRO DAMASIO",
+            "ANA PAULA RODRIGUES CORRÊA GUIMARÃES",
+            "ANGELA RIBEIRO NEVES",
+            "ARIANNE FERREIRA VIEIRA",
+            "CÉSIO MALAQUIAS",
+            "CLÁUDIO NASCIMENTO SILVA",
+            "CLÓVIS RAFAEL BORGES FERREIRA",
+            "DANIEL SOARES BARBOSA",
+            "DANIELA DE ALMEIDA CASTRO",
+            "EDSON ARANTES FARIA FILHO",
+            "EDUARDO LUCAS MAGALHÃES CASTRO",
+            "FABÍOLA PEDROSA PEIXOTO MARQUES",
+            "GERALDO EDSON ROSA",
+            "GLEICIANE MARIA JOSÉ DA SILVA",
+            "GÚBIO DIAS PEREIRA",
+            "JOÃO BATISTA LUCAS DA SILVA REIS",
+            "JOSE LUIZ RIBEIRO",
+            "JULIANA FERREIRA VITURINO",
+            "JULIANA KÊNIA MARTINS DA SILVA",
+            "JULIO CÉSAR TELES SPINDOLA",
+            "KAMILLA CHRYSTINE ROLIM D. SANTOS GARCÊS",
+            "LIDIANE SIMÕES",
+            "LIVIA BRITO",
+            "LUCIANA CONSOLAÇÃO DOS SANTOS",
+            "LUCIANA SANTANA DA ROCHA",
+            "LUCIENE DE SOUZA BARBOSA GOMES SILVA",
+            "MARCIO HENRIQUE GOMES RODOVALHO",
+            "MARIA EDWIGES PINHEIRO DE SOUZA CHAVES",
+            "MARINA PERILLO NAVARRETE LAVERS",
+            "PATRÍCIA CORDEIRO DE MORAES E SOUZA",
+            "PEDRO HENRIQUE AIRES RIBEIRO",
+            "RODRIGO ALESSANDRO TÔGO SANTOS",
+            "RÚBIA MARA DE FREITAS",
+            "SILVIA MARQUES NAVES DA MOTA SOUZA",
+            "SIMONE DUARTE GROSSI",
+            "TATHIANE PESSOA DE SOUZA",
+            "THIAGO GOMES GOBO",
+            "VANESSA SANTANA",
+            "VIVIANE MANOEL DA SILVA BORGES",
+            "VIVIANE MIYADA",
+            "WANESSA DE BRITO JORGE"
+        ];
+
+        // Variáveis globais para armazenar os dados
+        let dadosCNAE = [];
+        let dadosRegulados = [];
+        let dadosInspecoes = [];
+        let dataTable = null;
+
+        function popularFiscais() {
+            const select = $('#fiscal');
+            fiscaisOficiais.forEach(fiscal => {
+                select.append(`<option value="${fiscal}">${fiscal}</option>`);
+            });
+        }
+
+        function carregarArquivos() {
+            let arquivosCarregados = 0;
+            const totalArquivos = 3;
+
+            // Carregar CNAE
+            Papa.parse('CNAE.cvs', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'UTF-8',
+                complete: function(results) {
+                    dadosCNAE = results.data;
+                    arquivosCarregados++;
+                    verificarCarregamento(arquivosCarregados, totalArquivos);
+                }
+            });
+
+            // Carregar Regulados
+            Papa.parse('Regulados.cvs', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'UTF-8',
+                complete: function(results) {
+                    dadosRegulados = results.data;
+                    arquivosCarregados++;
+                    verificarCarregamento(arquivosCarregados, totalArquivos);
+                }
+            });
+
+            // Carregar Inspeções
+            Papa.parse('inspecoes.cvs', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'UTF-8',
+                complete: function(results) {
+                    dadosInspecoes = results.data;
+                    arquivosCarregados++;
+                    verificarCarregamento(arquivosCarregados, totalArquivos);
+                }
+            });
+        }
+
+        function verificarCarregamento(carregados, total) {
+            if (carregados === total) {
+                mostrarInfo('✅ Dados carregados com sucesso! Selecione um fiscal e o período para consultar.', 'success');
+            }
+        }
+
+        function mostrarInfo(mensagem, tipo) {
+            const infoBox = $('#infoBox');
+            infoBox.removeClass('info-box warning success');
+            infoBox.addClass('info-box ' + tipo);
+            infoBox.html(mensagem);
+            infoBox.show();
+        }
+
+        function converterData(dataStr) {
+            // Converte dd.mm.yyyy para yyyy-mm-dd
+            if (!dataStr || dataStr.trim() === '') return null;
+            const partes = dataStr.split('.');
+            if (partes.length === 3) {
+                return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+            }
+            return null;
+        }
+
+        function buscarInspecoes() {
+            const fiscalSelecionado = $('#fiscal').val();
+            const dataInicial = $('#dataInicial').val();
+            const dataFinal = $('#dataFinal').val();
+
+            if (!fiscalSelecionado) {
+                mostrarInfo('⚠️ Por favor, selecione um fiscal.', 'warning');
+                return;
+            }
+
+            if (!dataInicial || !dataFinal) {
+                mostrarInfo('⚠️ Por favor, selecione o período (data inicial e final).', 'warning');
+                return;
+            }
+
+            $('#loading').show();
+            $('#tabelaInspecoes').hide();
+            $('#infoBox').hide();
+
+            // Processar em segundo plano
+            setTimeout(() => {
+                const resultados = processarInspecoes(fiscalSelecionado, dataInicial, dataFinal);
+                exibirResultados(resultados, fiscalSelecionado, dataInicial, dataFinal);
+            }, 100);
+        }
+
+        function processarInspecoes(fiscal, dataIni, dataFim) {
+            const resultados = [];
+
+            dadosInspecoes.forEach(insp => {
+                // Verificar se o fiscal participou
+                const participou = insp.Fiscal1 === fiscal || 
+                                  insp.Fiscal2 === fiscal || 
+                                  insp.Fiscal3 === fiscal;
+
+                if (!participou) return;
+
+                // Verificar período
+                const dataInspecao = converterData(insp.DT_VISITA);
+                if (!dataInspecao || dataInspecao < dataIni || dataInspecao > dataFim) return;
+
+                // Buscar dados do regulado
+                const regulado = dadosRegulados.find(r => r.CODIGO === insp.CODIGO);
+                const razaoSocial = regulado ? regulado.RAZAO : '';
+
+                // Buscar dados do CNAE
+                let cnaeSubclasse = '';
+                let complexidade = '';
+
+                if (insp.Atividade && insp.Atividade.trim() !== '') {
+                    const cnae = dadosCNAE.find(c => c.Subclasse === insp.Atividade.trim());
+                    if (cnae) {
+                        cnaeSubclasse = cnae.Subclasse;
+                        complexidade = cnae.Complexidade;
+                    }
+                }
+
+                // Extrair dados de OS
+                let osNumero = '';
+                let osModalidade = '';
+
+                if (insp.Denuncia && insp.Denuncia.trim() !== '') {
+                    osNumero = insp.Denuncia.trim();
+                    osModalidade = 'Denúncia';
+                } else if (insp.OS && insp.OS.trim() !== '') {
+                    osNumero = insp.OS.trim();
+                    osModalidade = 'OS';
+                } else if (insp.Oficio && insp.Oficio.trim() !== '') {
+                    osNumero = insp.Oficio.trim();
+                    osModalidade = 'Ofício';
+                } else if (insp.Protocolo && insp.Protocolo.trim() !== '') {
+                    osNumero = insp.Protocolo.trim();
+                    osModalidade = 'Protocolo';
+                }
+
+                resultados.push({
+                    data: dataInspecao,
+                    osNumero: osNumero,
+                    osModalidade: osModalidade,
+                    tipo: insp.TIPO || '',
+                    numero: insp.NUMERO || '',
+                    razao: razaoSocial,
+                    cnae: cnaeSubclasse,
+                    complexidade: complexidade
+                });
+            });
+
+            return resultados;
+        }
+
+        function exibirResultados(resultados, fiscal, dataIni, dataFim) {
+            $('#loading').hide();
+
+            if (resultados.length === 0) {
+                mostrarInfo(`❌ Nenhuma inspeção encontrada para <strong>${fiscal}</strong> no período de ${formatarDataBR(dataIni)} a ${formatarDataBR(dataFim)}.`, 'warning');
+                $('#tabelaInspecoes').hide();
+                return;
+            }
+
+            mostrarInfo(`✅ Encontradas <strong>${resultados.length}</strong> inspeções de <strong>${fiscal}</strong> no período de ${formatarDataBR(dataIni)} a ${formatarDataBR(dataFim)}.`, 'success');
+
+            // Destruir DataTable anterior se existir
+            if (dataTable) {
+                dataTable.destroy();
+            }
+
+            // Limpar tabela
+            $('#tabelaInspecoes tbody').empty();
+
+            // Popular tabela
+            resultados.forEach(r => {
+                // Formatar OS com número em destaque
+                let osHTML = '';
+                if (r.osNumero) {
+                    osHTML = `<div class="os-cell"><div class="os-numero">${r.osNumero}</div><div class="os-modalidade">${r.osModalidade}</div></div>`;
+                }
+                
+                $('#tabelaInspecoes tbody').append(`
+                    <tr>
+                        <td>${formatarDataBR(r.data)}</td>
+                        <td class="os-cell">${osHTML}</td>
+                        <td>${r.tipo}</td>
+                        <td>${r.numero}</td>
+                        <td>${r.razao}</td>
+                        <td>${r.cnae}</td>
+                        <td>${r.complexidade}</td>
+                    </tr>
+                `);
+            });
+
+            // Inicializar DataTable
+            $('#tabelaInspecoes').show();
+                    document.getElementById('exportSection').style.display = 'block';
+            dataTable = $('#tabelaInspecoes').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+                },
+                order: [[0, 'desc']],
+                pageLength: 25
+            });
+        }
+
+        function formatarDataBR(dataISO) {
+            if (!dataISO) return '';
+            const partes = dataISO.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+    
+
+        // ========== FUNÇÕES DE EXPORTAÇÃO ==========
+
+        function exportarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape');
+
+            const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
+
+            doc.setFontSize(16);
+            doc.text('Relatório de Produção Fiscal - VISAM Anápolis', 14, 15);
+            doc.setFontSize(11);
+            doc.text(`Fiscal: ${fiscal}`, 14, 22);
+            doc.text(`Período: ${dataInicial} a ${dataFinal}`, 14, 28);
+
+            const table = $('#tabelaInspecoes').DataTable();
+            const dados = table.rows({search: 'applied'}).data().toArray();
+
+            const dadosTabela = dados.map(row => {
+                const osNumero = $(row[1]).find('.os-numero').text() || '';
+                const osModalidade = $(row[1]).find('.os-modalidade').text() || '';
+                return [row[0], osNumero, osModalidade, row[2], row[3], row[4], row[5], row[6]];
+            });
+
+            doc.autoTable({
+                head: [['Data', 'OS', 'Mod', 'Tipo Doc', 'Nº Doc', 'Razão Social', 'CNAE', 'Compl']],
+                body: dadosTabela,
+                startY: 32,
+                styles: { fontSize: 7 },
+                headStyles: { fillColor: [102, 126, 234] },
+                columnStyles: {
+                    0: { cellWidth: 20 },
+                    1: { cellWidth: 15 },
+                    2: { cellWidth: 15 },
+                    3: { cellWidth: 30 },
+                    4: { cellWidth: 15 },
+                    5: { cellWidth: 'auto' },
+                    6: { cellWidth: 18 },
+                    7: { cellWidth: 18 }
+                }
+            });
+
+            doc.save(`RPF-${hoje}.pdf`);
+        }
+
+        function exportarExcel() {
+            const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
+
+            const table = $('#tabelaInspecoes').DataTable();
+            const dados = table.rows({search: 'applied'}).data().toArray();
+
+            const dadosExcel = [
+                ['Relatório de Produção Fiscal - VISAM Anápolis'],
+                [`Fiscal: ${fiscal}`],
+                [`Período: ${dataInicial} a ${dataFinal}`],
+                [],
+                ['Data', 'OS', 'Modalidade', 'Tipo Documento', 'Nº Doc', 'Razão Social', 'CNAE', 'Complexidade']
+            ];
+
+            dados.forEach(row => {
+                const osNumero = $(row[1]).find('.os-numero').text() || '';
+                const osModalidade = $(row[1]).find('.os-modalidade').text() || '';
+                dadosExcel.push([row[0], osNumero, osModalidade, row[2], row[3], row[4], row[5], row[6]]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(dadosExcel);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Inspeções');
+
+            XLSX.writeFile(wb, `RPF-${hoje}.xlsx`);
+        }
+
+        function exportarWord() {
+            const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
+
+            const table = $('#tabelaInspecoes').DataTable();
+            const dados = table.rows({search: 'applied'}).data().toArray();
+
+            const rows = dados.map(row => {
+                const osNumero = $(row[1]).find('.os-numero').text() || '';
+                const osModalidade = $(row[1]).find('.os-modalidade').text() || '';
+                return new docx.TableRow({
+                    children: [
+                        new docx.TableCell({ children: [new docx.Paragraph(row[0])] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(osNumero)] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(osModalidade)] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(row[2])] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(row[3])] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(row[4])] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(row[5])] }),
+                        new docx.TableCell({ children: [new docx.Paragraph(row[6])] })
+                    ]
+                });
+            });
+
+            const tableWord = new docx.Table({
+                rows: [
+                    new docx.TableRow({
+                        children: [
+                            new docx.TableCell({ children: [new docx.Paragraph('Data')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('OS')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('Modalidade')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('Tipo Doc')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('Nº Doc')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('Razão Social')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('CNAE')] }),
+                            new docx.TableCell({ children: [new docx.Paragraph('Complexidade')] })
+                        ]
+                    }),
+                    ...rows
+                ]
+            });
+
+            const doc = new docx.Document({
+                sections: [{
+                    properties: {},
+                    children: [
+                        new docx.Paragraph({
+                            text: 'Relatório de Produção Fiscal - VISAM Anápolis',
+                            heading: docx.HeadingLevel.HEADING_1
+                        }),
+                        new docx.Paragraph(`Fiscal: ${fiscal}`),
+                        new docx.Paragraph(`Período: ${dataInicial} a ${dataFinal}`),
+                        new docx.Paragraph(''),
+                        tableWord
+                    ]
+                }]
+            });
+
+            docx.Packer.toBlob(doc).then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RPF-${hoje}.docx`;
+                a.click();
+            });
+        }
+
+        function exportarHTML() {
+            const fiscal = document.getElementById('fiscal').options[document.getElementById('fiscal').selectedIndex].text;
+            const dataInicial = document.getElementById('dataInicial').value || 'N/A';
+            const dataFinal = document.getElementById('dataFinal').value || 'N/A';
+            const hoje = new Date().toISOString().split('T')[0];
+
+            const table = $('#tabelaInspecoes').DataTable();
+            const dados = table.rows({search: 'applied'}).data().toArray();
+
+            let html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Produção Fiscal</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #667eea; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #667eea; color: white; padding: 10px; text-align: left; }
+        td { border: 1px solid #ddd; padding: 8px; }
+        tr:nth-child(even) { background: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Produção Fiscal - VISAM Anápolis</h1>
+    <p><strong>Fiscal:</strong> ${fiscal}</p>
+    <p><strong>Período:</strong> ${dataInicial} a ${dataFinal}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>OS</th>
+                <th>Modalidade</th>
+                <th>Tipo Documento</th>
+                <th>Nº Doc</th>
+                <th>Razão Social</th>
+                <th>CNAE</th>
+                <th>Complexidade</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+            dados.forEach(row => {
+                const osNumero = $(row[1]).find('.os-numero').text() || '';
+                const osModalidade = $(row[1]).find('.os-modalidade').text() || '';
+                html += `
+            <tr>
+                <td>${row[0]}</td>
+                <td>${osNumero}</td>
+                <td>${osModalidade}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+                <td>${row[5]}</td>
+                <td>${row[6]}</td>
+            </tr>`;
+            });
+
+            html += `
+        </tbody>
+    </table>
+</body>
+</html>`;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `RPF-${hoje}.html`;
+            a.click();
+        }
+
+    
+        // === BOTÃO VOLTAR INTELIGENTE ===
+        function getMobileOS() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes('android')) return 'android';
+            if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) return 'ios';
+            return 'desktop';
+        }
+
+        function criarBotaoVoltar() {
+            const container = document.getElementById('backButtonContainer');
+            if (!container) {
+                console.log('❌ Container backButtonContainer não encontrado');
+                return;
+            }
+
+            // Limpar botão anterior
+            container.innerHTML = '';
+
+            const os = getMobileOS();
+            const isMobile = window.innerWidth <= 1024;
+
+            console.log('📱 Detectado:', os, 'Tela:', window.innerWidth + 'px', 'Mobile:', isMobile);
+
+            if (!isMobile) return;
+
+            const btn = document.createElement('button');
+            btn.className = 'back-btn';
+
+            if (os === 'ios') {
+                btn.className += ' back-ios';
+                btn.innerHTML = '✓ OK';
+            } else {
+                btn.className += ' back-android';
+                btn.innerHTML = '← Voltar';
+            }
+
+            btn.onclick = (e) => {
+                e.preventDefault();
+                console.log('🔙 Botão voltar clicado');
+                if (document.referrer) {
+                    window.history.back();
+                } else {
+                    window.location.href = '../index.html';
+                }
+            };
+
+            container.appendChild(btn);
+            console.log('✅ Botão criado:', os);
+        }
+
+        // Executar após carregar e no resize
+        window.addEventListener('load', criarBotaoVoltar);
+        window.addEventListener('resize', criarBotaoVoltar);
+
+    </script>
+</body>
+</html>
