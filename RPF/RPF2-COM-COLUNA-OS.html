@@ -864,6 +864,38 @@
                     }
                 }
 
+
+                // Função para formatar número OS
+function formatarNumeroOS(numero) {
+    if (!numero) return '';
+    // Remove todos os espaços
+    const limpo = numero.replace(/\s+/g, '');
+    // Se tem mais de 4 dígitos, adiciona espaço no meio
+    if (limpo.length > 4) {
+        return limpo.substring(0, 4) + ' ' + limpo.substring(4);
+    }
+    return limpo;
+}
+
+// Extrair dados de OS
+let osNumero = '';
+let osModalidade = '';
+
+if (insp.Denuncia && insp.Denuncia.trim() !== '') {
+    osNumero = formatarNumeroOS(insp.Denuncia.trim());  // ← USAR formatarNumeroOS
+    osModalidade = 'Denúncia';
+} else if (insp.OS && insp.OS.trim() !== '') {
+    osNumero = formatarNumeroOS(insp.OS.trim());        // ← USAR formatarNumeroOS
+    osModalidade = 'OS';
+} else if (insp.Oficio && insp.Oficio.trim() !== '') {
+    osNumero = formatarNumeroOS(insp.Oficio.trim());    // ← USAR formatarNumeroOS
+    osModalidade = 'Ofício';
+} else if (insp.Protocolo && insp.Protocolo.trim() !== '') {
+    osNumero = formatarNumeroOS(insp.Protocolo.trim()); // ← USAR formatarNumeroOS
+    osModalidade = 'Protocolo';
+}
+
+                
                 // Extrair dados de OS
                 let osNumero = '';
                 let osModalidade = '';
