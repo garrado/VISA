@@ -549,7 +549,7 @@
                     Processando dados...
                 </div>
                 
-            <div class="table-responsive" style="margin-top: 30px;">
+            <div class="table-responsive">
                 <table id="tabelaInspecoes" class="display" style="display: none; width: 100%;">
                     <thead>
                         <tr>
@@ -695,7 +695,7 @@
                     await carregarLoginDB();
                 }
 
-                const reg = loginDB.find(r => r.Usuario === usuario && r.Senha === senha);
+                const reg = loginDB.find(r => r.Usuario === usuario);
                 if (!reg) {
                     document.getElementById('authError').style.display = 'block';
                     return;
