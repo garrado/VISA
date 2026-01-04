@@ -500,7 +500,7 @@
     <div class="main-content" id="mainContent">
         <div class="container">
             <div class="header">
-                <a href="../index.html" class="btn-ok-header">OK</a>
+                <a href="index.html" class="btn-ok-header">OK</a>
                 <h1>🏥 Relatório de Inspeções por Período</h1>
                 <p>Vigilância Sanitária - Anápolis/GO</p>
                 <div id="backButtonContainer"></div>
@@ -571,7 +571,7 @@
 
     <script>
         // ========== AUTENTICAÇÃO POR USUÁRIO (login.csv) ==========
-        const LOGIN_CSV_URL = 'login.csv'; // Na mesma pasta do HTML (RPF/)
+        const LOGIN_CSV_URL = 'data/login.csv'; // Na mesma pasta do HTML (RPF/)
         let loginDB = [];
         let usuarioLogado = null;
 
@@ -791,7 +791,7 @@
             const totalArquivos = 3;
 
             // Carregar CNAE
-            Papa.parse('CNAE.cvs', {
+            Papa.parse('data/CNAE.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
@@ -804,7 +804,7 @@
             });
 
             // Carregar Regulados
-            Papa.parse('Regulados.cvs', {
+            Papa.parse('data/Regulados.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
@@ -817,7 +817,7 @@
             });
 
             // Carregar Inspeções
-            Papa.parse('inspecoes.cvs', {
+            Papa.parse('data/inspecoes.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
