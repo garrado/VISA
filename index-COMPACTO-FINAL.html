@@ -1009,8 +1009,9 @@ function renderizarIndicadores(container, dados) {
         '<tr style="border-bottom: 1px solid rgba(0,0,0,0.05);"><td style="padding: 8px 4px;">🔔 Denúncia</td><td style="text-align: right; font-weight: 600; color: #2c5aa0;">' + dados.osDetalhadas.denuncias + '</td></tr>' +
         '<tr><td style="padding: 8px 4px;">📋 Protocolo</td><td style="text-align: right; font-weight: 600; color: #2c5aa0;">' + dados.osDetalhadas.protocolos + '</td></tr>' +
       '</table>' +
-    '</div><br>' +
-
+    '</div>' +
+    '<div style="border-top: 1px solid rgba(0,0,0,0.08); margin: 20px 0 16px 0;"></div>' +
+    
     // Seção Tipos de Documentos
     '<div style="margin-top: 8px; padding-top: 0px;">' +
       '<h4 style="margin: 0 0 12px 0; color: #2c5aa0; font-size: 0.95rem; font-weight: 600;">📄 Tipos de Documentos: <strong style="font-size: 0.95rem;">' + dados.totalInspecoes + '</strong> <small style="color: var(--muted); font-weight: normal;">Total</small></h4>' +
