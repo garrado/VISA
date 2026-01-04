@@ -843,6 +843,7 @@ function carregarIndicadores() {
     download: true,
     header: false,
     delimiter: ';',
+    encoding: '',
     skipEmptyLines: true,
     complete: function(results) {
       processarDados(results.data, container);
