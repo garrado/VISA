@@ -1,0 +1,155 @@
+Listagem de caminhos de pasta
+O número de série do volume é F27E-E00E
+C:.
+¦   cadastro_economico_por_equipe_colorido.html
+¦   check.html
+¦   Escala_Ferias_Janeiro_2026_APP.html
+¦   Escala_Plantao_Janeiro_2026.html
+¦   Escala_Veiculos_Janeiro_2026_APP.html
+¦   estrutura.txt
+¦   FIREBASE-SEGURANCA.md
+¦   folga.html
+¦   index.html
+¦   index_old.html
+¦   legislacao.html
+¦   manifest.webmanifest
+¦   mts.html
+¦   README.html
+¦   README.md
+¦   redesim.html
+¦   Regras Plantão v_4_4 .html
+¦   Regulados.html
+¦   relatorio_plantao_fiscal.html
+¦   service-worker.js
+¦   
++---check-list-acougue
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           
++---check-list-alimentos-geral
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           
++---check-list-atacadista-cosme-e-saneantes
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           
++---check-list-drogarias-1
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           page-05.jpg
+¦           page-06.jpg
+¦           
++---check-list-escola
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           
++---check-list-saude-cnaes-8630502-e-8630503
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           
++---check-list-saude-cnaes-baixas
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           page-04.jpg
+¦           
++---check-list-varejista-cosme-e-san
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           
++---checklist-academia
+¦   ¦   index.html
+¦   ¦   original.pdf
+¦   ¦   
+¦   +---assets
+¦           page-01.jpg
+¦           page-02.jpg
+¦           page-03.jpg
+¦           
++---css
+¦       base.css
+¦       b_layouts.css
+¦       components.css
+¦       design-tokens.css
+¦       header-component.css
+¦       layouts.css
+¦       regulados.css
+¦       
++---data
+¦   ¦   index_regulados.json
+¦   ¦   
+¦   +---his
+¦   ¦   +---00
+¦   ¦   ¦       10000.json
+¦               43129.json
+¦               43131.json
+¦               
++---icons
+¦       visa-192.png
+¦       visa-512.png
+¦       visa-compartilhar.png
+¦       
++---js
+¦       guard.js
+¦       header-loader.js
+¦       platform-detector.js
+¦       regulados.js
+¦       
++---mts
+¦       MTS_GERAL_TODOS_FISCAIS.pdf
+¦       
++---normas
+¦       lc_377_2018_v3.html
+¦       
++---RPF
+        CNAE.cvs
+        inspecoes.cvs
+        login.csv
+        Regulados.cvs
+        RPF2-COM-BOTAO-OK.html
+        
