@@ -839,7 +839,7 @@ function carregarIndicadores() {
   const container = document.getElementById('indicadores-content');
   if (!container) return;
   
-  Papa.parse('RPF/inspecoes.cvs', {
+  Papa.parse('data/inspecoes.cvs', {
     download: true,
     header: false,
     delimiter: ';',
@@ -848,7 +848,7 @@ function carregarIndicadores() {
       processarDados(results.data, container);
     },
     error: function(error) {
-      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro: RPF/inspecoes.cvs</div>';
+      container.innerHTML = '<div class="indicadores-loading">⚠️ Erro: data/inspecoes.cvs</div>';
     }
   });
 }
