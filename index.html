@@ -971,8 +971,8 @@ function processarDados(data, container) {
 
   const tiposDocumentos = {};
   inspecoesFiltradas.forEach(row => {
-    if (row[6] && row[6].trim()) {
-      tiposDocumentos[row[6].trim()] = (tiposDocumentos[row[6].trim()] || 0) + 1;
+    if (row[6] && row[9].trim()) {
+      tiposDocumentos[row[9].trim()] = (tiposDocumentos[row[9].trim()] || 0) + 1;
     }
   });
 
