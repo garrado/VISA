@@ -791,7 +791,7 @@
             const totalArquivos = 3;
 
             // Carregar CNAE
-            Papa.parse('CNAE.cvs', {
+            Papa.parse('data/CNAE.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
@@ -804,7 +804,7 @@
             });
 
             // Carregar Regulados
-            Papa.parse('Regulados.cvs', {
+            Papa.parse('data/Regulados.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
@@ -817,7 +817,7 @@
             });
 
             // Carregar Inspeções
-            Papa.parse('inspecoes.cvs', {
+            Papa.parse('data/inspecoes.cvs', {
                 download: true,
                 header: true,
                 delimiter: ';',
