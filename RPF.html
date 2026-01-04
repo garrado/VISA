@@ -641,13 +641,7 @@
             } catch(e) {
                 console.error('Erro ao carregar login.csv:', e);
                 document.getElementById('authError').style.display = 'block';
-                tentativasErro++;
-
-                // Após 3 tentativas erradas, redireciona para index
-                if (tentativasErro >= 3) {
-                    alert('Número máximo de tentativas excedido. Redirecionando...');
-                    window.location.href = 'index.html';
-                }
+                
             }
         }
 
@@ -706,6 +700,13 @@
                     document.getElementById('authError').style.display = 'block';
                     document.getElementById('senhaInput').value = '';
                     document.getElementById('usuarioSelect').focus();
+                    tentativasErro++;
+
+                // Após 3 tentativas erradas, redireciona para index
+                if (tentativasErro >= 3) {
+                    alert('Número máximo de tentativas excedido. Redirecionando...');
+                    window.location.href = 'index.html';
+                }
                     return;
                 }
 
@@ -715,8 +716,9 @@
                     return;
                 }
 
+              
                 usuarioLogado = { nome: reg.Usuario, grupo: reg.Grupo };
-
+  tentativasErro = 0; // Resetar contador
                 document.getElementById('authOverlay').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
 
