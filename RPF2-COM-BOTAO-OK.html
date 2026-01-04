@@ -897,7 +897,8 @@
                 if (!dataInspecao || dataInspecao < dataIni || dataInspecao > dataFim) return;
 
                 // Buscar dados do regulado
-                const regulado = dadosRegulados.find(r => r.CODIGO === insp.CODIGO);
+                const regulado = dadosRegulados.find(r => String(r.CODIGO).trim() === String(insp.CODIGO).trim());
+
                 const razaoSocial = regulado ? regulado.RAZAO : '';
 
                 // Buscar dados do CNAE
@@ -905,7 +906,7 @@
                 let complexidade = '';
 
                 if (insp.Atividade && insp.Atividade.trim() !== '') {
-                    const cnae = dadosCNAE.find(c => c.Subclasse === insp.Atividade.trim());
+                    const cnae = dadosCNAE.find(c => c.Subclasse.trim() === insp.Atividade.trim());
                     if (cnae) {
                         cnaeSubclasse = cnae.Subclasse;
                         complexidade = cnae.Complexidade;
