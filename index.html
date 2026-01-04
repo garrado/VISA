@@ -374,10 +374,10 @@ header p {
         insp.DT_VISITA && String(insp.DT_VISITA).includes(anteriorKey)
       );
 
-      // Verifica se já existe inspeção com dia >= 25 no mês atual
-      const existeDia25ouMaisNoMesAtual = rowsMesAtual.some(insp => {
+      // Verifica se já existe inspeção com dia >= 15 no mês atual
+      const existeDia15ouMaisNoMesAtual = rowsMesAtual.some(insp => {
         const dmy = parseDateBR(insp.DT_VISITA);
-        return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 25;
+        return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 15;
       });
 
       // === DECISÃO FINAL ===
@@ -389,8 +389,8 @@ header p {
         inspecoesFiltradas = rowsMesAnterior;
         periodoTexto = labelMesAno(anterior.month, anterior.year);
       } else {
-        // Dia 15 ou depois: verifica se tem inspeção >= dia 25 no mês atual
-        if (existeDia25ouMaisNoMesAtual) {
+        // Dia 15 ou depois: verifica se tem inspeção >= dia 15 no mês atual
+        if (existeDia15ouMaisNoMesAtual) {
           inspecoesFiltradas = rowsMesAtual;
           periodoTexto = labelMesAno(mesAtual, anoAtual);
         } else {
