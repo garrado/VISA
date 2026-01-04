@@ -905,15 +905,15 @@ function processarDados(data, container) {
   const rowsMesAtual = rows.filter(row => row[2] && String(row[2]).includes(atualKey));
   const rowsMesAnterior = rows.filter(row => row[2] && String(row[2]).includes(anteriorKey));
 
-  // Verifica se no mês atual já existem inspeções "a partir do dia 25" (>= 25)
-  const existeDia25ouMaisNoMesAtual = rowsMesAtual.some(row => {
+  // Verifica se no mês atual já existem inspeções "a partir do dia 15" (>= 15)
+  const existeDia15ouMaisNoMesAtual = rowsMesAtual.some(row => {
     const dmy = parseDMY(row[2]);
-    return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 25;
+    return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 15;
   });
 
   // === Decisão final ===
-  // 1) Enquanto NÃO chegar no dia 25 do mês corrente, mostra mês anterior.
-  // 2) Depois do dia 25, só troca para o mês corrente se já existirem inspeções com dia >= 25 nesse mês.
+  // 1) Enquanto NÃO chegar no dia 15 do mês corrente, mostra mês anterior.
+  // 2) Depois do dia 15, só troca para o mês corrente se já existirem inspeções com dia >= 15 nesse mês.
   let inspecoesFiltradas;
   let periodoTexto;
 
@@ -921,7 +921,7 @@ function processarDados(data, container) {
     inspecoesFiltradas = rowsMesAnterior;
     periodoTexto = labelMesAno(anterior.month, anterior.year);
   } else {
-    if (existeDia25ouMaisNoMesAtual) {
+    if (existeDia15ouMaisNoMesAtual) {
       inspecoesFiltradas = rowsMesAtual;
       periodoTexto = labelMesAno(mesAtual, anoAtual);
     } else {
