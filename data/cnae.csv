@@ -1,4 +1,4 @@
-﻿"Subclasse";"Atividade";"Complexidade"
+﻿"Subclasse";"Atividade";"Complexidade";
 "8730-1/02";"Albergues assistenciais";"MÉDIA"
 "5590-6/01";"Albergues, exceto assistenciais";"MÉDIA"
 "7739-0/02";"Aluguel de equipamentos científicos, médicos e hospitalares, sem operador";"BAIXA"
@@ -266,3 +266,4 @@
 "3821-1/00";"Tratamento e disposicao de residuos nao-perigosos";"MÉDIA"
 "3822-0/00";"Tratamento e disposicao de residuos perigosos";"MÉDIA"
 "8621-6/01";"UTI movel";"MÉDIA"
+
