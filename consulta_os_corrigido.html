@@ -188,6 +188,7 @@
             padding: 24px;
             border: 1px solid var(--line);
             box-shadow: var(--shadow2);
+            margin-top: 24px;
         }
 
         .info-box {
@@ -512,7 +513,7 @@
     <header>
         <a href="index.html" class="btn-ok-header">OK</a>
         <h1>Vigilância Sanitária</h1>
-        <h2>Consulta de Ordens de Serviço</h2>
+        <h2>Consulta Ordens de Serviço</h2>
     </header>
 
     <div class="container">
@@ -559,7 +560,7 @@
                     <label for="filterCancelado">Cancelado:</label>
                     <select id="filterCancelado">
                         <option value="">Todos</option>
-                        <option value="Não">Não</option>
+                        <option value="Não" selected>Não</option>
                         <option value="Sim">Sim</option>
                     </select>
                 </div>
@@ -569,7 +570,7 @@
                     <select id="filterAtendido">
                         <option value="">Todos</option>
                         <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
+                        <option value="Não" selected>Não</option>
                     </select>
                 </div>
 
@@ -704,6 +705,7 @@
         let dadosTramitacao = [];
         let dadosRegulados = [];
         let dadosBairros = [];
+        let dadosCnae = [];
         let todasOS = [];
         let dataTable = null;
 
@@ -732,7 +734,7 @@
         // Carregar arquivos CSV
         function carregarArquivos() {
             let arquivosCarregados = 0;
-            const totalArquivos = 7;
+            const totalArquivos = 8;
             let errosCarregamento = [];
 
             mostrarInfo('⏳ Carregando dados...', 'info');
@@ -866,6 +868,23 @@
                     verificarCarregamento();
                 }
             });
+
+            // Carregar CNAE
+            Papa.parse('data/cnae.csv', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'utf-8',
+                complete: function(results) {
+                    dadosCnae = results.data;
+                    verificarCarregamento();
+                },
+                error: function(error) {
+                    console.error('Erro ao carregar cnae.csv:', error);
+                    errosCarregamento.push('CNAE');
+                    verificarCarregamento();
+                }
+            });
         }
 
         // Mostrar info box
@@ -923,6 +942,19 @@
             );
             
             return bairro ? (bairro.NOME || '').trim() : '';
+        }
+
+        // Buscar descrição do CNAE pelo código
+        function buscarCnae(codigoCnae) {
+            if (!codigoCnae || String(codigoCnae).trim() === '') return '';
+            
+            const cnaeNorm = String(codigoCnae).trim();
+            
+            const cnae = dadosCnae.find(c => 
+                String(c.CODIGO || '').trim() === cnaeNorm
+            );
+            
+            return cnae ? (cnae.ATIVIDADE || cnae.Atividade || '').trim() : '';
         }
 
         // Buscar Ordens de Serviço
@@ -1002,6 +1034,10 @@
                             }
                         }
 
+                        // Buscar descrição do CNAE
+                        const area = r.Area || '';
+                        const areaDesc = area ? buscarCnae(area) : '';
+
                         todasOS.push({
                             numero: r.OS,
                             tipo: 'Requerimento',
@@ -1014,7 +1050,8 @@
                             motivo: r.Motivo || '',
                             atendida: processarBool(r.Atendimento) ? 'Sim' : 'Não',
                             cancelado: processarBool(r.Cancelado) ? 'Sim' : 'Não',
-                            area: r.Area || '',
+                            area: area,
+                            area_desc: areaDesc,
                             logradouro: logradouro,
                             cnpj: cnpj,
                             cpf: cpf,
@@ -1390,7 +1427,13 @@
                         <div class="detail-value">${os.cpf || '-'}</div>
                     </div>`;
 
-            if (os.area) {
+            if (os.area_desc) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">CNAE/Área:</div>
+                        <div class="detail-value">${os.area_desc}</div>
+                    </div>`;
+            } else if (os.area) {
                 html += `
                     <div class="detail-row">
                         <div class="detail-label">CNAE/Área:</div>
@@ -1421,14 +1464,6 @@
                     <div class="detail-row">
                         <div class="detail-label">Bairro:</div>
                         <div class="detail-value">${os.bairro}</div>
-                    </div>`;
-            }
-
-            if (os.cdbai) {
-                html += `
-                    <div class="detail-row">
-                        <div class="detail-label">Código do Bairro:</div>
-                        <div class="detail-value">${os.cdbai}</div>
                     </div>`;
             }
 
