@@ -270,9 +270,21 @@
         table.dataTable {
             width: 100% !important;
             border-collapse: collapse;
-            margin-top: 16px !important;
+            margin-top: 32px !important;
         }
 
+/* Espaçamento dos controles do DataTables */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 20px !important;
+}
+
+        
         table.dataTable thead th {
             background: var(--brand1);
             color: white;
