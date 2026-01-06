@@ -967,10 +967,10 @@
             const subclasseNorm = String(subclasse).trim();
             
             const cnae = dadosCnae.find(c => 
-                String(c.SUBCLASSE || '').trim() === subclasseNorm
+                String(c.Subclasse || '').trim() === subclasseNorm
             );
             
-            return cnae ? (cnae.ATIVIDADE || cnae.Atividade || '').trim() : '';
+            return cnae ? (cnae.Atividade || cnae.Atividade || '').trim() : '';
         }
 
         // Buscar Ordens de Serviço
