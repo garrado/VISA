@@ -126,6 +126,10 @@
             margin-bottom: 16px;
         }
 
+        .filter-row:last-child {
+            margin-bottom: 32px;
+        }
+
         .filter-group {
             display: flex;
             flex-direction: column;
@@ -188,6 +192,7 @@
             padding: 24px;
             border: 1px solid var(--line);
             box-shadow: var(--shadow2);
+            margin-top: 24px;
         }
 
         .info-box {
@@ -212,7 +217,7 @@
         .stats {
             display: flex;
             justify-content: space-around;
-            margin: 20px 0;
+            margin: 32px 0 20px 0;
             flex-wrap: wrap;
             gap: 15px;
         }
@@ -568,8 +573,8 @@
                     <label for="filterAtendido">Atendido:</label>
                     <select id="filterAtendido">
                         <option value="">Todos</option>
-                        <option value="Não" selected>Não</option>
                         <option value="Sim">Sim</option>
+                        <option value="Não" selected>Não</option>
                     </select>
                 </div>
 
@@ -703,6 +708,8 @@
         let dadosProtocolo = [];
         let dadosTramitacao = [];
         let dadosRegulados = [];
+        let dadosBairros = [];
+        let dadosCnae = [];
         let todasOS = [];
         let dataTable = null;
 
@@ -731,7 +738,7 @@
         // Carregar arquivos CSV
         function carregarArquivos() {
             let arquivosCarregados = 0;
-            const totalArquivos = 6;
+            const totalArquivos = 8;
             let errosCarregamento = [];
 
             mostrarInfo('⏳ Carregando dados...', 'info');
@@ -848,6 +855,40 @@
                     verificarCarregamento();
                 }
             });
+
+            // Carregar Bairros
+            Papa.parse('data/bairros.csv', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'utf-8',
+                complete: function(results) {
+                    dadosBairros = results.data;
+                    verificarCarregamento();
+                },
+                error: function(error) {
+                    console.error('Erro ao carregar bairros.csv:', error);
+                    errosCarregamento.push('Bairros');
+                    verificarCarregamento();
+                }
+            });
+
+            // Carregar CNAE
+            Papa.parse('data/cnae.csv', {
+                download: true,
+                header: true,
+                delimiter: ';',
+                encoding: 'utf-8',
+                complete: function(results) {
+                    dadosCnae = results.data;
+                    verificarCarregamento();
+                },
+                error: function(error) {
+                    console.error('Erro ao carregar cnae.csv:', error);
+                    errosCarregamento.push('CNAE');
+                    verificarCarregamento();
+                }
+            });
         }
 
         // Mostrar info box
@@ -881,6 +922,43 @@
             if (!valor || String(valor).trim() === '') return false;
             const v = String(valor).toUpperCase();
             return v === 'TRUE' || v === 'SIM' || v === 'T' || v === 'S';
+        }
+
+        // Buscar regulado pelo código
+        function buscarRegulado(codigo) {
+            if (!codigo || String(codigo).trim() === '') return null;
+            
+            const codigoNorm = String(codigo).trim();
+            
+            return dadosRegulados.find(r => 
+                String(r.CODIGO || '').trim() === codigoNorm
+            );
+        }
+
+        // Buscar bairro pelo código
+        function buscarBairro(cdbai) {
+            if (!cdbai || String(cdbai).trim() === '') return '';
+            
+            const cdBaiNorm = String(cdbai).trim();
+            
+            const bairro = dadosBairros.find(b => 
+                String(b.CODIGO || '').trim() === cdBaiNorm
+            );
+            
+            return bairro ? (bairro.NOME || '').trim() : '';
+        }
+
+        // Buscar descrição do CNAE pela subclasse
+        function buscarCnae(subclasse) {
+            if (!subclasse || String(subclasse).trim() === '') return '';
+            
+            const subclasseNorm = String(subclasse).trim();
+            
+            const cnae = dadosCnae.find(c => 
+                String(c.SUBCLASSE || '').trim() === subclasseNorm
+            );
+            
+            return cnae ? (cnae.ATIVIDADE || cnae.Atividade || '').trim() : '';
         }
 
         // Buscar Ordens de Serviço
@@ -939,6 +1017,7 @@
                         let cnpj = '';
                         let cpf = '';
                         let cdbai = '';
+                        let bairro = '';
 
                         if (r.Codigo) {
                             const regulado = dadosRegulados.find(reg => 
@@ -951,8 +1030,17 @@
                                 cnpj = regulado.CGC || '';
                                 cpf = regulado.CPF || '';
                                 cdbai = regulado.CDBAI || '';
+                                
+                                // Buscar nome do bairro
+                                if (cdbai) {
+                                    bairro = buscarBairro(cdbai);
+                                }
                             }
                         }
+
+                        // Buscar descrição do CNAE pela subclasse
+                        const area = r.Area || '';
+                        const areaDesc = area ? buscarCnae(area) : '';
 
                         todasOS.push({
                             numero: r.OS,
@@ -966,12 +1054,14 @@
                             motivo: r.Motivo || '',
                             atendida: processarBool(r.Atendimento) ? 'Sim' : 'Não',
                             cancelado: processarBool(r.Cancelado) ? 'Sim' : 'Não',
-                            area: r.Area || '',
+                            area: area,
+                            area_desc: areaDesc,
                             logradouro: logradouro,
                             cnpj: cnpj,
                             cpf: cpf,
                             observacao: r.Obs_Req || '',
-                            cdbai: cdbai
+                            cdbai: cdbai,
+                            bairro: bairro
                         });
                     }
                     
@@ -990,6 +1080,10 @@
                         const fiscal = o.Fiscalencaminha || '';
                         if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) continue;
 
+                        // Buscar nome do bairro se tiver código
+                        const cdbai = o.Cdbai || '';
+                        const bairro = cdbai ? buscarBairro(cdbai) : '';
+
                         todasOS.push({
                             numero: o.Oficio,
                             tipo: 'Ofício',
@@ -1007,7 +1101,8 @@
                             cnpj: o.Cnpj || '',
                             cpf: o.Cpf || '',
                             observacao: o.Ordem || '',
-                            cdbai: o.Cdbai || ''
+                            cdbai: cdbai,
+                            bairro: bairro
                         });
                     }
                     
@@ -1026,6 +1121,10 @@
                         const fiscal = d.FiscalEncaminha || '';
                         if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) continue;
 
+                        // Buscar nome do bairro se tiver código
+                        const cdbai = d.Cdbai || '';
+                        const bairro = cdbai ? buscarBairro(cdbai) : '';
+
                         todasOS.push({
                             numero: d.Denuncia,
                             tipo: 'Denúncia',
@@ -1043,7 +1142,8 @@
                             cnpj: d.Cnpj || '',
                             cpf: d.Cpf || '',
                             observacao: d.Descricao || '',
-                            cdbai: d.Cdbai || ''
+                            cdbai: cdbai,
+                            bairro: bairro
                         });
                     }
                     
@@ -1092,24 +1192,52 @@
 
                         if (!destinoValido) continue;
 
+                        // Buscar dados do regulado usando o código
+                        const regulado = buscarRegulado(p.Codigo);
+
+                        let razaoSocial = '';
+                        let fantasia = '';
+                        let logradouro = '';
+                        let cnpj = '';
+                        let cpf = '';
+                        let cdbai = '';
+                        let area = '';
+                        let bairro = '';
+
+                        if (regulado) {
+                            razaoSocial = regulado.RAZAO || '';
+                            fantasia = regulado.FANTASIA || '';
+                            logradouro = regulado.LOGRADOURO || '';
+                            cnpj = regulado.CGC || '';
+                            cpf = regulado.CPF || '';
+                            cdbai = regulado.CDBAI || '';
+                            area = regulado.AREA || '';
+                            
+                            // Buscar nome do bairro pelo código
+                            if (cdbai) {
+                                bairro = buscarBairro(cdbai);
+                            }
+                        }
+
                         todasOS.push({
                             numero: p.Protocolo,
                             tipo: 'Protocolo',
                             fiscal: carga,
-                            razao_social: p.Protocolante || '',
-                            fantasia: '',
+                            razao_social: razaoSocial,
+                            fantasia: fantasia,
                             complexidade: '',
                             data_req: converterData(p.Data),
                             data_encaminha: dataEncaminha,
                             motivo: p.Assunto || '',
                             atendida: 'Não',
                             cancelado: 'Não',
-                            area: '',
-                            logradouro: '',
-                            cnpj: '',
-                            cpf: p.Documento || '',
+                            area: area,
+                            logradouro: logradouro,
+                            cnpj: cnpj,
+                            cpf: cpf,
                             observacao: p.Observa || '',
-                            cdbai: ''
+                            cdbai: cdbai,
+                            bairro: bairro
                         });
                     }
                     
@@ -1306,9 +1434,17 @@
             if (os.area) {
                 html += `
                     <div class="detail-row">
-                        <div class="detail-label">CNAE/Área:</div>
+                        <div class="detail-label">CNAE:</div>
                         <div class="detail-value">${os.area}</div>
                     </div>`;
+                
+                if (os.area_desc) {
+                    html += `
+                    <div class="detail-row">
+                        <div class="detail-label"></div>
+                        <div class="detail-value" style="font-style: italic; color: #64748b; font-size: 0.95em;">${os.area_desc}</div>
+                    </div>`;
+                }
             }
 
             if (os.complexidade && os.tipo === 'Requerimento') {
@@ -1329,11 +1465,11 @@
                         <div class="detail-value">${os.logradouro || '-'}</div>
                     </div>`;
 
-            if (os.cdbai) {
+            if (os.bairro) {
                 html += `
                     <div class="detail-row">
-                        <div class="detail-label">Código do Bairro:</div>
-                        <div class="detail-value">${os.cdbai}</div>
+                        <div class="detail-label">Bairro:</div>
+                        <div class="detail-value">${os.bairro}</div>
                     </div>`;
             }
 
