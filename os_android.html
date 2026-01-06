@@ -18,6 +18,10 @@
     <!-- PapaParse para ler CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
+    <!-- Eruda DevTools para Debug Mobile (remover em produção) -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+
     <style>
         /* RESET */
         * {
@@ -905,183 +909,228 @@
                 tramitacao: dadosTramitacao.length
             });
 
-            setTimeout(() => {
-                todasOS = [];
+            // PROCESSAR EM CHUNKS para não travar o Android
+            todasOS = [];
+            let processados = 0;
+            const totalItens = dadosRequerimento.length + dadosOficio.length + 
+                              dadosDenuncia.length + dadosProtocolo.length;
 
+            // Função para processar lotes
+            function processarEmLotes() {
+                const CHUNK_SIZE = 100; // Processar 100 itens por vez
+                let inicio = processados;
+                let fim = Math.min(inicio + CHUNK_SIZE, totalItens);
+                
                 // Processar REQUERIMENTOS
-                dadosRequerimento.forEach(r => {
-                    if (!r.OS || r.OS.trim() === '') return;
+                if (processados < dadosRequerimento.length) {
+                    const inicioReq = processados;
+                    const fimReq = Math.min(fim, dadosRequerimento.length);
+                    
+                    for (let i = inicioReq; i < fimReq; i++) {
+                        const r = dadosRequerimento[i];
+                        if (!r.OS || r.OS.trim() === '') continue;
 
-                    const fiscal = r.Fiscal_Encaminha || '';
-                    // Só valida fiscal se não estiver vazio
-                    if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) return;
+                        const fiscal = r.Fiscal_Encaminha || '';
+                        if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) continue;
 
-                    // Buscar dados do regulado
-                    let razaoSocial = r.Requerente || '';
-                    let fantasia = '';
-                    let logradouro = '';
-                    let cnpj = '';
-                    let cpf = '';
-                    let cdbai = '';
+                        let razaoSocial = r.Requerente || '';
+                        let fantasia = '';
+                        let logradouro = '';
+                        let cnpj = '';
+                        let cpf = '';
+                        let cdbai = '';
 
-                    if (r.Codigo) {
-                        const regulado = dadosRegulados.find(reg => 
-                            String(reg.CODIGO).trim() === String(r.Codigo).trim()
-                        );
-                        if (regulado) {
-                            razaoSocial = regulado.RAZAO || razaoSocial;
-                            fantasia = regulado.FANTASIA || '';
-                            logradouro = regulado.LOGRADOURO || '';
-                            cnpj = regulado.CGC || '';
-                            cpf = regulado.CPF || '';
-                            cdbai = regulado.CDBAI || '';
-                        }
-                    }
-
-                    todasOS.push({
-                        numero: r.OS,
-                        tipo: 'Requerimento',
-                        fiscal: fiscal,
-                        razao_social: razaoSocial,
-                        fantasia: fantasia,
-                        complexidade: r.Complexidade || '',
-                        data_req: converterData(r.Dt_Req),
-                        data_encaminha: converterData(r.Dt_encaminha),
-                        motivo: r.Motivo || '',
-                        atendida: processarBool(r.Atendimento) ? 'Sim' : 'Não',
-                        cancelado: processarBool(r.Cancelado) ? 'Sim' : 'Não',
-                        area: r.Area || '',
-                        logradouro: logradouro,
-                        cnpj: cnpj,
-                        cpf: cpf,
-                        observacao: r.Obs_Req || '',
-                        cdbai: cdbai
-                    });
-                });
-
-                // Processar OFÍCIOS
-                dadosOficio.forEach(o => {
-                    if (!o.Oficio || o.Oficio.trim() === '') return;
-
-                    const fiscal = o.Fiscalencaminha || '';
-                    if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) return;
-
-                    todasOS.push({
-                        numero: o.Oficio,
-                        tipo: 'Ofício',
-                        fiscal: fiscal,
-                        razao_social: o.Regulado || '',
-                        fantasia: o.Fantasia || '',
-                        complexidade: '',
-                        data_req: converterData(o.Data),
-                        data_encaminha: converterData(o.Dtencaminha),
-                        motivo: o.Motivo || '',
-                        atendida: processarBool(o.Archive) ? 'Sim' : 'Não',
-                        cancelado: processarBool(o.Cancela) ? 'Sim' : 'Não',
-                        area: '',
-                        logradouro: o.Logradouro || '',
-                        cnpj: o.Cnpj || '',
-                        cpf: o.Cpf || '',
-                        observacao: o.Ordem || '',
-                        cdbai: o.Cdbai || ''
-                    });
-                });
-
-                // Processar DENÚNCIAS
-                dadosDenuncia.forEach(d => {
-                    if (!d.Denuncia || d.Denuncia.trim() === '') return;
-
-                    const fiscal = d.FiscalEncaminha || '';
-                    if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) return;
-
-                    todasOS.push({
-                        numero: d.Denuncia,
-                        tipo: 'Denúncia',
-                        fiscal: fiscal,
-                        razao_social: d.Reclamado || '',
-                        fantasia: '',
-                        complexidade: '',
-                        data_req: converterData(d.Data),
-                        data_encaminha: converterData(d.DtEncaminha),
-                        motivo: d.Objeto1 || '',
-                        atendida: processarBool(d.Archive) ? 'Sim' : 'Não',
-                        cancelado: 'Não',
-                        area: d.Area || '',
-                        logradouro: d.Logradouro || '',
-                        cnpj: d.Cnpj || '',
-                        cpf: d.Cpf || '',
-                        observacao: d.Descricao || '',
-                        cdbai: d.Cdbai || ''
-                    });
-                });
-
-                // Processar PROTOCOLOS
-                dadosProtocolo.forEach(p => {
-                    if (!p.Protocolo || p.Protocolo.trim() === '') return;
-
-                    const carga = p.Carga || '';
-                    if (carga && carga.trim() !== '' && !fiscalValido(carga)) return;
-
-                    // Buscar tramitação mais recente
-                    const trams = dadosTramitacao.filter(t => 
-                        String(t.PROTOCOLO).trim() === String(p.Protocolo).trim()
-                    );
-
-                    let dataEncaminha = '';
-                    let destinoValido = true;
-
-                    if (trams.length > 0) {
-                        // Ordenar por data e hora
-                        trams.sort((a, b) => {
-                            const dataA = converterData(a.DATA);
-                            const dataB = converterData(b.DATA);
-                            if (dataA !== dataB) return dataB.localeCompare(dataA);
-                            return (b.HORA || '').localeCompare(a.HORA || '');
-                        });
-
-                        const tramRecente = trams[0];
-                        dataEncaminha = converterData(tramRecente.DATA);
-
-                        // VALIDAÇÃO CRÍTICA: destino deve ser igual ao carga
-                        if (carga && carga.trim() !== '') {
-                            const destino = normalizarTexto(tramRecente.DESTINO);
-                            const cargaNorm = normalizarTexto(carga);
-
-                            if (destino !== cargaNorm) {
-                                destinoValido = false;
+                        if (r.Codigo) {
+                            const regulado = dadosRegulados.find(reg => 
+                                String(reg.CODIGO).trim() === String(r.Codigo).trim()
+                            );
+                            if (regulado) {
+                                razaoSocial = regulado.RAZAO || razaoSocial;
+                                fantasia = regulado.FANTASIA || '';
+                                logradouro = regulado.LOGRADOURO || '';
+                                cnpj = regulado.CGC || '';
+                                cpf = regulado.CPF || '';
+                                cdbai = regulado.CDBAI || '';
                             }
                         }
+
+                        todasOS.push({
+                            numero: r.OS,
+                            tipo: 'Requerimento',
+                            fiscal: fiscal,
+                            razao_social: razaoSocial,
+                            fantasia: fantasia,
+                            complexidade: r.Complexidade || '',
+                            data_req: converterData(r.Dt_Req),
+                            data_encaminha: converterData(r.Dt_encaminha),
+                            motivo: r.Motivo || '',
+                            atendida: processarBool(r.Atendimento) ? 'Sim' : 'Não',
+                            cancelado: processarBool(r.Cancelado) ? 'Sim' : 'Não',
+                            area: r.Area || '',
+                            logradouro: logradouro,
+                            cnpj: cnpj,
+                            cpf: cpf,
+                            observacao: r.Obs_Req || '',
+                            cdbai: cdbai
+                        });
                     }
+                    
+                    processados = fimReq;
+                }
+                // Processar OFÍCIOS
+                else if (processados < dadosRequerimento.length + dadosOficio.length) {
+                    const base = dadosRequerimento.length;
+                    const inicioOf = processados - base;
+                    const fimOf = Math.min(fim - base, dadosOficio.length);
+                    
+                    for (let i = inicioOf; i < fimOf; i++) {
+                        const o = dadosOficio[i];
+                        if (!o.Oficio || o.Oficio.trim() === '') continue;
 
-                    // Se não passar na validação, não adiciona
-                    if (!destinoValido) return;
+                        const fiscal = o.Fiscalencaminha || '';
+                        if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) continue;
 
-                    todasOS.push({
-                        numero: p.Protocolo,
-                        tipo: 'Protocolo',
-                        fiscal: carga,
-                        razao_social: p.Protocolante || '',
-                        fantasia: '',
-                        complexidade: '',
-                        data_req: converterData(p.Data),
-                        data_encaminha: dataEncaminha,
-                        motivo: p.Assunto || '',
-                        atendida: 'Não',
-                        cancelado: 'Não',
-                        area: '',
-                        logradouro: '',
-                        cnpj: '',
-                        cpf: p.Documento || '',
-                        observacao: p.Observa || '',
-                        cdbai: ''
-                    });
-                });
+                        todasOS.push({
+                            numero: o.Oficio,
+                            tipo: 'Ofício',
+                            fiscal: fiscal,
+                            razao_social: o.Regulado || '',
+                            fantasia: o.Fantasia || '',
+                            complexidade: '',
+                            data_req: converterData(o.Data),
+                            data_encaminha: converterData(o.Dtencaminha),
+                            motivo: o.Motivo || '',
+                            atendida: processarBool(o.Archive) ? 'Sim' : 'Não',
+                            cancelado: processarBool(o.Cancela) ? 'Sim' : 'Não',
+                            area: '',
+                            logradouro: o.Logradouro || '',
+                            cnpj: o.Cnpj || '',
+                            cpf: o.Cpf || '',
+                            observacao: o.Ordem || '',
+                            cdbai: o.Cdbai || ''
+                        });
+                    }
+                    
+                    processados = base + fimOf;
+                }
+                // Processar DENÚNCIAS
+                else if (processados < dadosRequerimento.length + dadosOficio.length + dadosDenuncia.length) {
+                    const base = dadosRequerimento.length + dadosOficio.length;
+                    const inicioDen = processados - base;
+                    const fimDen = Math.min(fim - base, dadosDenuncia.length);
+                    
+                    for (let i = inicioDen; i < fimDen; i++) {
+                        const d = dadosDenuncia[i];
+                        if (!d.Denuncia || d.Denuncia.trim() === '') continue;
 
-                console.log(`✅ Total de OS processadas: ${todasOS.length}`);
+                        const fiscal = d.FiscalEncaminha || '';
+                        if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) continue;
 
-                // Aplicar filtros
-                aplicarFiltros();
-            }, 100);
+                        todasOS.push({
+                            numero: d.Denuncia,
+                            tipo: 'Denúncia',
+                            fiscal: fiscal,
+                            razao_social: d.Reclamado || '',
+                            fantasia: '',
+                            complexidade: '',
+                            data_req: converterData(d.Data),
+                            data_encaminha: converterData(d.DtEncaminha),
+                            motivo: d.Objeto1 || '',
+                            atendida: processarBool(d.Archive) ? 'Sim' : 'Não',
+                            cancelado: 'Não',
+                            area: d.Area || '',
+                            logradouro: d.Logradouro || '',
+                            cnpj: d.Cnpj || '',
+                            cpf: d.Cpf || '',
+                            observacao: d.Descricao || '',
+                            cdbai: d.Cdbai || ''
+                        });
+                    }
+                    
+                    processados = base + fimDen;
+                }
+                // Processar PROTOCOLOS
+                else {
+                    const base = dadosRequerimento.length + dadosOficio.length + dadosDenuncia.length;
+                    const inicioProt = processados - base;
+                    const fimProt = Math.min(fim - base, dadosProtocolo.length);
+                    
+                    for (let i = inicioProt; i < fimProt; i++) {
+                        const p = dadosProtocolo[i];
+                        if (!p.Protocolo || p.Protocolo.trim() === '') continue;
+
+                        const carga = p.Carga || '';
+                        if (carga && carga.trim() !== '' && !fiscalValido(carga)) continue;
+
+                        const trams = dadosTramitacao.filter(t => 
+                            String(t.PROTOCOLO).trim() === String(p.Protocolo).trim()
+                        );
+
+                        let dataEncaminha = '';
+                        let destinoValido = true;
+
+                        if (trams.length > 0) {
+                            trams.sort((a, b) => {
+                                const dataA = converterData(a.DATA);
+                                const dataB = converterData(b.DATA);
+                                if (dataA !== dataB) return dataB.localeCompare(dataA);
+                                return (b.HORA || '').localeCompare(a.HORA || '');
+                            });
+
+                            const tramRecente = trams[0];
+                            dataEncaminha = converterData(tramRecente.DATA);
+
+                            if (carga && carga.trim() !== '') {
+                                const destino = normalizarTexto(tramRecente.DESTINO);
+                                const cargaNorm = normalizarTexto(carga);
+
+                                if (destino !== cargaNorm) {
+                                    destinoValido = false;
+                                }
+                            }
+                        }
+
+                        if (!destinoValido) continue;
+
+                        todasOS.push({
+                            numero: p.Protocolo,
+                            tipo: 'Protocolo',
+                            fiscal: carga,
+                            razao_social: p.Protocolante || '',
+                            fantasia: '',
+                            complexidade: '',
+                            data_req: converterData(p.Data),
+                            data_encaminha: dataEncaminha,
+                            motivo: p.Assunto || '',
+                            atendida: 'Não',
+                            cancelado: 'Não',
+                            area: '',
+                            logradouro: '',
+                            cnpj: '',
+                            cpf: p.Documento || '',
+                            observacao: p.Observa || '',
+                            cdbai: ''
+                        });
+                    }
+                    
+                    processados = base + fimProt;
+                }
+                
+                // Atualizar progresso
+                const percentual = Math.round((processados / totalItens) * 100);
+                mostrarInfo(`⏳ Processando dados... ${percentual}%`, 'info');
+                
+                // Continuar processando ou finalizar
+                if (processados < totalItens) {
+                    setTimeout(processarEmLotes, 10); // Pequena pausa entre chunks
+                } else {
+                    console.log(`✅ Total de OS processadas: ${todasOS.length}`);
+                    aplicarFiltros();
+                }
+            }
+            
+            // Iniciar processamento
+            setTimeout(processarEmLotes, 10);
         }
 
         // Aplicar filtros
