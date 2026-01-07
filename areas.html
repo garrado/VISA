@@ -103,81 +103,78 @@
   .modal-box ul{padding-left:20px;line-height:1.6}
   .modal-actions{display:flex;justify-content:flex-end;margin-top:14px}
 
+  /* ✅ Rolagem interna no modal (desktop + celular) */
+  .modal-box{
+    max-height:80vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .modal-scroll{
+    overflow:auto;
+    max-height:60vh;
+    padding-right:8px;
+  }
+
   @media(max-width:1024px){
     .filters{grid-template-columns:1fr}
     th:first-child, td:first-child{min-width:200px}
   }
 
-/* =========================
-   AJUSTE RESPONSIVO – COLUNA BAIRRO
-========================= */
-@media (max-width: 768px){
-
-  /* reduz largura mínima da coluna Bairro */
-  th:first-child,
-  td:first-child{
-    min-width: 140px;     /* antes estava ~200/240 */
-    max-width: 160px;
-    font-size: 0.85rem;   /* diminui a fonte só no mobile */
-    line-height: 1.2;
-    white-space: normal;  /* permite quebrar o nome do bairro */
-    word-break: break-word;
+  /* =========================
+     AJUSTE RESPONSIVO – COLUNA BAIRRO
+  ========================= */
+  @media (max-width: 768px){
+    th:first-child,
+    td:first-child{
+      min-width: 140px;
+      max-width: 160px;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      white-space: normal;
+      word-break: break-word;
+      padding: 8px;
+    }
   }
 
-  /* opcional: um pouco menos de padding para caber melhor */
-  th:first-child,
-  td:first-child{
-    padding: 8px;
-  }
-}
-
-/* =========================
-   AJUSTE RESPONSIVO – TÍTULO E SUBTÍTULO
-   (evita sobrepor o botão OK)
-========================= */
-@media (max-width: 768px){
-
-  header{
-    padding-right: 72px; /* garante espaço físico pro botão OK */
+  /* =========================
+     AJUSTE RESPONSIVO – TÍTULO E SUBTÍTULO
+     (evita sobrepor o botão OK)
+  ========================= */
+  @media (max-width: 768px){
+    header{ padding-right: 72px; }
+    header h1{ font-size: 1.45rem; line-height: 1.2; }
+    header h2{ font-size: 0.95rem; line-height: 1.25; }
   }
 
-  header h1{
-    font-size: 1.45rem;  /* ajuste fino do título */
-    line-height: 1.2;
+  /* =========================
+     Botão "Aviso Legal"
+  ========================= */
+  .legal-wrap{
+    max-width:1100px;
+    margin:12px auto 0;
+    padding:0 16px;
+    display:flex;
+    justify-content:center;
   }
-
-  header h2{
-    font-size: 0.95rem;  /* ajuste fino do subtítulo */
-    line-height: 1.25;
+  .btn-legal{
+    width:auto;
+    padding:10px 16px;
+    border-radius:999px;
+    background:#fff3cd;
+    border:1px solid #f0ad4e;
+    color:#8a1f11;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
   }
-}
+  .btn-legal:hover{filter:brightness(.97)}
 
- /* ===== Botão Aviso Legal ===== */
-.btn-legal{
-  background:#fff3cd;
-  border:1px solid #f0ad4e;
-  color:#8a1f11;
-  font-weight:900;
-  padding:10px 16px;
-  border-radius:999px;
-  cursor:pointer;
-  box-shadow:0 2px 6px rgba(0,0,0,.08);
-}
-.btn-legal:hover{
-  filter:brightness(.97);
-}
-
-/* ===== Texto do Aviso Legal ===== */
-.aviso-legal-text{
-  font-size:0.95rem;
-  line-height:1.55;
-  color:#1f2937;
-}
-.aviso-legal-text p{
-  margin-bottom:12px;
-}
-
- 
+  .legal-text p{
+    margin-bottom:12px;
+    line-height:1.55;
+    color:#0f172a;
+    font-weight:600;
+  }
 </style>
 </head>
 
@@ -188,12 +185,11 @@
   <h2>Áreas de Atuação por Bairro</h2>
 </header>
 
- <div class="container">
-  <div style="text-align:center; margin:12px 0 4px;">
-    <button class="btn-legal" id="btnAvisoLegal">⚠️ Aviso Legal</button>
-  </div>
+<!-- ✅ Botão Aviso Legal (entre o banner e o primeiro box) -->
+<div class="legal-wrap">
+  <button class="btn-legal" id="btnAvisoLegal" type="button">⚠️ Aviso Legal</button>
 </div>
- 
+
 <div class="container">
 
   <div class="card">
@@ -234,9 +230,43 @@
 <div class="modal" id="modal">
   <div class="modal-box">
     <h3 id="modalTitle"></h3>
-    <ul id="modalList"></ul>
+    <ul id="modalList" class="modal-scroll"></ul>
     <div class="modal-actions">
       <button class="btn-clear" id="btnFecharModal" type="button">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ MODAL AVISO LEGAL -->
+<div class="modal" id="avisoLegalModal">
+  <div class="modal-box">
+    <h3 style="color:#8a1f11;">Aviso Legal</h3>
+
+    <div class="modal-scroll legal-text">
+      <p>
+        Informamos que a divisão dos fiscais por áreas de atuação não é fixa, não gerando direito adquirido
+        ou qualquer forma de vinculação permanente.
+      </p>
+
+      <p>
+        Nos termos da Lei Complementar nº 548/2023, compete ao Secretário Municipal de Saúde a organização
+        mensal das Ordens de Serviço, inclusive quanto à definição e à redistribuição das áreas de atuação.
+      </p>
+
+      <p>
+        Ressalta-se que essa atribuição foi formalmente delegada ao Gerente da Vigilância Sanitária, a quem
+        cabe organizar e ajustar mensalmente as Ordens de Serviço, conforme a necessidade do serviço público,
+        a demanda operacional e o interesse da Administração.
+      </p>
+
+      <p>
+        Dessa forma, eventuais alterações na definição das áreas de atuação são legais, legítimas e inerentes
+        ao poder de gestão administrativa, devendo ser observadas por todos.
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-clear" id="btnFecharAvisoLegal" type="button">Fechar</button>
     </div>
   </div>
 </div>
@@ -276,9 +306,14 @@ const qFiscal = document.getElementById("qFiscal");
 const fSigla  = document.getElementById("fSigla");
 const thead   = document.getElementById("thead");
 const tbody   = document.getElementById("tbody");
+
+// Modal CNAE
 const modal   = document.getElementById("modal");
 const modalTitle = document.getElementById("modalTitle");
 const modalList  = document.getElementById("modalList");
+
+// Modal Aviso Legal
+const avisoLegalModal = document.getElementById("avisoLegalModal");
 
 let dados = [];
 let siglas = [];
@@ -314,15 +349,6 @@ function loadCSV(url){
   });
 }
 
- function openAvisoLegal(){
-  document.getElementById("avisoLegalModal").style.display = "block";
-}
-
-function closeAvisoLegal(){
-  document.getElementById("avisoLegalModal").style.display = "none";
-}
-
- 
 async function init(){
   // Carrega CNAE e Bairros em paralelo
   const [cnaeRows, bairrosRows] = await Promise.all([
@@ -483,45 +509,12 @@ function closeModal(){ modal.style.display = "none"; }
 // expõe para onclick do header
 window.openModal = openModal;
 
-</div>
+/* =========================
+   Modal Aviso Legal
+========================= */
+function openAvisoLegal(){ avisoLegalModal.style.display = "block"; }
+function closeAvisoLegal(){ avisoLegalModal.style.display = "none"; }
 
-  <div class="modal-box">
-    <h3 style="color:#8a1f11;">Aviso Legal</h3>
-
-    <div class="aviso-legal-text">
-      <p>
-        Informamos que a divisão dos fiscais por áreas de atuação não é fixa,
-        não gerando direito adquirido ou qualquer forma de vinculação permanente.
-      </p>
-
-      <p>
-        Nos termos da Lei Complementar nº 548/2023, compete ao Secretário Municipal
-        de Saúde a organização mensal das Ordens de Serviço, inclusive quanto à
-        definição e à redistribuição das áreas de atuação.
-      </p>
-
-      <p>
-        Ressalta-se que essa atribuição foi formalmente delegada ao Gerente da
-        Vigilância Sanitária, a quem cabe organizar e ajustar mensalmente as
-        Ordens de Serviço, conforme a necessidade do serviço público, a demanda
-        operacional e o interesse da Administração.
-      </p>
-
-      <p>
-        Dessa forma, eventuais alterações na definição das áreas de atuação são
-        legais, legítimas e inerentes ao poder de gestão administrativa, devendo
-        ser observadas por todos.
-      </p>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-clear" onclick="closeAvisoLegal()">Fechar</button>
-    </div>
-  </div>
-</div>
-
- 
- 
 /* =========================
    Eventos
 ========================= */
@@ -541,9 +534,17 @@ document.getElementById("btnLimpar").addEventListener("click", () => {
 });
 fSigla.addEventListener("change", render);
 
+// Modal CNAE
 document.getElementById("btnFecharModal").addEventListener("click", closeModal);
 modal.addEventListener("click", (e) => {
   if(e.target === modal) closeModal();
+});
+
+// Aviso Legal
+document.getElementById("btnAvisoLegal").addEventListener("click", openAvisoLegal);
+document.getElementById("btnFecharAvisoLegal").addEventListener("click", closeAvisoLegal);
+avisoLegalModal.addEventListener("click", (e) => {
+  if(e.target === avisoLegalModal) closeAvisoLegal();
 });
 
 /* start */
@@ -551,32 +552,6 @@ init().catch(err => {
   console.error(err);
   alert("Erro ao carregar dados. Verifique se data/bairros.csv e data/cnae.csv existem e se está abrindo via servidor (Live Server).");
 });
-<script>
-  // ... todo o JS da página ...
-
-  function openAvisoLegal(){ ... }
-  function closeAvisoLegal(){ ... }
-document.getElementById("btnAvisoLegal").addEventListener("click", () => {
-  document.getElementById("avisoLegalModal").style.display = "block";
-});
- document.getElementById("btnFecharAvisoLegal").addEventListener("click", () => {
-  document.getElementById("avisoLegalModal").style.display = "none";
-});
-
-
- 
 </script>
-
- 
-</script>
- <div class="modal" id="avisoLegalModal">
-<div class="modal" id="avisoLegalModal">
-
 </body>
 </html>
-
-
-
-
-
-
