@@ -107,6 +107,31 @@
     .filters{grid-template-columns:1fr}
     th:first-child, td:first-child{min-width:200px}
   }
+
+/* =========================
+   AJUSTE RESPONSIVO – COLUNA BAIRRO
+========================= */
+@media (max-width: 768px){
+
+  /* reduz largura mínima da coluna Bairro */
+  th:first-child,
+  td:first-child{
+    min-width: 140px;     /* antes estava ~200/240 */
+    max-width: 160px;
+    font-size: 0.85rem;   /* diminui a fonte só no mobile */
+    line-height: 1.2;
+    white-space: normal;  /* permite quebrar o nome do bairro */
+    word-break: break-word;
+  }
+
+  /* opcional: um pouco menos de padding para caber melhor */
+  th:first-child,
+  td:first-child{
+    padding: 8px;
+  }
+}
+
+ 
 </style>
 </head>
 
@@ -429,3 +454,4 @@ init().catch(err => {
 </script>
 </body>
 </html>
+
