@@ -854,7 +854,7 @@ function carregarIndicadores() {
   
   Papa.parse('data/inspecoes.csv', {
     download: true,
-    header: false,
+    header: true,
     delimiter: ';',
     encoding: '',
     skipEmptyLines: true,
@@ -868,7 +868,7 @@ function carregarIndicadores() {
 }
 
 function processarDados(data, container) {
-  const rows = data.slice(1);
+  const rows = data;
 
   // ===== Helpers =====
   const mesesPt = [
@@ -915,12 +915,12 @@ function processarDados(data, container) {
   const anteriorKey = keyMesAno(anterior.month, anterior.year);
 
   // Filtra linhas do mês atual e do mês anterior (baseado no "MM.AAAA" presente na data)
-  const rowsMesAtual = rows.filter(row => row[2] && String(row[2]).includes(atualKey));
-  const rowsMesAnterior = rows.filter(row => row[2] && String(row[2]).includes(anteriorKey));
+  const rowsMesAtual = rows.filter(row => row.DT_VISITA && String(row.DT_VISITA).includes(atualKey));
+  const rowsMesAnterior = rows.filter(row => row.DT_VISITA && String(row.DT_VISITA).includes(anteriorKey));
 
   // Verifica se no mês atual já existem inspeções "a partir do dia 15" (>= 15)
   const existeDia15ouMaisNoMesAtual = rowsMesAtual.some(row => {
-    const dmy = parseDMY(row[2]);
+    const dmy = parseDMY(row.DT_VISITA);
     return dmy && dmy.year === anoAtual && dmy.month === mesAtual && dmy.day >= 15;
   });
 
@@ -951,13 +951,13 @@ function processarDados(data, container) {
 
   // ===== segue seu cálculo original =====
   const totalInspecoes = inspecoesFiltradas.length;
-  const autos = inspecoesFiltradas.filter(row => row[8] && row[8].includes('AUTO DE INFRAÇÃO')).length;
+  const autos = inspecoesFiltradas.filter(row => row.TIPO && row.TIPO.includes('AUTO DE INFRAÇÃO')).length;
 
   const fiscaisSet = new Set();
   inspecoesFiltradas.forEach(row => {
-  if (row[5] && row[5].trim()) fiscaisSet.add(row[5].trim());   // Fiscal1
-  if (row[6] && row[6].trim()) fiscaisSet.add(row[6].trim());   // Fiscal2
-  if (row[7] && row[7].trim()) fiscaisSet.add(row[7].trim());   // Fiscal3
+  if (row.Fiscal1 && row.Fiscal1.trim()) fiscaisSet.add(row.Fiscal1.trim());
+  if (row.Fiscal2 && row.Fiscal2.trim()) fiscaisSet.add(row.Fiscal2.trim());
+  if (row.Fiscal3 && row.Fiscal3.trim()) fiscaisSet.add(row.Fiscal3.trim());
   });
   const totalFiscais = fiscaisSet.size;
 
@@ -968,10 +968,10 @@ function processarDados(data, container) {
   const protocolos = new Set();
 
   inspecoesFiltradas.forEach(row => {
-    if (row[10] && row[10].trim() !== '') denuncias.add(row[10].trim());
-    if (row[18] && row[18].trim() !== '') requerimentos.add(row[18].trim());
-    if (row[25] && row[25].trim() !== '') oficios.add(row[25].trim());
-    if (row[24] && row[24].trim() !== '') protocolos.add(row[24].trim());
+    if (row.Denuncia && row.Denuncia.trim() !== '') denuncias.add(row.Denuncia.trim());
+    if (row.OS && row.OS.trim() !== '') requerimentos.add(row.OS.trim());
+    if (row.Oficio && row.Oficio.trim() !== '') oficios.add(row.Oficio.trim());
+    if (row.Protocolo && row.Protocolo.trim() !== '') protocolos.add(row.Protocolo.trim());
   });
 
   const osDetalhadas = {
@@ -986,8 +986,9 @@ function processarDados(data, container) {
 
   const tiposDocumentos = {};
   inspecoesFiltradas.forEach(row => {
-    if (row[8] && row[8].trim()) {
-      tiposDocumentos[row[8].trim()] = (tiposDocumentos[row[8].trim()] || 0) + 1;
+   if (row.TIPO && row.TIPO.trim()) {
+      tiposDocumentos[row.TIPO.trim()] = (tiposDocumentos[row.TIPO.trim()] || 0) + 1;
+
     }
   });
 
