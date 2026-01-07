@@ -1,633 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Divisão por Bairro/Local × Fiscal (SIGLAS) - VISA Anápolis</title>
+<meta charset="UTF-8">
+<title>Áreas de Atuação – Vigilância Sanitária</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Igual ao RPF -->
-  <link rel="stylesheet" href="./css/design-tokens.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<link rel="stylesheet" href="./css/design-tokens.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <style>
-    /* === BASE (padrão do RPF) === */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100% }
+<style>
+body{font-family:system-ui,Segoe UI,Arial;background:#f6f7fb;margin:0}
+header{background:#1a3a6b;color:#fff;padding:26px 20px;text-align:center;position:sticky;top:0}
+header h1{margin:0;font-size:2rem;font-weight:900}
+header h2{margin-top:6px;font-weight:500;opacity:.9}
 
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--bg, #f6f7fb);
-      color: var(--text, #0f172a);
-      line-height: 1.6;
-    }
+.container{max-width:1100px;margin:20px auto;padding:0 16px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
 
-    header {
-      background: #1a3a6b;
-      color: #ffffff;
-      padding: 28px 20px 26px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+.filters{display:grid;grid-template-columns:2fr 2fr 1fr 140px 140px;gap:12px}
+label{font-weight:700;margin-bottom:6px}
+input,select,button{padding:12px;border-radius:10px;border:1px solid #ccc;font-size:1rem}
+button{font-weight:800;cursor:pointer}
+.btn{background:#2c5aa0;color:#fff;border:none}
+.btn-clear{background:#eef2ff;color:#1a3a6b}
 
-    header h1 {
-      margin: 0;
-      font-size: clamp(1.7rem, 2.4vw, 2.3rem);
-      font-weight: 900;
-      letter-spacing: .2px;
-      color: #ffffff;
-    }
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:#2c5aa0;color:#fff;padding:10px;cursor:pointer;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid #ddd}
+tr:hover td{background:#f1f5ff}
+.hit{background:#ffe066;border-left:4px solid #1a3a6b;padding:2px 6px;font-weight:900}
 
-    header h2 {
-      margin: 8px 0 0;
-      font-size: clamp(1rem, 1.5vw, 1.15rem);
-      font-weight: 500;
-      opacity: .92;
-      color: #ffffff;
-    }
-
-    /* Botão OK igual ao RPF */
-    .btn-ok-header {
-      position: absolute;
-      top: 50%;
-      right: 16px;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: #34C759;
-      font-size: 17px;
-      font-weight: 600;
-      padding: 16px 12px;
-      cursor: pointer;
-      text-decoration: none;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-ok-header:hover { opacity: 0.7; }
-
-    .container {
-      max-width: 1100px;
-      margin: 22px auto 30px;
-      padding: 0 16px;
-    }
-
-    .card {
-      background: var(--card, #ffffff);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(15,23,42,.08);
-      box-shadow: 0 4px 14px rgba(15,23,42,.08);
-    }
-
-    .filter-row {
-      display: grid;
-      grid-template-columns: 2fr 2fr 1fr 160px 140px;
-      gap: 14px;
-      align-items: end;
-    }
-
-    .filter-group { display: flex; flex-direction: column; min-width: 0; }
-
-    .filter-group label {
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--text, #0f172a);
-      font-size: .95em;
-    }
-
-    .filter-group input,
-    .filter-group select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid rgba(15,23,42,.12);
-      border-radius: 10px;
-      font-size: 1em;
-      background: #fff;
-      color: var(--text, #0f172a);
-      outline: none;
-      min-width: 0;
-    }
-
-    .filter-group input:focus,
-    .filter-group select:focus {
-      border-color: rgba(26,58,107,.65);
-      box-shadow: 0 0 0 3px rgba(26,58,107,.12);
-    }
-
-    .btn-search {
-      padding: 12px 18px;
-      background: linear-gradient(135deg, #2c5aa0, #1a3a6b);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1em;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .15s transform, .15s box-shadow;
-      width: 100%;
-    }
-    .btn-search:hover { box-shadow: 0 4px 14px rgba(15,23,42,.10); transform: translateY(-1px); }
-    .btn-search:active { transform: translateY(0); }
-
-    .btn-clear {
-      padding: 12px 18px;
-      background: #eef2ff;
-      color: #1a3a6b;
-      border: 1px solid #c7d2fe;
-      border-radius: 12px;
-      font-size: 1em;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-    }
-    .btn-clear:hover { filter: brightness(0.98); }
-
-    .results-card {
-      background: var(--card, #ffffff);
-      border-radius: 16px;
-      padding: 18px;
-      border: 1px solid rgba(15,23,42,.08);
-      box-shadow: 0 4px 14px rgba(15,23,42,.08);
-    }
-
-    .info-box {
-      background: rgba(44, 90, 160, 0.08);
-      border-left: 4px solid #2c5aa0;
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      border-radius: 6px;
-      color: var(--text, #0f172a);
-      font-weight: 700;
-    }
-
-    .table-responsive {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 12px;
-      border: 1px solid rgba(15,23,42,.10);
-    }
-
-    table {
-      width: max(100%, 1050px);
-      border-collapse: collapse;
-      background: #fff;
-    }
-
-    thead th {
-      background: #2c5aa0;
-      color: #fff;
-      font-weight: 900;
-      padding: 12px 10px;
-      text-align: left;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      white-space: nowrap;
-    }
-
-    tbody td {
-      padding: 10px 10px;
-      border-bottom: 1px solid rgba(15,23,42,.08);
-      vertical-align: top;
-      color: var(--text, #0f172a);
-      font-size: .95em;
-    }
-
-    tbody tr:hover td { background: rgba(44, 90, 160, 0.06); }
-
-    .muted { color: rgba(100,116,139,1); font-weight: 700; }
-    .mono {
-      font-variant-numeric: tabular-nums;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    /* ✅ Destaque forte (bem visível) */
-    .hit {
-      background: #ffe066;
-      border-left: 4px solid #1a3a6b;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-weight: 900;
-      color: #1a3a6b;
-      display: inline-block;
-    }
-
-    /* ✅ Ocultação de colunas */
-    .col-hidden { display: none !important; }
-
-    .footer {
-      margin-top: 10px;
-      color: rgba(100,116,139,1);
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    @media (max-width: 1024px){
-      .filter-row { grid-template-columns: 1fr; }
-      header { padding: 28px 70px 26px 20px; }
-      .btn-search, .btn-clear { padding: 14px; }
-      .filter-group input, .filter-group select { font-size: 16px; }
-    }
-  </style>
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999}
+.modal-box{background:#fff;max-width:760px;margin:5vh auto;border-radius:16px;padding:20px}
+.modal-box h3{color:#1a3a6b}
+</style>
 </head>
 
 <body>
-  <header>
-    <a class="btn-ok-header" href="index.html">OK</a>
-    <h1>Vigilância Sanitária</h1>
-    <h2>Divisão por Bairro/Local × Fiscal (por Áreas)</h2>
-  </header>
 
-  <div class="container">
-    <div class="card">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label for="qBairro">Bairro/Local (NOME)</label>
-          <input id="qBairro" type="text" placeholder="Ex.: Jundiaí, Centro, Mercado..." />
-        </div>
+<header>
+  <h1>Vigilância Sanitária</h1>
+  <h2>Áreas de Atuação por Bairro</h2>
+</header>
 
-        <div class="filter-group">
-          <label for="qFiscal">Fiscal (procura em todas as Áreas)</label>
-          <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE." />
-        </div>
+<div class="container">
 
-        <div class="filter-group">
-          <label for="fSigla">Área (opcional)</label>
-          <select id="fSigla">
-            <option value="">(todas)</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <button class="btn-search" id="btnBuscar" type="button">🔍 Buscar</button>
-        </div>
-
-        <div class="filter-group">
-          <button class="btn-clear" id="btnLimpar" type="button">Limpar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="results-card">
-      <div class="info-box" id="infoBox">Carregando dados…</div>
-
-      <div class="table-responsive" id="tableWrap">
-        <table id="tbl">
-          <thead><tr id="theadRow"></tr></thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-
-      <div class="footer">
-        <span>Fonte: <span class="mono" id="fonteCsv"></span></span>
-        <span>Registros: <span class="mono" id="count">0</span></span>
-        <span>Áreas exibidas: <span class="mono" id="shownCols">0</span> / <span class="mono" id="totalCols">0</span></span>
-      </div>
-    </div>
+<div class="card">
+<div class="filters">
+  <div>
+    <label>Bairro / Local</label>
+    <input id="qBairro">
   </div>
+  <div>
+    <label>Fiscal</label>
+    <input id="qFiscal">
+  </div>
+  <div>
+    <label>Área</label>
+    <select id="fSigla"><option value="">Todas</option></select>
+  </div>
+  <button class="btn" onclick="render()">Buscar</button>
+  <button class="btn-clear" onclick="limpar()">Limpar</button>
+</div>
+</div>
+
+<div class="card">
+<table>
+<thead><tr id="thead"></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+
+</div>
+
+<!-- MODAL CNAE -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle"></h3>
+    <ul id="modalList"></ul>
+    <button class="btn-clear" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
 
 <script>
-(() => {
-  // =========================
-  // ✅ AJUSTE AQUI O CAMINHO DO CSV
-  // =========================
-  const CSV_FILE = "data/bairros.csv";
+const CSV_BAIRROS="data/bairros.csv";
+const CSV_CNAE="data/cnae.csv";
 
-  // Colunas fixas (sempre visíveis)
-  const FIXED_COLS = ["CODIGO", "NOME", "SETOR", "SETORALIMENTO"];
+const IGNORE=["CODIGO","SETOR","SETORALIMENTO","FU","CONTROLE"];
 
-  // Ignorar coluna "CONTROLE" (às vezes vem estranha)
-  const IGNORE_COLS = new Set([
-    "CONTROLE", '"CONTROLE"', "﻿CONTROLE", "﻿\"CONTROLE\"",
-    "\uFEFFCONTROLE", '\uFEFF"CONTROLE"'
-  ]);
+const SIGLA_TO_NOME={
+  IA:"Indústrias Alimentícias",AG:"Alimentos em Geral",ED:"Ensino",
+  OS:"Produtos para Saúde",SS:"Serviços de Saúde",OD:"Serviços Odontológicos",
+  CS:"Cosméticos",AM:"Ambiental",VT:"Veterinária",BI:"Outras Áreas I",
+  LP:"Assistência à Saúde",AO:"Outras Áreas II",TR:"Transporte",
+  DR:"Medicamentos",MD:"Medicamentos",PS:"Produtos Sujeitos à VISA"
+};
 
-  // =========================
-  // ✅ SIGLA -> NOME REAL DA ÁREA (conforme siglas.docx)
-  // (Exibição: "Nome (SIGLA)"; Interno: continua usando a SIGLA)
-  // =========================
-  const SIGLA_TO_NOME = {
-    "IA": "Indústrias Alimentícias",
-    "AG": "Alimentos em Geral",
-    "ED": "Estabelecimentos de Ensino",
-    "OS": "Produtos para Saúde",
-    "SS": "Serviços de Saúde",
-    "OD": "Serviços Odontológicos",
-    "CS": "Cosméticos e Saneantes",
-    "AM": "Vigilância Ambiental",
-    "VT": "Serviços Veterinários",
-    "BI": "Outras Áreas I",
-    "LP": "Estabelecimentos Assistenciais à Saúde",
-    "AO": "Outras Áreas II",
-    "TR": "Serviços de Transporte",
-    "DR": "Comércio varejista de Medicamentos",
-    "MD": "Medicamentos"
-  };
+let dados=[],siglas=[],cnaeMap={};
 
-  // Label exibido para uma sigla (fallback: mostra a própria sigla)
-  function labelArea(sigla){
-    const nome = SIGLA_TO_NOME[sigla];
-    return nome ? `${nome} (${sigla})` : sigla;
-  }
+const norm=s=>String(s||"").toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
-  const el = (id) => document.getElementById(id);
-  const qBairro = el("qBairro");
-  const qFiscal = el("qFiscal");
-  const fSigla  = el("fSigla");
-  const tbody   = el("tbody");
-  const theadRow= el("theadRow");
-  const countEl = el("count");
-  const infoBox = el("infoBox");
-  const fonteCsv= el("fonteCsv");
-  const shownColsEl = el("shownCols");
-  const totalColsEl = el("totalCols");
-
-  fonteCsv.textContent = CSV_FILE;
-
-  let rows = [];
-  let siglas = [];
-  let lastRenderedCols = []; // colunas atualmente no DOM (FIXED + siglas)
-
-  function norm(s){
-    return String(s ?? "")
-      .replace(/\u00A0/g, " ")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toUpperCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-
-  function escapeHtml(s){
-    return String(s ?? "")
-      .replaceAll("&","&amp;").replaceAll("<","&lt;")
-      .replaceAll(">","&gt;").replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  function highlight(original, query){
-    const o = String(original ?? "");
-    const nq = norm(query);
-    if(!nq) return escapeHtml(o);
-    if(!norm(o).includes(nq)) return escapeHtml(o);
-    return `<span class="hit">${escapeHtml(o)}</span>`;
-  }
-
-  // Busca robusta por fiscal dentro da célula
-  function cellHasFiscal(cellValue, qFiscalText){
-    const q = norm(qFiscalText);
-    if(!q) return true;
-
-    const raw = norm(cellValue);
-    if(!raw) return false;
-
-    if(raw.includes(q)) return true;
-
-    const tokens = raw
-      .replace(/\s+E\s+/g, ";")
-      .split(/[;,\n\/|]+/g)
-      .map(t => t.replace(/\s+/g," ").trim())
-      .filter(Boolean);
-
-    for(const t of tokens){
-      if(t.includes(q) || q.includes(t)) return true;
-    }
-    return false;
-  }
-
-  function buildHeader(){
-    const cols = [...FIXED_COLS, ...siglas];
-    lastRenderedCols = cols;
-
-    theadRow.innerHTML = cols.map((c, idx) => {
-      const isFixed = FIXED_COLS.includes(c);
-      const label = isFixed ? c : labelArea(c);
-      // data-col mantém a SIGLA real, pra NÃO quebrar nada no hide/show
-      return `<th data-col="${escapeHtml(c)}" data-idx="${idx}">${escapeHtml(label)}</th>`;
-    }).join("");
-
-    totalColsEl.textContent = String(siglas.length);
-  }
-
-  function buildSiglaFilter(){
-    // ✅ Exibe NOME REAL no dropdown, mas mantém value = SIGLA
-    fSigla.innerHTML =
-      `<option value="">(todas as áreas)</option>` +
-      siglas
-        .map(s => `<option value="${escapeHtml(s)}">${escapeHtml(labelArea(s))}</option>`)
-        .join("");
-  }
-
-  function rowMatches(row){
-    const qb = norm(qBairro.value);
-    const qf = qFiscal.value;
-    const fs = fSigla.value;
-
-    // bairro/local
-    if(qb){
-      if(!norm(row.NOME).includes(qb)) return false;
-    }
-
-    // sigla selecionada: exige que tenha algo nessa coluna
-    if(fs){
-      const v = String(row[fs] ?? "").trim();
-      if(!v) return false;
-
-      // se digitou fiscal, procura apenas nesta sigla
-      if(qf && !cellHasFiscal(row[fs], qf)) return false;
-      return true;
-    }
-
-    // fiscal sem sigla selecionada: varre todas as siglas
-    if(qf){
-      let ok = false;
-      for(const s of siglas){
-        if(cellHasFiscal(row[s], qf)) { ok = true; break; }
-      }
-      if(!ok) return false;
-    }
-
-    return true;
-  }
-
-  // ✅ Decide quais colunas SIGLAS ficam visíveis quando há busca por fiscal
-  function computeVisibleSiglas(filteredRows){
-    const qf = qFiscal.value.trim();
-    const fs = fSigla.value;
-
-    // sem fiscal: mostra tudo
-    if(!qf) return new Set(siglas);
-
-    // com sigla selecionada: só faz sentido mostrar a sigla escolhida
-    if(fs) return new Set([fs]);
-
-    // com fiscal e sem sigla: mostrar só as siglas onde ele aparece em pelo menos 1 linha filtrada
-    const visible = new Set();
-    for(const s of siglas){
-      for(const r of filteredRows){
-        if(cellHasFiscal(r[s], qf)){
-          visible.add(s);
-          break;
-        }
-      }
-    }
-    return visible;
-  }
-
-  // ✅ Aplica hide/show nas colunas (TH e TD)
-  function applyColumnVisibility(visibleSiglasSet){
-    const cols = lastRenderedCols;
-
-    // conta siglas visíveis
-    let shown = 0;
-
-    cols.forEach((c, idx) => {
-      const isFixed = FIXED_COLS.includes(c);
-      const isSigla = !isFixed;
-
-      const shouldShow = isFixed || (visibleSiglasSet.has(c));
-      if(isSigla && shouldShow) shown++;
-
-      // header
-      const th = theadRow.querySelector(`th[data-idx="${idx}"]`);
-      if(th){
-        th.classList.toggle("col-hidden", !shouldShow);
-      }
-
-      // body tds
-      tbody.querySelectorAll(`tr`).forEach(tr => {
-        const td = tr.children[idx];
-        if(td) td.classList.toggle("col-hidden", !shouldShow);
-      });
-    });
-
-    shownColsEl.textContent = String(shown);
-  }
-
-  function render(){
-    const filtered = rows.filter(rowMatches);
-    countEl.textContent = String(filtered.length);
-
-    const qb = qBairro.value;
-    const qf = qFiscal.value;
-
-    const cols = [...FIXED_COLS, ...siglas];
-    lastRenderedCols = cols;
-
-    tbody.innerHTML = filtered.map(r => {
-      const tds = cols.map(c => {
-        const v = r[c] ?? "";
-        let content = escapeHtml(v);
-
-        if(c === "NOME") content = highlight(v, qb);
-        else if(siglas.includes(c) && qf) content = highlight(v, qf);
-
-        if(!String(v).trim()) content = `<span class="muted">—</span>`;
-        return `<td>${content}</td>`;
-      }).join("");
-
-      return `<tr>${tds}</tr>`;
-    }).join("");
-
-    // ✅ Ocultar colunas que não possuem o fiscal
-    const visibleSiglas = computeVisibleSiglas(filtered);
-    applyColumnVisibility(visibleSiglas);
-
-    // mensagem
-    const hasFiscal = qFiscal.value.trim().length > 0;
-    if(hasFiscal){
-      infoBox.innerHTML = `✅ Busca por fiscal ativa. Colunas (Áreas) sem o nome foram ocultadas automaticamente.`;
-    } else {
-      infoBox.innerHTML = `✅ Dados carregados. Use os filtros e clique em <b>Buscar</b>.`;
-      shownColsEl.textContent = String(siglas.length);
-    }
-
-    // caso não haja resultados
-    if(filtered.length === 0){
-      infoBox.innerHTML = `⚠️ Nenhum registro encontrado com os filtros atuais.`;
-      shownColsEl.textContent = "0";
-    }
-  }
-
-  function loadCSV(){
-    return new Promise((resolve, reject) => {
-      Papa.parse(CSV_FILE, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        // Se seu CSV for sempre ';', você pode travar:
-        // delimiter: ';',
-        complete: (results) => resolve(results),
-        error: (err) => reject(err)
-      });
-    });
-  }
-
-  async function init(){
-    infoBox.innerHTML = `Carregando <span class="mono">${escapeHtml(CSV_FILE)}</span>…`;
-
-    const res = await loadCSV();
-    const data = (res.data || []);
-    const fields = (res.meta && res.meta.fields) ? res.meta.fields : Object.keys(data[0] || {});
-
-    const headers = (fields || [])
-      .map(h => String(h || "").replace(/^\uFEFF/,"").trim())
-      .filter(Boolean)
-      .filter(h => !IGNORE_COLS.has(h));
-
-    siglas = headers.filter(h => !FIXED_COLS.includes(h));
-
-    rows = data.map(r => {
-      const obj = {};
-      for(const c of FIXED_COLS) obj[c] = r[c] ?? "";
-      for(const s of siglas) obj[s] = r[s] ?? "";
-      return obj;
-    });
-
-    buildHeader();
-    buildSiglaFilter();
-    render();
-  }
-
-  // Eventos
-  el("btnBuscar").addEventListener("click", render);
-
-  // Enter para buscar
-  [qBairro, qFiscal].forEach(inp => {
-    inp.addEventListener("keypress", (e) => {
-      if(e.key === "Enter") render();
-    });
+Papa.parse(CSV_CNAE,{
+ download:true,header:true,
+ complete:r=>{
+  r.data.forEach(l=>{
+   if(!cnaeMap[l.Equipe]) cnaeMap[l.Equipe]=[];
+   if(l.Atividade) cnaeMap[l.Equipe].push(l.Atividade);
   });
+ }
+});
 
-  fSigla.addEventListener("change", render);
+Papa.parse(CSV_BAIRROS,{
+ download:true,header:true,
+ complete:r=>{
+  const h=Object.keys(r.data[0]).filter(c=>!IGNORE.includes(c));
+  siglas=h.filter(c=>c!=="NOME");
+  dados=r.data;
+  montarHeader();
+  montarFiltro();
+  render();
+ }
+});
 
-  el("btnLimpar").addEventListener("click", () => {
-    qBairro.value = "";
-    qFiscal.value = "";
-    fSigla.value = "";
-    render();
-    qBairro.focus();
-  });
+function montarHeader(){
+  const th=document.getElementById("thead");
+  th.innerHTML="<th>Bairro</th>"+siglas.map(s=>
+   `<th onclick="openModal('${s}')">${SIGLA_TO_NOME[s]||s}</th>`).join("");
+}
 
-  init().catch(err => {
-    console.error(err);
-    infoBox.innerHTML = `❌ Erro ao carregar o CSV: <span class="mono">${escapeHtml(err.message || err)}</span><br>
-      <span class="muted">Dica: abra via servidor local (Live Server / python -m http.server) e confirme o caminho do arquivo.</span>`;
-    tbody.innerHTML = `<tr><td colspan="50" class="muted">Sem dados.</td></tr>`;
-    countEl.textContent = "0";
-    shownColsEl.textContent = "0";
-    totalColsEl.textContent = String(siglas.length || 0);
-  });
-})();
+function montarFiltro(){
+  fSigla.innerHTML="<option value=''>Todas</option>"+
+    siglas.map(s=>`<option value="${s}">${SIGLA_TO_NOME[s]||s}</option>`).join("");
+}
+
+function render(){
+ tbody.innerHTML="";
+ dados.filter(l=>{
+  if(qBairro.value && !norm(l.NOME).includes(norm(qBairro.value))) return false;
+  if(fSigla.value && !l[fSigla.value]) return false;
+  if(qFiscal.value){
+   return siglas.some(s=>norm(l[s]).includes(norm(qFiscal.value)));
+  }
+  return true;
+ }).forEach(l=>{
+  tbody.innerHTML+=
+   "<tr><td>"+l.NOME+"</td>"+
+   siglas.map(s=>{
+    let v=l[s]||"";
+    if(qFiscal.value && norm(v).includes(norm(qFiscal.value)))
+      v=`<span class="hit">${v}</span>`;
+    return `<td>${v}</td>`;
+   }).join("")+"</tr>";
+ });
+}
+
+function limpar(){qBairro.value=qFiscal.value=fSigla.value="";render()}
+
+function openModal(sigla){
+ modal.style.display="block";
+ modalTitle.innerText=SIGLA_TO_NOME[sigla]+" ("+sigla+")";
+ modalList.innerHTML=(cnaeMap[sigla]||["Nenhuma atividade"]).map(a=>`<li>${a}</li>`).join("");
+}
+function closeModal(){modal.style.display="none"}
 </script>
+
 </body>
 </html>
