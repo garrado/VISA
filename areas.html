@@ -190,9 +190,7 @@
 
  <div class="container">
   <div style="text-align:center; margin:12px 0 4px;">
-    <button class="btn-legal" onclick="openAvisoLegal()">
-      ⚠️ Aviso Legal
-    </button>
+    <button class="btn-legal" id="btnAvisoLegal">⚠️ Aviso Legal</button>
   </div>
 </div>
  
@@ -553,9 +551,27 @@ init().catch(err => {
   console.error(err);
   alert("Erro ao carregar dados. Verifique se data/bairros.csv e data/cnae.csv existem e se está abrindo via servidor (Live Server).");
 });
+<script>
+  // ... todo o JS da página ...
+
+  function openAvisoLegal(){ ... }
+  function closeAvisoLegal(){ ... }
+document.getElementById("btnAvisoLegal").addEventListener("click", () => {
+  document.getElementById("avisoLegalModal").style.display = "block";
+});
+ document.getElementById("btnFecharAvisoLegal").addEventListener("click", () => {
+  document.getElementById("avisoLegalModal").style.display = "none";
+});
+
+
+ 
+</script>
+
+ 
 </script>
 </body>
 </html>
+
 
 
 
