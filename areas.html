@@ -245,7 +245,7 @@
   <header>
     <a class="btn-ok-header" href="index.html">OK</a>
     <h1>Vigilância Sanitária</h1>
-    <h2>Divisão por Bairro/Local × Fiscal (por SIGLAS)</h2>
+    <h2>Divisão por Bairro/Local × Fiscal (por Áreas)</h2>
   </header>
 
   <div class="container">
@@ -257,12 +257,12 @@
         </div>
 
         <div class="filter-group">
-          <label for="qFiscal">Fiscal (procura em todas as SIGLAS)</label>
-          <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE..." />
+          <label for="qFiscal">Fiscal (procura em todas as Áreas)</label>
+          <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE." />
         </div>
 
         <div class="filter-group">
-          <label for="fSigla">SIGLA (opcional)</label>
+          <label for="fSigla">Área (opcional)</label>
           <select id="fSigla">
             <option value="">(todas)</option>
           </select>
@@ -291,7 +291,7 @@
       <div class="footer">
         <span>Fonte: <span class="mono" id="fonteCsv"></span></span>
         <span>Registros: <span class="mono" id="count">0</span></span>
-        <span>SIGLAS exibidas: <span class="mono" id="shownCols">0</span> / <span class="mono" id="totalCols">0</span></span>
+        <span>Áreas exibidas: <span class="mono" id="shownCols">0</span> / <span class="mono" id="totalCols">0</span></span>
       </div>
     </div>
   </div>
@@ -311,6 +311,34 @@
     "CONTROLE", '"CONTROLE"', "﻿CONTROLE", "﻿\"CONTROLE\"",
     "\uFEFFCONTROLE", '\uFEFF"CONTROLE"'
   ]);
+
+  // =========================
+  // ✅ SIGLA -> NOME REAL DA ÁREA (conforme siglas.docx)
+  // (Exibição: "Nome (SIGLA)"; Interno: continua usando a SIGLA)
+  // =========================
+  const SIGLA_TO_NOME = {
+    "IA": "Indústrias Alimentícias",
+    "AG": "Alimentos em Geral",
+    "ED": "Estabelecimentos de Ensino",
+    "OS": "Produtos para Saúde",
+    "SS": "Serviços de Saúde",
+    "OD": "Serviços Odontológicos",
+    "CS": "Cosméticos e Saneantes",
+    "AM": "Vigilância Ambiental",
+    "VT": "Serviços Veterinários",
+    "BI": "Outras Áreas I",
+    "LP": "Estabelecimentos Assistenciais à Saúde",
+    "AO": "Outras Áreas II",
+    "TR": "Serviços de Transporte",
+    "DR": "Comércio varejista de Medicamentos",
+    "MD": "Medicamentos"
+  };
+
+  // Label exibido para uma sigla (fallback: mostra a própria sigla)
+  function labelArea(sigla){
+    const nome = SIGLA_TO_NOME[sigla];
+    return nome ? `${nome} (${sigla})` : sigla;
+  }
 
   const el = (id) => document.getElementById(id);
   const qBairro = el("qBairro");
@@ -381,16 +409,22 @@
     lastRenderedCols = cols;
 
     theadRow.innerHTML = cols.map((c, idx) => {
-      return `<th data-col="${escapeHtml(c)}" data-idx="${idx}">${escapeHtml(c)}</th>`;
+      const isFixed = FIXED_COLS.includes(c);
+      const label = isFixed ? c : labelArea(c);
+      // data-col mantém a SIGLA real, pra NÃO quebrar nada no hide/show
+      return `<th data-col="${escapeHtml(c)}" data-idx="${idx}">${escapeHtml(label)}</th>`;
     }).join("");
 
     totalColsEl.textContent = String(siglas.length);
   }
 
   function buildSiglaFilter(){
+    // ✅ Exibe NOME REAL no dropdown, mas mantém value = SIGLA
     fSigla.innerHTML =
-      `<option value="">(todas)</option>` +
-      siglas.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
+      `<option value="">(todas as áreas)</option>` +
+      siglas
+        .map(s => `<option value="${escapeHtml(s)}">${escapeHtml(labelArea(s))}</option>`)
+        .join("");
   }
 
   function rowMatches(row){
@@ -511,7 +545,7 @@
     // mensagem
     const hasFiscal = qFiscal.value.trim().length > 0;
     if(hasFiscal){
-      infoBox.innerHTML = `✅ Busca por fiscal ativa. Colunas (SIGLAS) sem o nome foram ocultadas automaticamente.`;
+      infoBox.innerHTML = `✅ Busca por fiscal ativa. Colunas (Áreas) sem o nome foram ocultadas automaticamente.`;
     } else {
       infoBox.innerHTML = `✅ Dados carregados. Use os filtros e clique em <b>Buscar</b>.`;
       shownColsEl.textContent = String(siglas.length);
