@@ -152,6 +152,31 @@
   }
 }
 
+ /* ===== Botão Aviso Legal ===== */
+.btn-legal{
+  background:#fff3cd;
+  border:1px solid #f0ad4e;
+  color:#8a1f11;
+  font-weight:900;
+  padding:10px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.btn-legal:hover{
+  filter:brightness(.97);
+}
+
+/* ===== Texto do Aviso Legal ===== */
+.aviso-legal-text{
+  font-size:0.95rem;
+  line-height:1.55;
+  color:#1f2937;
+}
+.aviso-legal-text p{
+  margin-bottom:12px;
+}
+
  
 </style>
 </head>
@@ -163,6 +188,14 @@
   <h2>Áreas de Atuação por Bairro</h2>
 </header>
 
+ <div class="container">
+  <div style="text-align:center; margin:12px 0 4px;">
+    <button class="btn-legal" onclick="openAvisoLegal()">
+      ⚠️ Aviso Legal
+    </button>
+  </div>
+</div>
+ 
 <div class="container">
 
   <div class="card">
@@ -283,6 +316,15 @@ function loadCSV(url){
   });
 }
 
+ function openAvisoLegal(){
+  document.getElementById("avisoLegalModal").style.display = "block";
+}
+
+function closeAvisoLegal(){
+  document.getElementById("avisoLegalModal").style.display = "none";
+}
+
+ 
 async function init(){
   // Carrega CNAE e Bairros em paralelo
   const [cnaeRows, bairrosRows] = await Promise.all([
@@ -443,6 +485,45 @@ function closeModal(){ modal.style.display = "none"; }
 // expõe para onclick do header
 window.openModal = openModal;
 
+
+<div class="modal" id="avisoLegalModal">
+  <div class="modal-box">
+    <h3 style="color:#8a1f11;">Aviso Legal</h3>
+
+    <div class="aviso-legal-text">
+      <p>
+        Informamos que a divisão dos fiscais por áreas de atuação não é fixa,
+        não gerando direito adquirido ou qualquer forma de vinculação permanente.
+      </p>
+
+      <p>
+        Nos termos da Lei Complementar nº 548/2023, compete ao Secretário Municipal
+        de Saúde a organização mensal das Ordens de Serviço, inclusive quanto à
+        definição e à redistribuição das áreas de atuação.
+      </p>
+
+      <p>
+        Ressalta-se que essa atribuição foi formalmente delegada ao Gerente da
+        Vigilância Sanitária, a quem cabe organizar e ajustar mensalmente as
+        Ordens de Serviço, conforme a necessidade do serviço público, a demanda
+        operacional e o interesse da Administração.
+      </p>
+
+      <p>
+        Dessa forma, eventuais alterações na definição das áreas de atuação são
+        legais, legítimas e inerentes ao poder de gestão administrativa, devendo
+        ser observadas por todos.
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-clear" onclick="closeAvisoLegal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+ 
+ 
 /* =========================
    Eventos
 ========================= */
@@ -475,5 +556,6 @@ init().catch(err => {
 </script>
 </body>
 </html>
+
 
 
