@@ -1,87 +1,320 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Divisão por Bairro/Local × Fiscal (por SIGLA)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Divisão por Bairro/Local × Fiscal (SIGLAS) - VISA Anápolis</title>
+
+  <!-- Mesmo design tokens do seu app (se existir na pasta css/) -->
+  <link rel="stylesheet" href="./css/design-tokens.css">
+
+  <!-- PapaParse (igual ao RPF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
-    :root { --b:#e5e7eb; --t:#111827; --m:#6b7280; --bg:#ffffff; --chip:#f3f4f6; }
-    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; color: var(--t); background: var(--bg); }
-    h1{ font-size: 18px; margin: 0 0 10px; }
-    .sub{ color: var(--m); margin: 0 0 14px; font-size: 13px; }
-    .bar{ display:flex; flex-wrap:wrap; gap:10px; align-items:end; border:1px solid var(--b); padding:12px; border-radius:12px; }
-    label{ font-size:12px; color: var(--m); display:block; margin-bottom:4px; }
-    input, select, button{
-      font-size: 14px; padding: 9px 10px; border: 1px solid var(--b); border-radius: 10px; outline: none;
-      background:#fff;
+    /* === BASE (padrão do RPF) === */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    /* fallback caso design-tokens.css não exista */
+    :root{
+      --bg:#f6f7fb;
+      --text:#0f172a;
+      --muted:#64748b;
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --shadow: 0 8px 28px rgba(15,23,42,.10);
+      --shadow2: 0 4px 14px rgba(15,23,42,.08);
+      --brand1:#2c5aa0;
+      --brand2:#1a3a6b;
+      --input-bg:#fff;
+      --input-text:#0f172a;
+      --input-border:#d1d5db;
+      --input-focus:#2c5aa0;
     }
-    input:focus, select:focus{ border-color:#9ca3af; box-shadow: 0 0 0 3px rgba(156,163,175,.25); }
-    button{ cursor:pointer; }
-    .pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--b); border-radius:999px; background:var(--chip); font-size:12px; color:var(--m); }
-    .wrap{ overflow:auto; border:1px solid var(--b); border-radius:12px; margin-top:12px; }
-    table{ border-collapse: collapse; width: max(100%, 1100px); }
-    th, td{ border-bottom:1px solid var(--b); padding:8px 10px; font-size:13px; vertical-align: top; }
-    th{ position: sticky; top: 0; background: #fafafa; z-index: 2; text-align:left; white-space:nowrap; }
-    tr:hover td{ background:#fcfcfc; }
-    .muted{ color:var(--m); }
-    .mono{ font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    .hit{ background: #fff7ed; border-radius: 6px; padding: 0 2px; }
-    .right{ margin-left:auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .small{ font-size:12px; color:var(--m); }
-    .footer{ margin-top:10px; font-size:12px; color:var(--m); }
+
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    header{
+      background: #1a3a6b;
+      color: #fff;
+      padding: 28px 20px 26px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1{
+      margin: 0;
+      font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    header h2{
+      margin: 8px 0 0;
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      font-weight: 500;
+      opacity: .92;
+    }
+    .btn-ok-header{
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #34C759;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 16px 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-ok-header:hover{ opacity: .75; }
+
+    .container{
+      max-width: 1100px;
+      margin: 22px auto 30px;
+      padding: 0 16px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow2);
+    }
+
+    .filter-row{
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 160px 140px;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .filter-group{
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .filter-group label{
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: .95em;
+    }
+
+    .filter-group input,
+    .filter-group select{
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      font-size: 1em;
+      background: var(--input-bg);
+      color: var(--input-text);
+      outline: none;
+      min-width: 0;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus{
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.15);
+    }
+
+    .btn-search{
+      padding: 12px 18px;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1em;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .15s transform, .15s box-shadow;
+      width: 100%;
+    }
+    .btn-search:hover{ box-shadow: var(--shadow2); transform: translateY(-1px); }
+    .btn-search:active{ transform: translateY(0); }
+
+    .btn-clear{
+      padding: 12px 18px;
+      background: #eef2ff;
+      color: #1a3a6b;
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      font-size: 1em;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-clear:hover{ filter: brightness(0.98); }
+
+    .results-card{
+      background: var(--card);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow2);
+    }
+
+    .info-box{
+      background: rgba(44, 90, 160, 0.08);
+      border-left: 4px solid var(--brand1);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .table-responsive{
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    table{
+      width: max(100%, 1050px);
+      border-collapse: collapse;
+      background: #fff;
+    }
+    thead th{
+      background: var(--brand1);
+      color: #fff;
+      font-weight: 800;
+      padding: 12px 10px;
+      text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      white-space: nowrap;
+    }
+    tbody td{
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      color: var(--text);
+      font-size: .95em;
+    }
+    tbody tr:hover td{
+      background: rgba(44, 90, 160, 0.05);
+    }
+
+    .muted{ color: var(--muted); font-weight: 600; }
+    .mono{
+      font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .hit{
+      background: #fff7dd;
+      border-radius: 6px;
+      padding: 0 3px;
+      display: inline-block;
+    }
+
+    .footer{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1024px){
+      .filter-row{ grid-template-columns: 1fr; }
+      header{ padding: 28px 70px 26px 20px; }
+      .btn-search, .btn-clear{ padding: 14px; }
+      .filter-group input, .filter-group select{ font-size: 16px; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Divisão por Bairro/Local × Fiscal (colunas por SIGLAS)</h1>
-  <p class="sub">
-    Pesquisa por <b>Bairro/Local</b> (campo NOME) e por <b>Fiscal</b> (busca em todas as siglas).
-  </p>
+  <header>
+    <a class="btn-ok-header" href="index.html">OK</a>
+    <h1>Vigilância Sanitária</h1>
+    <h2>Divisão por Bairro/Local × Fiscal (por SIGLAS)</h2>
+  </header>
 
-  <div class="bar">
-    <div>
-      <label for="qBairro">Pesquisar bairro/local (NOME)</label>
-      <input id="qBairro" type="text" placeholder="Ex.: Jundiaí, Centro, Mercado..." size="34" />
+  <div class="container">
+    <div class="card">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="qBairro">Bairro/Local (NOME)</label>
+          <input id="qBairro" type="text" placeholder="Ex.: Jundiaí, Centro, Mercado..." />
+        </div>
+
+        <div class="filter-group">
+          <label for="qFiscal">Fiscal (busca robusta nas SIGLAS)</label>
+          <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE..." />
+        </div>
+
+        <div class="filter-group">
+          <label for="fSigla">SIGLA (opcional)</label>
+          <select id="fSigla">
+            <option value="">(todas)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <button class="btn-search" id="btnBuscar" type="button">🔍 Buscar</button>
+        </div>
+
+        <div class="filter-group">
+          <button class="btn-clear" id="btnLimpar" type="button">Limpar</button>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <label for="qFiscal">Pesquisar fiscal (em qualquer SIGLA)</label>
-      <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE..." size="34" />
+    <div class="results-card">
+      <div class="info-box" id="infoBox">
+        Carregando dados…
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr id="theadRow"></tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Fonte: <span class="mono" id="fonteCsv"></span>
+        &nbsp;•&nbsp; Registros exibidos: <span class="mono" id="count">0</span>
+      </div>
     </div>
-
-    <div>
-      <label for="fSigla">Filtrar por SIGLA (opcional)</label>
-      <select id="fSigla">
-        <option value="">(todas)</option>
-      </select>
-    </div>
-
-    <div class="right">
-      <span class="pill"><span class="mono" id="count">0</span> registros</span>
-      <button id="btnLimpar" type="button">Limpar filtros</button>
-    </div>
-  </div>
-
-  <div class="wrap">
-    <table id="tbl">
-      <thead><tr id="theadRow"></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-
-  <div class="footer">
-    Fonte: <span class="mono">data/bairros.csv</span> (mesma pasta do HTML).
   </div>
 
 <script>
 (() => {
-  // ====== AJUSTE AQUI SE NECESSÁRIO ======
-  const CSV_FILE = "data/bairros.csv"; // deve estar na mesma pasta do HTML
+  // ===== AJUSTE AQUI O CAMINHO DO CSV (o seu novo endereço) =====
+  // Ex.: "data/bairros.csv" ou "data/divisao_area.csv" etc.
+  const CSV_FILE = "data/bairros.csv";
 
-  // Colunas "fixas" antes das siglas (com base no seu CSV)
+  // Colunas fixas (antes das SIGLAS)
   const FIXED_COLS = ["CODIGO", "NOME", "SETOR", "SETORALIMENTO"];
 
-  // Vamos detectar as SIGLAS automaticamente: tudo que não é FIXED e não é CONTROLE
-  const IGNORE_COLS = new Set(['CONTROLE', '"CONTROLE"', '﻿"CONTROLE"', '\uFEFF"CONTROLE"', '\uFEFFCONTROLE', '﻿CONTROLE']);
+  // Ignorar "CONTROLE" (vem estranho no CSV às vezes)
+  const IGNORE_COLS = new Set([
+    "CONTROLE", '"CONTROLE"', "﻿CONTROLE", "﻿\"CONTROLE\"",
+    "\uFEFFCONTROLE", '\uFEFF"CONTROLE"'
+  ]);
 
   const el = (id) => document.getElementById(id);
   const qBairro = el("qBairro");
@@ -90,37 +323,63 @@
   const tbody   = el("tbody");
   const theadRow= el("theadRow");
   const countEl = el("count");
+  const infoBox = el("infoBox");
+  const fonteCsv= el("fonteCsv");
 
   let rows = [];
   let siglas = [];
 
+  fonteCsv.textContent = CSV_FILE;
+
   function norm(s){
-    return (s ?? "")
-      .toString()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase().trim();
+    return String(s ?? "")
+      .replace(/\u00A0/g, " ")         // NBSP
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
   function escapeHtml(s){
-    return (s ?? "").toString()
+    return String(s ?? "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;")
       .replaceAll(">","&gt;").replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
   }
 
-  // destaque simples (não case-sensitive, com normalização de acentos)
   function highlight(original, query){
-    if(!query) return escapeHtml(original ?? "");
-    const o = (original ?? "").toString();
+    const o = String(original ?? "");
     const nq = norm(query);
     if(!nq) return escapeHtml(o);
-
-    // tentativa simples: se a versão normalizada contém, destacamos por aproximação
-    // (mantém robusto sem complicar demais)
     if(!norm(o).includes(nq)) return escapeHtml(o);
-
-    // fallback: só marca a célula inteira como "hit" (mais confiável com acentos)
     return `<span class="hit">${escapeHtml(o)}</span>`;
+  }
+
+  // ===== FILTRO ROBUSTO POR FISCAL =====
+  // - normaliza acentos/case
+  // - separa por ; , / | \n e também por " E " (quando listam "FULANO E SICRANO")
+  function cellHasFiscal(cellValue, qFiscalText){
+    const q = norm(qFiscalText);
+    if(!q) return true;
+
+    const raw = norm(cellValue);
+    if(!raw) return false;
+
+    // se já contém direto, ok
+    if(raw.includes(q)) return true;
+
+    // tokenização agressiva (lista de nomes na célula)
+    const tokens = raw
+      .replace(/\s+E\s+/g, ";")       // "FULANO E SICRANO" -> "FULANO;SICRANO"
+      .split(/[;,\n\/|]+/g)
+      .map(t => t.replace(/\s+/g," ").trim())
+      .filter(Boolean);
+
+    // match por token (q pode ser parte do token ou token pode ser parte do q)
+    for(const t of tokens){
+      if(t.includes(q) || q.includes(t)) return true;
+    }
+    return false;
   }
 
   function buildHeader(){
@@ -129,179 +388,134 @@
   }
 
   function buildSiglaFilter(){
-    // preencher select com siglas
-    fSigla.innerHTML = `<option value="">(todas)</option>` + siglas
-      .map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`)
-      .join("");
+    fSigla.innerHTML =
+      `<option value="">(todas)</option>` +
+      siglas.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
   }
 
   function rowMatches(row){
     const qb = norm(qBairro.value);
-    const qf = norm(qFiscal.value);
+    const qf = qFiscal.value;
     const fs = fSigla.value;
 
-    // filtro bairro/local
+    // bairro/local
     if(qb){
-      const nome = norm(row.NOME);
-      if(!nome.includes(qb)) return false;
+      if(!norm(row.NOME).includes(qb)) return false;
     }
 
-    // filtro por sigla específica (opcional)
+    // sigla (se selecionou) -> exige que tenha algo nessa coluna
     if(fs){
-      const val = norm(row[fs]);
-      // se também tiver texto de fiscal, ele será aplicado abaixo;
-      // aqui a gente só garante que a sigla existe (não vazia) se o usuário quer filtrar por ela
-      // (se você preferir "mostrar mesmo vazia", comente a linha abaixo)
-      if(!val) return false;
+      const v = String(row[fs] ?? "").trim();
+      if(!v) return false;
+
+      // se também digitou fiscal, filtra SOMENTE nessa sigla
+      if(qf && !cellHasFiscal(row[fs], qf)) return false;
+      return true;
     }
 
-    // filtro fiscal (busca em qualquer sigla OU só na sigla escolhida, se selecionada)
+    // fiscal (varre todas as siglas)
     if(qf){
-      if(fs){
-        const v = norm(row[fs]);
-        if(!v.includes(qf)) return false;
-      } else {
-        let ok = false;
-        for(const s of siglas){
-          if(norm(row[s]).includes(qf)){ ok = true; break; }
-        }
-        if(!ok) return false;
+      let ok = false;
+      for(const s of siglas){
+        if(cellHasFiscal(row[s], qf)){ ok = true; break; }
       }
+      if(!ok) return false;
     }
 
     return true;
   }
 
   function render(){
+    const filtered = rows.filter(rowMatches);
+    countEl.textContent = String(filtered.length);
+
     const qb = qBairro.value;
     const qf = qFiscal.value;
 
-    const filtered = rows.filter(rowMatches);
-    countEl.textContent = filtered.length.toString();
-
     const cols = [...FIXED_COLS, ...siglas];
+
     tbody.innerHTML = filtered.map(r => {
       const tds = cols.map(c => {
         const v = r[c] ?? "";
-        const content = (c === "NOME")
-          ? highlight(v, qb)
-          : (siglas.includes(c) ? highlight(v, qf) : escapeHtml(v));
-        return `<td>${content || `<span class="muted">—</span>`}</td>`;
+        let content = escapeHtml(v);
+
+        if(c === "NOME") content = highlight(v, qb);
+        else if(siglas.includes(c) && qf) content = highlight(v, qf);
+
+        if(!String(v).trim()) content = `<span class="muted">—</span>`;
+        return `<td>${content}</td>`;
       }).join("");
+
       return `<tr>${tds}</tr>`;
     }).join("");
+
+    infoBox.innerHTML = `✅ Dados carregados. Use os filtros e clique em <b>Buscar</b>.`;
   }
 
-  function parseCSV(text){
-    // Parser simples (suporta aspas e separadores ; ou ,)
-    // 1) detecta separador pela primeira linha
-    const lines = text.replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n").filter(l => l.trim() !== "");
-    if(lines.length === 0) return { headers: [], data: [] };
-
-    const first = lines[0];
-    const sep = (first.split(";").length > first.split(",").length) ? ";" : ",";
-
-    const parseLine = (line) => {
-      const out = [];
-      let cur = "";
-      let inQ = false;
-      for(let i=0;i<line.length;i++){
-        const ch = line[i];
-        if(ch === '"'){
-          if(inQ && line[i+1] === '"'){ cur += '"'; i++; }
-          else inQ = !inQ;
-        } else if(ch === sep && !inQ){
-          out.push(cur);
-          cur = "";
-        } else {
-          cur += ch;
-        }
-      }
-      out.push(cur);
-      return out.map(s => s.trim());
-    };
-
-    const headersRaw = parseLine(lines[0]).map(h => h.replace(/^\uFEFF/, "")); // remove BOM
-    const headers = headersRaw.map(h => h.replace(/^"(.+)"$/,"$1")); // remove aspas externas
-
-    const data = [];
-    for(let i=1;i<lines.length;i++){
-      const parts = parseLine(lines[i]);
-      const obj = {};
-      for(let c=0;c<headers.length;c++){
-        obj[headers[c]] = (parts[c] ?? "").replace(/^"(.+)"$/,"$1");
-      }
-      data.push(obj);
-    }
-    return { headers, data };
+  function loadCSV(){
+    return new Promise((resolve, reject) => {
+      Papa.parse(CSV_FILE, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        // se seu CSV for SEMPRE ;, pode travar aqui: delimiter: ";"
+        complete: (results) => resolve(results),
+        error: (err) => reject(err)
+      });
+    });
   }
 
   async function init(){
-    const resp = await fetch(CSV_FILE, { cache: "no-store" });
-    if(!resp.ok){
-      throw new Error(`Não consegui ler o arquivo "${CSV_FILE}". Status: ${resp.status}`);
-    }
-    const text = await resp.text();
-    const { headers, data } = parseCSV(text);
+    infoBox.innerHTML = `Carregando <span class="mono">${escapeHtml(CSV_FILE)}</span>…`;
 
-    // normalizar nomes de colunas e limpar a coluna CONTROLE (que vem estranha no seu CSV)
-    const cleanedHeaders = headers.map(h => h.trim());
-    const fixed = [];
-    const detectedSiglas = [];
+    const res = await loadCSV();
+    const data = (res.data || []);
+    const fields = (res.meta && res.meta.fields) ? res.meta.fields : Object.keys(data[0] || {});
 
-    for(const h of cleanedHeaders){
-      const hh = h.replace(/^\uFEFF/, "");
-      if(IGNORE_COLS.has(hh)) continue;
+    // limpa BOM / "CONTROLE"
+    const headers = fields.map(h => String(h || "").replace(/^\uFEFF/,"").trim()).filter(Boolean);
+    siglas = headers.filter(h => !IGNORE_COLS.has(h) && !FIXED_COLS.includes(h));
 
-      if(FIXED_COLS.includes(hh)) fixed.push(hh);
-      else detectedSiglas.push(hh);
-    }
-
-    // Se por acaso alguma coluna fixa não foi encontrada, seguimos assim mesmo
-    siglas = detectedSiglas;
-
-    // montar rows com chaves padronizadas (somente colunas úteis)
     rows = data.map(r => {
       const obj = {};
-      for(const c of FIXED_COLS){
-        obj[c] = r[c] ?? "";
-      }
-      for(const s of siglas){
-        obj[s] = r[s] ?? "";
-      }
+      for(const c of FIXED_COLS) obj[c] = r[c] ?? "";
+      for(const s of siglas) obj[s] = r[s] ?? "";
       return obj;
     });
 
     buildHeader();
     buildSiglaFilter();
     render();
-
-    // listeners
-    [qBairro, qFiscal].forEach(inp => inp.addEventListener("input", render));
-    fSigla.addEventListener("change", render);
-
-    el("btnLimpar").addEventListener("click", () => {
-      qBairro.value = "";
-      qFiscal.value = "";
-      fSigla.value = "";
-      render();
-      qBairro.focus();
-    });
   }
 
+  // ===== EVENTOS (padrão app) =====
+  el("btnBuscar").addEventListener("click", render);
+
+  // Enter para buscar
+  [qBairro, qFiscal].forEach(inp => {
+    inp.addEventListener("keypress", (e) => {
+      if(e.key === "Enter") render();
+    });
+  });
+
+  fSigla.addEventListener("change", render);
+
+  el("btnLimpar").addEventListener("click", () => {
+    qBairro.value = "";
+    qFiscal.value = "";
+    fSigla.value = "";
+    render();
+    qBairro.focus();
+  });
+
   init().catch(err => {
-    tbody.innerHTML = `
-      <tr><td colspan="50">
-        <b>Erro ao carregar dados</b><br/>
-        <span class="mono">${escapeHtml(err.message)}</span><br/><br/>
-        <span class="small">
-          Dica: abra via servidor local (ex.: Live Server / python -m http.server) e confira se o CSV está na mesma pasta e com o mesmo nome.
-        </span>
-      </td></tr>`;
+    console.error(err);
+    infoBox.innerHTML = `❌ Erro ao carregar o CSV: <span class="mono">${escapeHtml(err.message || err)}</span><br>
+      <span class="muted">Dica: abra via servidor local (Live Server / python -m http.server) e confirme o caminho do arquivo.</span>`;
+    tbody.innerHTML = `<tr><td colspan="50" class="muted">Sem dados.</td></tr>`;
+    countEl.textContent = "0";
   });
 })();
 </script>
 </body>
 </html>
-
-
