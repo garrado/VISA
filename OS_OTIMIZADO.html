@@ -1011,40 +1011,40 @@
             
             // Sempre precisa de dados auxiliares se vai mostrar razão social
             if (!cacheCarregado.regulados) {
-                csvsNecessarios.push({ arquivo: 'regulados.csv', cache: 'regulados' });
+                csvsNecessarios.push({ arquivo: 'data\regulados.csv', cache: 'regulados' });
             }
             if (!cacheCarregado.bairros) {
-                csvsNecessarios.push({ arquivo: 'bairros.csv', cache: 'bairros' });
+                csvsNecessarios.push({ arquivo: 'data\bairros.csv', cache: 'bairros' });
             }
             if (!cacheCarregado.cnae) {
-                csvsNecessarios.push({ arquivo: 'cnae.csv', cache: 'cnae' });
+                csvsNecessarios.push({ arquivo: 'data\cnae.csv', cache: 'cnae' });
             }
             
             // Carregar tipos de OS baseado no filtro
             if (!filtros.tipo || filtros.tipo === 'Requerimento') {
                 if (!cacheCarregado.requerimento) {
-                    csvsNecessarios.push({ arquivo: 'requerimento.csv', cache: 'requerimento' });
+                    csvsNecessarios.push({ arquivo: 'data\requerimento.csv', cache: 'requerimento' });
                 }
             }
             if (!filtros.tipo || filtros.tipo === 'Ofício') {
                 if (!cacheCarregado.oficio) {
-                    csvsNecessarios.push({ arquivo: 'oficio.csv', cache: 'oficio' });
+                    csvsNecessarios.push({ arquivo: 'data\oficio.csv', cache: 'oficio' });
                 }
             }
             if (!filtros.tipo || filtros.tipo === 'Denúncia') {
                 if (!cacheCarregado.denuncia) {
-                    csvsNecessarios.push({ arquivo: 'denuncia.csv', cache: 'denuncia' });
+                    csvsNecessarios.push({ arquivo: 'data\denuncia.csv', cache: 'denuncia' });
                 }
             }
             if (!filtros.tipo || filtros.tipo === 'Protocolo') {
                 if (!cacheCarregado.protocolo) {
-                    csvsNecessarios.push({ arquivo: 'protocolo.csv', cache: 'protocolo' });
+                    csvsNecessarios.push({ arquivo: 'data\protocolo.csv', cache: 'protocolo' });
                 }
             }
             
             // Tramitação sempre pode ser útil
             if (!cacheCarregado.tramitacao) {
-                csvsNecessarios.push({ arquivo: 'tramitacao.csv', cache: 'tramitacao' });
+                csvsNecessarios.push({ arquivo: 'data\tramitacao.csv', cache: 'tramitacao' });
             }
             
             // Carregar CSVs necessários
