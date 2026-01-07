@@ -2,67 +2,54 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Divisão por Bairro/Local × Fiscal (SIGLAS) - VISA Anápolis</title>
 
-  <!-- Mesmo design tokens do seu app (se existir na pasta css/) -->
+  <!-- Igual ao RPF -->
   <link rel="stylesheet" href="./css/design-tokens.css">
-
-  <!-- PapaParse (igual ao RPF) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
     /* === BASE (padrão do RPF) === */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100% }
 
-    /* fallback caso design-tokens.css não exista */
-    :root{
-      --bg:#f6f7fb;
-      --text:#0f172a;
-      --muted:#64748b;
-      --card:#ffffff;
-      --line:#e5e7eb;
-      --shadow: 0 8px 28px rgba(15,23,42,.10);
-      --shadow2: 0 4px 14px rgba(15,23,42,.08);
-      --brand1:#2c5aa0;
-      --brand2:#1a3a6b;
-      --input-bg:#fff;
-      --input-text:#0f172a;
-      --input-border:#d1d5db;
-      --input-focus:#2c5aa0;
-    }
-
-    body{
+    body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.55;
+      background: var(--bg, #f6f7fb);
+      color: var(--text, #0f172a);
+      line-height: 1.6;
     }
 
-    header{
+    header {
       background: #1a3a6b;
-      color: #fff;
+      color: #ffffff;
       padding: 28px 20px 26px;
       text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    header h1{
+
+    header h1 {
       margin: 0;
       font-size: clamp(1.7rem, 2.4vw, 2.3rem);
       font-weight: 900;
       letter-spacing: .2px;
+      color: #ffffff;
     }
-    header h2{
+
+    header h2 {
       margin: 8px 0 0;
       font-size: clamp(1rem, 1.5vw, 1.15rem);
       font-weight: 500;
       opacity: .92;
+      color: #ffffff;
     }
-    .btn-ok-header{
+
+    /* Botão OK igual ao RPF */
+    .btn-ok-header {
       position: absolute;
       top: 50%;
       right: 16px;
@@ -75,69 +62,66 @@
       padding: 16px 12px;
       cursor: pointer;
       text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .btn-ok-header:hover{ opacity: .75; }
+    .btn-ok-header:hover { opacity: 0.7; }
 
-    .container{
+    .container {
       max-width: 1100px;
       margin: 22px auto 30px;
       padding: 0 16px;
     }
 
-    .card{
-      background: var(--card);
+    .card {
+      background: var(--card, #ffffff);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 16px;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow2);
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: 0 4px 14px rgba(15,23,42,.08);
     }
 
-    .filter-row{
+    .filter-row {
       display: grid;
       grid-template-columns: 2fr 2fr 1fr 160px 140px;
       gap: 14px;
       align-items: end;
     }
 
-    .filter-group{
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
+    .filter-group { display: flex; flex-direction: column; min-width: 0; }
 
-    .filter-group label{
+    .filter-group label {
       font-weight: 700;
       margin-bottom: 8px;
-      color: var(--text);
+      color: var(--text, #0f172a);
       font-size: .95em;
     }
 
     .filter-group input,
-    .filter-group select{
+    .filter-group select {
       width: 100%;
       padding: 12px;
-      border: 1px solid var(--input-border);
+      border: 1px solid rgba(15,23,42,.12);
       border-radius: 10px;
       font-size: 1em;
-      background: var(--input-bg);
-      color: var(--input-text);
+      background: #fff;
+      color: var(--text, #0f172a);
       outline: none;
       min-width: 0;
     }
 
     .filter-group input:focus,
-    .filter-group select:focus{
-      border-color: var(--input-focus);
-      box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.15);
+    .filter-group select:focus {
+      border-color: rgba(26,58,107,.65);
+      box-shadow: 0 0 0 3px rgba(26,58,107,.12);
     }
 
-    .btn-search{
+    .btn-search {
       padding: 12px 18px;
-      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      background: linear-gradient(135deg, #2c5aa0, #1a3a6b);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -147,10 +131,10 @@
       transition: .15s transform, .15s box-shadow;
       width: 100%;
     }
-    .btn-search:hover{ box-shadow: var(--shadow2); transform: translateY(-1px); }
-    .btn-search:active{ transform: translateY(0); }
+    .btn-search:hover { box-shadow: 0 4px 14px rgba(15,23,42,.10); transform: translateY(-1px); }
+    .btn-search:active { transform: translateY(0); }
 
-    .btn-clear{
+    .btn-clear {
       padding: 12px 18px;
       background: #eef2ff;
       color: #1a3a6b;
@@ -161,43 +145,44 @@
       cursor: pointer;
       width: 100%;
     }
-    .btn-clear:hover{ filter: brightness(0.98); }
+    .btn-clear:hover { filter: brightness(0.98); }
 
-    .results-card{
-      background: var(--card);
+    .results-card {
+      background: var(--card, #ffffff);
       border-radius: 16px;
       padding: 18px;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow2);
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: 0 4px 14px rgba(15,23,42,.08);
     }
 
-    .info-box{
+    .info-box {
       background: rgba(44, 90, 160, 0.08);
-      border-left: 4px solid var(--brand1);
+      border-left: 4px solid #2c5aa0;
       padding: 12px 14px;
       margin-bottom: 14px;
       border-radius: 6px;
-      color: var(--text);
-      font-weight: 600;
+      color: var(--text, #0f172a);
+      font-weight: 700;
     }
 
-    .table-responsive{
+    .table-responsive {
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       border-radius: 12px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(15,23,42,.10);
     }
 
-    table{
+    table {
       width: max(100%, 1050px);
       border-collapse: collapse;
       background: #fff;
     }
-    thead th{
-      background: var(--brand1);
+
+    thead th {
+      background: #2c5aa0;
       color: #fff;
-      font-weight: 800;
+      font-weight: 900;
       padding: 12px 10px;
       text-align: left;
       position: sticky;
@@ -205,40 +190,53 @@
       z-index: 2;
       white-space: nowrap;
     }
-    tbody td{
+
+    tbody td {
       padding: 10px 10px;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgba(15,23,42,.08);
       vertical-align: top;
-      color: var(--text);
+      color: var(--text, #0f172a);
       font-size: .95em;
     }
-    tbody tr:hover td{
-      background: rgba(44, 90, 160, 0.05);
-    }
 
-    .muted{ color: var(--muted); font-weight: 600; }
-    .mono{
+    tbody tr:hover td { background: rgba(44, 90, 160, 0.06); }
+
+    .muted { color: rgba(100,116,139,1); font-weight: 700; }
+    .mono {
       font-variant-numeric: tabular-nums;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
-    .hit{
-      background: #fff7dd;
+
+    /* ✅ Destaque forte (bem visível) */
+    .hit {
+      background: #ffe066;
+      border-left: 4px solid #1a3a6b;
+      padding: 2px 6px;
       border-radius: 6px;
-      padding: 0 3px;
+      font-weight: 900;
+      color: #1a3a6b;
       display: inline-block;
     }
 
-    .footer{
+    /* ✅ Ocultação de colunas */
+    .col-hidden { display: none !important; }
+
+    .footer {
       margin-top: 10px;
-      color: var(--muted);
+      color: rgba(100,116,139,1);
       font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     @media (max-width: 1024px){
-      .filter-row{ grid-template-columns: 1fr; }
-      header{ padding: 28px 70px 26px 20px; }
-      .btn-search, .btn-clear{ padding: 14px; }
-      .filter-group input, .filter-group select{ font-size: 16px; }
+      .filter-row { grid-template-columns: 1fr; }
+      header { padding: 28px 70px 26px 20px; }
+      .btn-search, .btn-clear { padding: 14px; }
+      .filter-group input, .filter-group select { font-size: 16px; }
     }
   </style>
 </head>
@@ -259,7 +257,7 @@
         </div>
 
         <div class="filter-group">
-          <label for="qFiscal">Fiscal (busca robusta nas SIGLAS)</label>
+          <label for="qFiscal">Fiscal (procura em todas as SIGLAS)</label>
           <input id="qFiscal" type="text" placeholder="Ex.: LIDIANE, THIAGO, VIVIANE..." />
         </div>
 
@@ -281,36 +279,34 @@
     </div>
 
     <div class="results-card">
-      <div class="info-box" id="infoBox">
-        Carregando dados…
-      </div>
+      <div class="info-box" id="infoBox">Carregando dados…</div>
 
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr id="theadRow"></tr>
-          </thead>
+      <div class="table-responsive" id="tableWrap">
+        <table id="tbl">
+          <thead><tr id="theadRow"></tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
 
       <div class="footer">
-        Fonte: <span class="mono" id="fonteCsv"></span>
-        &nbsp;•&nbsp; Registros exibidos: <span class="mono" id="count">0</span>
+        <span>Fonte: <span class="mono" id="fonteCsv"></span></span>
+        <span>Registros: <span class="mono" id="count">0</span></span>
+        <span>SIGLAS exibidas: <span class="mono" id="shownCols">0</span> / <span class="mono" id="totalCols">0</span></span>
       </div>
     </div>
   </div>
 
 <script>
 (() => {
-  // ===== AJUSTE AQUI O CAMINHO DO CSV (o seu novo endereço) =====
-  // Ex.: "data/bairros.csv" ou "data/divisao_area.csv" etc.
+  // =========================
+  // ✅ AJUSTE AQUI O CAMINHO DO CSV
+  // =========================
   const CSV_FILE = "data/bairros.csv";
 
-  // Colunas fixas (antes das SIGLAS)
+  // Colunas fixas (sempre visíveis)
   const FIXED_COLS = ["CODIGO", "NOME", "SETOR", "SETORALIMENTO"];
 
-  // Ignorar "CONTROLE" (vem estranho no CSV às vezes)
+  // Ignorar coluna "CONTROLE" (às vezes vem estranha)
   const IGNORE_COLS = new Set([
     "CONTROLE", '"CONTROLE"', "﻿CONTROLE", "﻿\"CONTROLE\"",
     "\uFEFFCONTROLE", '\uFEFF"CONTROLE"'
@@ -325,15 +321,18 @@
   const countEl = el("count");
   const infoBox = el("infoBox");
   const fonteCsv= el("fonteCsv");
-
-  let rows = [];
-  let siglas = [];
+  const shownColsEl = el("shownCols");
+  const totalColsEl = el("totalCols");
 
   fonteCsv.textContent = CSV_FILE;
 
+  let rows = [];
+  let siglas = [];
+  let lastRenderedCols = []; // colunas atualmente no DOM (FIXED + siglas)
+
   function norm(s){
     return String(s ?? "")
-      .replace(/\u00A0/g, " ")         // NBSP
+      .replace(/\u00A0/g, " ")
       .replace(/\s+/g, " ")
       .trim()
       .toUpperCase()
@@ -355,9 +354,7 @@
     return `<span class="hit">${escapeHtml(o)}</span>`;
   }
 
-  // ===== FILTRO ROBUSTO POR FISCAL =====
-  // - normaliza acentos/case
-  // - separa por ; , / | \n e também por " E " (quando listam "FULANO E SICRANO")
+  // Busca robusta por fiscal dentro da célula
   function cellHasFiscal(cellValue, qFiscalText){
     const q = norm(qFiscalText);
     if(!q) return true;
@@ -365,17 +362,14 @@
     const raw = norm(cellValue);
     if(!raw) return false;
 
-    // se já contém direto, ok
     if(raw.includes(q)) return true;
 
-    // tokenização agressiva (lista de nomes na célula)
     const tokens = raw
-      .replace(/\s+E\s+/g, ";")       // "FULANO E SICRANO" -> "FULANO;SICRANO"
+      .replace(/\s+E\s+/g, ";")
       .split(/[;,\n\/|]+/g)
       .map(t => t.replace(/\s+/g," ").trim())
       .filter(Boolean);
 
-    // match por token (q pode ser parte do token ou token pode ser parte do q)
     for(const t of tokens){
       if(t.includes(q) || q.includes(t)) return true;
     }
@@ -384,7 +378,13 @@
 
   function buildHeader(){
     const cols = [...FIXED_COLS, ...siglas];
-    theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c)}</th>`).join("");
+    lastRenderedCols = cols;
+
+    theadRow.innerHTML = cols.map((c, idx) => {
+      return `<th data-col="${escapeHtml(c)}" data-idx="${idx}">${escapeHtml(c)}</th>`;
+    }).join("");
+
+    totalColsEl.textContent = String(siglas.length);
   }
 
   function buildSiglaFilter(){
@@ -403,26 +403,80 @@
       if(!norm(row.NOME).includes(qb)) return false;
     }
 
-    // sigla (se selecionou) -> exige que tenha algo nessa coluna
+    // sigla selecionada: exige que tenha algo nessa coluna
     if(fs){
       const v = String(row[fs] ?? "").trim();
       if(!v) return false;
 
-      // se também digitou fiscal, filtra SOMENTE nessa sigla
+      // se digitou fiscal, procura apenas nesta sigla
       if(qf && !cellHasFiscal(row[fs], qf)) return false;
       return true;
     }
 
-    // fiscal (varre todas as siglas)
+    // fiscal sem sigla selecionada: varre todas as siglas
     if(qf){
       let ok = false;
       for(const s of siglas){
-        if(cellHasFiscal(row[s], qf)){ ok = true; break; }
+        if(cellHasFiscal(row[s], qf)) { ok = true; break; }
       }
       if(!ok) return false;
     }
 
     return true;
+  }
+
+  // ✅ Decide quais colunas SIGLAS ficam visíveis quando há busca por fiscal
+  function computeVisibleSiglas(filteredRows){
+    const qf = qFiscal.value.trim();
+    const fs = fSigla.value;
+
+    // sem fiscal: mostra tudo
+    if(!qf) return new Set(siglas);
+
+    // com sigla selecionada: só faz sentido mostrar a sigla escolhida
+    if(fs) return new Set([fs]);
+
+    // com fiscal e sem sigla: mostrar só as siglas onde ele aparece em pelo menos 1 linha filtrada
+    const visible = new Set();
+    for(const s of siglas){
+      for(const r of filteredRows){
+        if(cellHasFiscal(r[s], qf)){
+          visible.add(s);
+          break;
+        }
+      }
+    }
+    return visible;
+  }
+
+  // ✅ Aplica hide/show nas colunas (TH e TD)
+  function applyColumnVisibility(visibleSiglasSet){
+    const cols = lastRenderedCols;
+
+    // conta siglas visíveis
+    let shown = 0;
+
+    cols.forEach((c, idx) => {
+      const isFixed = FIXED_COLS.includes(c);
+      const isSigla = !isFixed;
+
+      const shouldShow = isFixed || (visibleSiglasSet.has(c));
+      if(isSigla && shouldShow) shown++;
+
+      // header
+      const th = theadRow.querySelector(`th[data-idx="${idx}"]`);
+      if(th){
+        th.classList.toggle("col-hidden", !shouldShow);
+      }
+
+      // body tds
+      tbody.querySelectorAll(`tr`).forEach(tr => {
+        const td = tr.children[idx];
+        if(td) td.classList.toggle("col-hidden", !shouldShow);
+      });
+    });
+
+    shownColsEl.textContent = String(shown);
   }
 
   function render(){
@@ -433,6 +487,7 @@
     const qf = qFiscal.value;
 
     const cols = [...FIXED_COLS, ...siglas];
+    lastRenderedCols = cols;
 
     tbody.innerHTML = filtered.map(r => {
       const tds = cols.map(c => {
@@ -449,7 +504,24 @@
       return `<tr>${tds}</tr>`;
     }).join("");
 
-    infoBox.innerHTML = `✅ Dados carregados. Use os filtros e clique em <b>Buscar</b>.`;
+    // ✅ Ocultar colunas que não possuem o fiscal
+    const visibleSiglas = computeVisibleSiglas(filtered);
+    applyColumnVisibility(visibleSiglas);
+
+    // mensagem
+    const hasFiscal = qFiscal.value.trim().length > 0;
+    if(hasFiscal){
+      infoBox.innerHTML = `✅ Busca por fiscal ativa. Colunas (SIGLAS) sem o nome foram ocultadas automaticamente.`;
+    } else {
+      infoBox.innerHTML = `✅ Dados carregados. Use os filtros e clique em <b>Buscar</b>.`;
+      shownColsEl.textContent = String(siglas.length);
+    }
+
+    // caso não haja resultados
+    if(filtered.length === 0){
+      infoBox.innerHTML = `⚠️ Nenhum registro encontrado com os filtros atuais.`;
+      shownColsEl.textContent = "0";
+    }
   }
 
   function loadCSV(){
@@ -458,7 +530,8 @@
         download: true,
         header: true,
         skipEmptyLines: true,
-        // se seu CSV for SEMPRE ;, pode travar aqui: delimiter: ";"
+        // Se seu CSV for sempre ';', você pode travar:
+        // delimiter: ';',
         complete: (results) => resolve(results),
         error: (err) => reject(err)
       });
@@ -472,9 +545,12 @@
     const data = (res.data || []);
     const fields = (res.meta && res.meta.fields) ? res.meta.fields : Object.keys(data[0] || {});
 
-    // limpa BOM / "CONTROLE"
-    const headers = fields.map(h => String(h || "").replace(/^\uFEFF/,"").trim()).filter(Boolean);
-    siglas = headers.filter(h => !IGNORE_COLS.has(h) && !FIXED_COLS.includes(h));
+    const headers = (fields || [])
+      .map(h => String(h || "").replace(/^\uFEFF/,"").trim())
+      .filter(Boolean)
+      .filter(h => !IGNORE_COLS.has(h));
+
+    siglas = headers.filter(h => !FIXED_COLS.includes(h));
 
     rows = data.map(r => {
       const obj = {};
@@ -488,7 +564,7 @@
     render();
   }
 
-  // ===== EVENTOS (padrão app) =====
+  // Eventos
   el("btnBuscar").addEventListener("click", render);
 
   // Enter para buscar
@@ -514,6 +590,8 @@
       <span class="muted">Dica: abra via servidor local (Live Server / python -m http.server) e confirme o caminho do arquivo.</span>`;
     tbody.innerHTML = `<tr><td colspan="50" class="muted">Sem dados.</td></tr>`;
     countEl.textContent = "0";
+    shownColsEl.textContent = "0";
+    totalColsEl.textContent = String(siglas.length || 0);
   });
 })();
 </script>
