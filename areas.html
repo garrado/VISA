@@ -330,8 +330,7 @@ function norm(s){
 }
 
 function labelArea(sigla){
-  const nome = SIGLA_TO_NOME[sigla];
-  return nome ? `${nome} (${sigla})` : sigla;
+  return SIGLA_TO_NOME[sigla] || sigla;
 }
 
 /* =========================
@@ -555,3 +554,4 @@ init().catch(err => {
 </script>
 </body>
 </html>
+
