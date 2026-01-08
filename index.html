@@ -1094,28 +1094,49 @@ if (document.readyState === 'loading') {
   const el = document.getElementById('sync-cvs-info');
   if (!el) return;
 
-  fetch('data/inspecoes.csv', { method: 'HEAD', cache: 'no-store' })
-    .then(response => {
-      const lastModified = response.headers.get('Last-Modified');
-      if (!lastModified) throw new Error('Header Last-Modified não disponível');
 
-      const data = new Date(lastModified);
+<script>
+(async function mostrarUltimaSincronizacaoCVS() {
+  const el = document.getElementById('sync-cvs-info');
+  if (!el) return;
 
-      const formatado = data.toLocaleString('pt-BR', {
-        timeZone: 'America/Sao_Paulo',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+  try {
+    const url = 'data/inspecoes.csv?ts=' + Date.now(); // cache-buster
+    const resp = await fetch(url, { method: 'HEAD', cache: 'no-store' });
 
-      el.innerHTML = `🔄 Sincronização com o CVS: <strong>${formatado}</strong>`;
-    })
-    .catch(() => {
-      el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
+    // 1) Se não for 2xx, provavelmente caiu em 404/fallback
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+    // 2) Se o servidor devolveu HTML, não é o CSV (caiu em fallback)
+    const ct = (resp.headers.get('Content-Type') || '').toLowerCase();
+    if (ct.includes('text/html')) throw new Error('Retornou HTML (fallback), não CSV');
+
+    // 3) Agora sim: data do arquivo publicado
+    const lm = resp.headers.get('Last-Modified');
+    if (!lm) throw new Error('Sem Last-Modified');
+
+    const d = new Date(lm);
+    const formatado = d.toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
+
+    el.innerHTML = `🔄 Sincronização com o CVS: <strong>${formatado}</strong>`;
+  } catch (e) {
+    // Mostra erro curto (sem poluir a página)
+    el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
+    // Se quiser diagnosticar pelo console:
+    console.warn('Sync CVS:', e);
+  }
 })();
+</script>
+
+
+  
 </script>
     
 </body>
