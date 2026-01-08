@@ -519,6 +519,11 @@ header h2 {
 </div>
      <div class="card links-section">
       <h3>Central de Trabalho</h3>
+       <div class="card links-section">
+       <h3>Central de Trabalho</h3>
+     <p id="sync-cvs-info" class="small muted" style="margin: 4px 0 12px 0;">
+        🔄 Sincronização com o CVS: verificando...
+     </p>
       <ul>
         <li><a class="linkPill" href="os.html"><div>OS<br><small>Consulta Ordens de Serviço</small></div><div class="arrow">📋</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
@@ -1084,5 +1089,34 @@ if (document.readyState === 'loading') {
 }
 </script>
 
+<script>
+(function mostrarUltimaSincronizacaoCVS() {
+  const el = document.getElementById('sync-cvs-info');
+  if (!el) return;
+
+  fetch('data/inspecoes.csv', { method: 'HEAD', cache: 'no-store' })
+    .then(response => {
+      const lastModified = response.headers.get('Last-Modified');
+      if (!lastModified) throw new Error('Header Last-Modified não disponível');
+
+      const data = new Date(lastModified);
+
+      const formatado = data.toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      el.innerHTML = `🔄 Sincronização com o CVS: <strong>${formatado}</strong>`;
+    })
+    .catch(() => {
+      el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
+    });
+})();
+</script>
+    
 </body>
 </html>
