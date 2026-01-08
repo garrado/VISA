@@ -519,9 +519,9 @@ header h2 {
 </div>
      <div class="card links-section">
       <h3>Central de Trabalho</h3>
-      <p id="sync-cvs-info" class="small muted" style="margin: 4px 0 12px 0;">
-        🔄 Sincronização com o CVS: verificando...
-      </p>
+<p id="sync-cvs-info" class="small muted" style="margin: 4px 0 12px 0;">
+  🔄 Sincronização com o CVS: verificando...
+</p>
       <ul>
         <li><a class="linkPill" href="os.html"><div>OS<br><small>Consulta Ordens de Serviço</small></div><div class="arrow">📋</div></a></li>
         <li><a class="linkPill" href="Regulados.html"><div>WebCVS<br><small>Sistema CVS online</small></div><div class="arrow">🌐</div></a></li>
@@ -1092,36 +1092,38 @@ document.addEventListener('DOMContentLoaded', function () {
   const el = document.getElementById('sync-cvs-info');
   if (!el) return;
 
-  fetch('data/inspecoes.csv?ts=' + Date.now(), {
-    method: 'HEAD',
-    cache: 'no-store'
-  })
-  .then(resp => {
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  fetch('data/cvs_sync.txt?ts=' + Date.now(), { cache: 'no-store' })
+    .then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.text();
+    })
+    .then(function (txt) {
+      const v = (txt || '').trim();
+      if (!v) throw new Error('Arquivo vazio');
 
-    const ct = (resp.headers.get('Content-Type') || '').toLowerCase();
-    if (ct.includes('text/html')) throw new Error('Fallback HTML');
+      // Se vier ISO (ex.: 2026-01-08T23:14:55-03:00), formata bonito.
+      // Se vier outro formato, mostra como está.
+      let exibicao = v;
+      const d = new Date(v);
+      if (!isNaN(d.getTime())) {
+        exibicao = d.toLocaleString('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
 
-    const lm = resp.headers.get('Last-Modified');
-    if (!lm) throw new Error('Sem Last-Modified');
-
-    const d = new Date(lm);
-    const formatado = d.toLocaleString('pt-BR', {
-      timeZone: 'America/Sao_Paulo',
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      el.innerHTML = '🔄 Sincronização com o CVS: <strong>' + exibicao + '</strong>';
+    })
+    .catch(function () {
+      el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
     });
-
-    el.innerHTML = `🔄 Sincronização com o CVS: <strong>${formatado}</strong>`;
-  })
-  .catch(() => {
-    el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
-  });
 });
 </script>
+  
     
 </body>
 </html>
