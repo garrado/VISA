@@ -1093,21 +1093,14 @@ if (document.readyState === 'loading') {
   if (!el) return;
 
   try {
-    const url = 'data/inspecoes.csv?ts=' + Date.now(); // cache-buster
-    const resp = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    const api = 'https://api.github.com/repos/garrado/VISA/commits?path=data/inspecoes.csv&per_page=1';
+    const resp = await fetch(api, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('GitHub API HTTP ' + resp.status);
 
-    // 1) Se não for 2xx, provavelmente caiu em 404/fallback
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const json = await resp.json();
+    if (!Array.isArray(json) || !json[0]?.commit?.committer?.date) throw new Error('Sem data no JSON');
 
-    // 2) Se o servidor devolveu HTML, não é o CSV (caiu em fallback)
-    const ct = (resp.headers.get('Content-Type') || '').toLowerCase();
-    if (ct.includes('text/html')) throw new Error('Retornou HTML (fallback), não CSV');
-
-    // 3) Agora sim: data do arquivo publicado
-    const lm = resp.headers.get('Last-Modified');
-    if (!lm) throw new Error('Sem Last-Modified');
-
-    const d = new Date(lm);
+    const d = new Date(json[0].commit.committer.date);
     const formatado = d.toLocaleString('pt-BR', {
       timeZone: 'America/Sao_Paulo',
       day: '2-digit',
@@ -1119,13 +1112,12 @@ if (document.readyState === 'loading') {
 
     el.innerHTML = `🔄 Sincronização com o CVS: <strong>${formatado}</strong>`;
   } catch (e) {
-    // Mostra erro curto (sem poluir a página)
     el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
-    // Se quiser diagnosticar pelo console:
-    console.warn('Sync CVS:', e);
+    console.warn('Sync CVS (GitHub API):', e);
   }
 })();
 </script>
+
     
 </body>
 </html>
