@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Ordens de Serviço - VISA Anápolis</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="./css/design-tokens.css">
+
+    <!-- DataTables CSS e JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <!-- PapaParse para ler CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <!-- Eruda DevTools para Debug Mobile (remover em produção) -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+
+    <style>
+        /* RESET */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: #1a3a6b;
+            color: #ffffff;
+            padding: 28px 20px 26px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(1.4rem, 2.4vw, 2.3rem);
+            font-weight: 900;
+            letter-spacing: .2px;
+            color: #ffffff;
+        }
+
+        header h2 {
+            margin: 8px 0 0;
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            font-weight: 500;
+            opacity: .92;
+            color: #ffffff;
+        }
+
+        /* Botão OK - voltar */
+.btn-ok-header {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #34C759;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 12px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-ok-header:hover {
+    opacity: 0.7;
+}
+
+
+        /* CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 22px auto 30px;
+            padding: 0 16px;
+        }
+
+        /* CARD DE FILTROS */
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow2);
+        }
+
+        .card h3 {
+            color: var(--brand1);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--brand1);
+            padding-bottom: 10px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .filter-row:last-child {
+            margin-bottom: 32px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            justify-content: flex-end;  ← ADICIONAR ESSA LINHA
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 0.95em;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background: var(--input-bg);
+            color: var(--input-text);
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.15);
+        }
+
+        .btn-search {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .15s transform, .15s box-shadow;
+            margin-top: 10px;
+        }
+
+        .btn-search:hover {
+            box-shadow: var(--shadow2);
+            transform: translateY(-1px);
+        }
+
+        .btn-search:active {
+            transform: translateY(0);
+        }
+
+        /* ÁREA DE RESULTADOS */
+        .results-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow2);
+            margin-top: 24px;
+        }
+
+        .info-box {
+            background: rgba(44, 90, 160, 0.08);
+            border-left: 4px solid var(--brand1);
+            padding: 15px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        .info-box.warning {
+            background: #fff7dd;
+            border-left-color: #d1a000;
+        }
+
+        .info-box.success {
+            background: rgba(52, 199, 89, 0.1);
+            border-left-color: #34C759;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 32px 0 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+            box-shadow: var(--shadow2);
+        }
+
+        .stat-card h3 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            border: none;
+            padding: 0;
+        }
+
+        .stat-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: var(--muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ccd6e0;
+            border-top: 4px solid var(--brand1);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* DATATABLES */
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse;
+            margin-top: 32px !important;
+        }
+
+/* Espaçamento dos controles do DataTables */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 20px !important;
+}
+
+        
+        table.dataTable thead th {
+            background: var(--brand1);
+            color: white;
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        table.dataTable tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--line);
+            color: var(--text);
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: rgba(44, 90, 160, 0.05);
+            cursor: pointer;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-requerimento { background: #007bff; color: white; }
+        .badge-oficio { background: #28a745; color: white; }
+        .badge-denuncia { background: #dc3545; color: white; }
+        .badge-protocolo { background: #6f42c1; color: white; }
+
+        .badge-complexidade-alta { background: #dc3545; color: white; }
+        .badge-complexidade-media { background: #ffc107; color: #333; }
+        .badge-complexidade-baixa { background: #28a745; color: white; }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .icon-atendido-sim { color: #28a745; }
+        .icon-atendido-nao { color: #ffc107; }
+        .icon-cancelado { color: #dc3545; }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.6em;
+            border: none;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close:hover {
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: calc(85vh - 180px);
+            overflow-y: auto;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            color: var(--brand1);
+            border-bottom: 2px solid var(--brand1);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .modal-footer {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* RESPONSIVO */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            #tabelaOS {
+                min-width: 900px;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                font-size: 16px;
+            }
+
+            .btn-search {
+                width: 100%;
+                padding: 14px;
+            }
+
+            header {
+                padding: 28px 70px 26px 20px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+            }
+
+            .detail-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            .card, .btn, .modal-footer {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="btn-ok-header">OK</a>
+        <h1>Vigilância Sanitária</h1>
+        <h2>Consulta Ordens de Serviço</h2>
+    </header>
+
+    <div class="container">
+        <!-- Card de Filtros -->
+        <div class="card">
+            <h3>🔍 Filtros de Busca</h3>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="filterTipo">Tipo de OS:</label>
+                    <select id="filterTipo">
+                        <option value="">-- Todos os Tipos --</option>
+                        <option value="Requerimento">Requerimento</option>
+                        <option value="Ofício">Ofício</option>
+                        <option value="Denúncia">Denúncia</option>
+                        <option value="Protocolo">Protocolo</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterFiscal">Fiscal:</label>
+                    <select id="filterFiscal">
+                        <option value="">-- Todos os Fiscais --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterNumero">Número da OS:</label>
+                    <input type="text" id="filterNumero" placeholder="Ex: 20210001">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterRazao">Razão Social:</label>
+                    <input type="text" id="filterRazao" placeholder="Digite parte do nome...">
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="filterFantasia">Nome Fantasia:</label>
+                    <input type="text" id="filterFantasia" placeholder="Digite parte do fantasia...">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterCancelado">Cancelado:</label>
+                    <select id="filterCancelado">
+                        <option value="" selected>Todos</option>
+                        <option value="Não">Não</option>
+                        <option value="Sim">Sim</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterAtendido">Atendido:</label>
+                    <select id="filterAtendido">
+                        <option value="" selected>Todos</option>
+                        <option value="Sim">Sim</option>
+                        <option value="Não">Não</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <button class="btn-search">🔍 Buscar</button>
+                </div>
+                
+                <div class="filter-group">
+                    <button onclick="testeDebug()" style="background: #ff9500; margin-left: 10px;">🐛 TESTE DEBUG</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="stats" id="statsArea" style="display: none;">
+            <div class="stat-card">
+                <h3 id="totalOS">0</h3>
+                <p>Total de OS</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalAtendidas">0</h3>
+                <p>Atendidas</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalPendentes">0</h3>
+                <p>Pendentes</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalCanceladas">0</h3>
+                <p>Canceladas</p>
+            </div>
+        </div>
+
+        <!-- Card de Resultados -->
+        <div class="results-card">
+            <div id="infoBox"></div>
+            
+            <!-- Indicador de cache -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 12px; background: rgba(44, 90, 160, 0.05); border-radius: 8px; font-size: 0.9em;">
+                <div>
+                    <span style="color: #64748b;">💾 Cache: </span>
+                    <span id="cacheStatus" style="font-weight: 600; color: var(--brand1);">Nenhum dado carregado</span>
+                </div>
+                <button onclick="forcarAtualizacao()" style="padding: 8px 16px; background: #34C759; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em;">
+                    🔄 Forçar Atualização
+                </button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                Carregando dados...
+            </div>
+
+            <div class="table-responsive">
+                <table id="tabelaOS" class="display" style="display: none;" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Número OS</th>
+                            <th>Tipo</th>
+                            <th>Fiscal</th>
+                            <th>Razão Social</th>
+                            <th>Nome Fantasia</th>
+                            <th>Complexidade</th>
+                            <th>Data Encam.</th>
+                            <th>Motivo/Assunto</th>
+                            <th>Atendido</th>
+                            <th>Cancelado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Detalhes da Ordem de Serviço</h2>
+                <span class="close" onclick="fecharModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir</button>
+                <button class="btn btn-secondary" onclick="fecharModal()">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lista oficial de fiscais da VISAM Anápolis (igual ao RPF-7.html)
+        const fiscaisOficiais = [
+            "ACADIA DE SOUZA VIEIRA SILVA",
+            "ADRIANA CRHISTINA DE REZENDE CARNEIRO",
+            "ADRIANE PEREIRA GUIMARÃES",
+            "ALINE CASTRO DAMASIO",
+            "ANA PAULA RODRIGUES CORRÊA GUIMARÃES",
+            "ANGELA RIBEIRO NEVES",
+            "ARIANNE FERREIRA VIEIRA",
+            "CÉSIO MALAQUIAS",
+            "CLÁUDIO NASCIMENTO SILVA",
+            "CLÓVIS RAFAEL BORGES FERREIRA",
+            "DANIEL SOARES BARBOSA",
+            "DANIELA DE ALMEIDA CASTRO",
+            "EDSON ARANTES FARIA FILHO",
+            "EDUARDO LUCAS MAGALHÃES CASTRO",
+            "FABÍOLA PEDROSA PEIXOTO MARQUES",
+            "GERALDO EDSON ROSA",
+            "GLEICIANE MARIA JOSÉ DA SILVA",
+            "GÚBIO DIAS PEREIRA",
+            "JOÃO BATISTA LUCAS DA SILVA REIS",
+            "JOSE LUIZ RIBEIRO",
+            "JULIANA FERREIRA VITURINO",
+            "JULIANA KÊNIA MARTINS DA SILVA",
+            "JULIO CÉSAR TELES SPINDOLA",
+            "KAMILLA CHRYSTINE ROLIM D. SANTOS GARCÊS",
+            "LIDIANE SIMÕES",
+            "LIVIA BRITO",
+            "LUCIANA CONSOLAÇÃO DOS SANTOS",
+            "LUCIANA SANTANA DA ROCHA",
+            "LUCIENE DE SOUZA BARBOSA GOMES SILVA",
+            "MARCIO HENRIQUE GOMES RODOVALHO",
+            "MARIA EDWIGES PINHEIRO DE SOUZA CHAVES",
+            "MARINA PERILLO NAVARRETE LAVERS",
+            "PATRÍCIA CORDEIRO DE MORAES E SOUZA",
+            "PEDRO HENRIQUE AIRES RIBEIRO",
+            "RODRIGO ALESSANDRO TÔGO SANTOS",
+            "RÚBIA MARA DE FREITAS",
+            "SILVIA MARQUES NAVES DA MOTA SOUZA",
+            "SIMONE DUARTE GROSSI",
+            "TATHIANE PESSOA DE SOUZA",
+            "THIAGO GOMES GOBO",
+            "VANESSA SANTANA",
+            "VIVIANE MANOEL DA SILVA BORGES",
+            "VIVIANE MIYADA",
+            "WANESSA DE BRITO JORGE"
+        ];
+
+        // ==================== VARIÁVEIS GLOBAIS ====================
+        
+        // Cache de dados (carrega sob demanda)
+        let dadosRequerimento = [];
+        let dadosOficio = [];
+        let dadosDenuncia = [];
+        let dadosProtocolo = [];
+        let dadosTramitacao = [];
+        let dadosRegulados = [];
+        let dadosBairros = [];
+        let dadosCnae = [];
+        
+        // Controle de carregamento
+        let cacheCarregado = {
+            requerimento: false,
+            oficio: false,
+            denuncia: false,
+            protocolo: false,
+            tramitacao: false,
+            regulados: false,
+            bairros: false,
+            cnae: false
+        };
+        
+        // ==================== CONFIGURAÇÃO DE CACHE ====================
+        
+        // ⚙️ CONFIGURE AQUI O HORÁRIO DE ATUALIZAÇÃO AUTOMÁTICA
+        const HORARIO_ATUALIZACAO = 6; // 6 = 06:00 da manhã
+        // Exemplos:
+        // 0 = Meia-noite (00:00)
+        // 6 = Seis da manhã (06:00)
+        // 12 = Meio-dia (12:00)
+        // 18 = Seis da tarde (18:00)
+        
+        // Cache-busting: Data de hoje para forçar recarregamento diário
+        function getDataCache() {
+            const agora = new Date();
+            const hora = agora.getHours();
+            
+            // Se for antes do horário configurado, considera ainda o dia anterior
+            if (hora < HORARIO_ATUALIZACAO) {
+                agora.setDate(agora.getDate() - 1);
+            }
+            
+            return agora.toISOString().split('T')[0]; // YYYY-MM-DD
+        }
+        
+        let dataCache = getDataCache();
+        
+        // Verificar se cache está desatualizado
+        function verificarCacheDesatualizado() {
+            const dataAtual = getDataCache();
+            if (dataAtual !== dataCache) {
+                console.log(`🔄 Nova data detectada (após ${HORARIO_ATUALIZACAO}:00), limpando cache...`);
+                limparCache();
+                dataCache = dataAtual;
+            }
+        }
+        
+        // Limpar cache (força recarregamento)
+        function limparCache() {
+            dadosRequerimento = [];
+            dadosOficio = [];
+            dadosDenuncia = [];
+            dadosProtocolo = [];
+            dadosTramitacao = [];
+            dadosRegulados = [];
+            dadosBairros = [];
+            dadosCnae = [];
+            
+            cacheCarregado = {
+                requerimento: false,
+                oficio: false,
+                denuncia: false,
+                protocolo: false,
+                tramitacao: false,
+                regulados: false,
+                bairros: false,
+                cnae: false
+            };
+            
+            indiceRegulados = null;
+            indiceBairros = null;
+            indiceCnae = null;
+            
+            console.log('✅ Cache limpo');
+            atualizarStatusCache();
+        }
+        
+        // Forçar atualização (botão)
+        function forcarAtualizacao() {
+            if (confirm('⚠️ Isso irá limpar todos os dados em cache e recarregar nas próximas buscas.\n\nContinuar?')) {
+                limparCache();
+                mostrarInfo('✅ Cache limpo! Os dados serão recarregados na próxima busca.', 'success');
+            }
+        }
+        
+        // Atualizar indicador de status do cache
+        function atualizarStatusCache() {
+            const carregados = Object.values(cacheCarregado).filter(v => v).length;
+            const total = Object.keys(cacheCarregado).length;
+            
+            const statusEl = document.getElementById('cacheStatus');
+            if (!statusEl) return;
+            
+            if (carregados === 0) {
+                statusEl.textContent = 'Nenhum dado carregado';
+                statusEl.style.color = '#94a3b8';
+            } else {
+                statusEl.textContent = `${carregados}/${total} arquivos em cache (Data: ${dataCache})`;
+                statusEl.style.color = '#34C759';
+            }
+        }
+        
+        // Índices para busca rápida O(1)
+        let indiceRegulados = null;
+        let indiceBairros = null;
+        let indiceCnae = null;
+        
+        let dataTable = null;
+        
+        // Normalizar texto (remover acentos)
+        function normalizarTexto(texto) {
+            if (!texto) return '';
+            return String(texto)
+                .trim()
+                .toUpperCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+
+        // Verificar se fiscal está na lista oficial
+        function fiscalValido(nome) {
+            if (!nome || String(nome).trim() === '') return false;
+            const normalizado = normalizarTexto(nome);
+            return fiscaisOficiais.some(f => normalizarTexto(f) === normalizado);
+        }
+
+        // ==================== CARREGAMENTO OTIMIZADO ====================
+        
+        // Popular select de fiscais (carrega apenas lista fixa)
+        function popularFiscais() {
+            const $select = $('#filterFiscal');
+            $select.empty();
+            $select.append('<option value="">Todos os fiscais</option>');
+            
+            fiscaisOficiais.sort().forEach(fiscal => {
+                $select.append(`<option value="${fiscal}">${fiscal}</option>`);
+            });
+        }
+        
+        // Carregar CSV específico
+        function carregarCSV(nomeArquivo, nomeCache) {
+            return new Promise((resolve, reject) => {
+                // Verificar se mudou de dia (força recarregamento)
+                verificarCacheDesatualizado();
+                
+                // Se já está em cache, retorna imediatamente
+                if (cacheCarregado[nomeCache]) {
+                    console.log(`✅ ${nomeCache} já em cache`);
+                    resolve(window[`dados${nomeCache.charAt(0).toUpperCase() + nomeCache.slice(1)}`]);
+                    return;
+                }
+                
+                console.log(`⬇️  Baixando ${nomeArquivo}...`);
+                
+                // Adiciona timestamp para evitar cache do navegador
+                const timestamp = new Date().getTime();
+                const urlComCacheBusting = `${nomeArquivo}?v=${timestamp}`;
+                
+                Papa.parse(urlComCacheBusting, {
+                    download: true,
+                    header: true,
+                    delimiter: ';',
+                    encoding: 'utf-8',
+                    complete: function(results) {
+                        const dados = results.data;
+                        
+                        // Armazena em cache
+                        switch(nomeCache) {
+                            case 'requerimento':
+                                dadosRequerimento = dados;
+                                break;
+                            case 'oficio':
+                                dadosOficio = dados;
+                                break;
+                            case 'denuncia':
+                                dadosDenuncia = dados;
+                                break;
+                            case 'protocolo':
+                                dadosProtocolo = dados;
+                                break;
+                            case 'tramitacao':
+                                dadosTramitacao = dados;
+                                break;
+                            case 'regulados':
+                                dadosRegulados = dados;
+                                criarIndiceRegulados();
+                                break;
+                            case 'bairros':
+                                dadosBairros = dados;
+                                criarIndiceBairros();
+                                break;
+                            case 'cnae':
+                                dadosCnae = dados;
+                                criarIndiceCnae();
+                                break;
+                        }
+                        
+                        cacheCarregado[nomeCache] = true;
+                        console.log(`✅ ${nomeCache} carregado: ${dados.length} registros`);
+                        atualizarStatusCache(); // Atualiza indicador
+                        resolve(dados);
+                    },
+                    error: function(error) {
+                        console.error(`❌ Erro ao carregar ${nomeArquivo}:`, error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+        
+        // Carregar múltiplos CSVs
+        function carregarCSVsNecessarios(lista) {
+            const promises = lista.map(item => {
+                return carregarCSV(item.arquivo, item.cache);
+            });
+            
+            return Promise.all(promises);
+        }
+        
+        // ==================== ÍNDICES PARA BUSCA RÁPIDA ====================
+        
+        function criarIndiceRegulados() {
+            indiceRegulados = new Map();
+            dadosRegulados.forEach(r => {
+                const codigo = String(r.CODIGO || '').trim();
+                if (codigo) {
+                    indiceRegulados.set(codigo, r);
+                }
+            });
+            console.log(`🔍 Índice de regulados: ${indiceRegulados.size} registros`);
+        }
+        
+        function criarIndiceBairros() {
+            indiceBairros = new Map();
+            dadosBairros.forEach(b => {
+                const codigo = String(b.CODIGO || '').trim();
+                if (codigo) {
+                    indiceBairros.set(codigo, b);
+                }
+            });
+            console.log(`🔍 Índice de bairros: ${indiceBairros.size} registros`);
+        }
+        
+        function criarIndiceCnae() {
+            indiceCnae = new Map();
+            dadosCnae.forEach(c => {
+                const subclasse = String(c.Subclasse || '').trim();
+                if (subclasse) {
+                    indiceCnae.set(subclasse, c);
+                }
+            });
+            console.log(`🔍 Índice de CNAEs: ${indiceCnae.size} registros`);
+        }
+        
+        // Buscar regulado pelo código (O(1) com índice)
+        function buscarRegulado(codigo) {
+            if (!codigo || String(codigo).trim() === '') return null;
+            const codigoNorm = String(codigo).trim();
+            return indiceRegulados ? indiceRegulados.get(codigoNorm) : null;
+        }
+
+        // Buscar bairro pelo código (O(1) com índice)
+        function buscarBairro(cdbai) {
+            if (!cdbai || String(cdbai).trim() === '') return '';
+            const cdBaiNorm = String(cdbai).trim();
+            const bairro = indiceBairros ? indiceBairros.get(cdBaiNorm) : null;
+            return bairro ? (bairro.NOME || '').trim() : '';
+        }
+
+        // Buscar descrição do CNAE pela subclasse (O(1) com índice)
+        function buscarCnae(subclasse) {
+            if (!subclasse || String(subclasse).trim() === '') return '';
+            const subclasseNorm = String(subclasse).trim();
+            const cnae = indiceCnae ? indiceCnae.get(subclasseNorm) : null;
+            return cnae ? (cnae.Atividade || '').trim() : '';
+        }
+        
+        // Buscar última tramitação do protocolo
+        function buscarUltimaTramitacao(numeroProtocolo, carga) {
+            if (!dadosTramitacao || dadosTramitacao.length === 0) return null;
+            
+            // Filtrar tramitações deste protocolo onde Destino = Carga do protocolo
+            const tramitacoesFiltradas = dadosTramitacao.filter(t => {
+                return t.Protocolo === numeroProtocolo && t.Destino === carga;
+            });
+            
+            if (tramitacoesFiltradas.length === 0) return null;
+            
+            // Ordenar por data (mais recente primeiro)  
+            tramitacoesFiltradas.sort((a, b) => {
+                const dataA = converterData(a.Data);
+                const dataB = converterData(b.Data);
+                return dataB > dataA ? 1 : -1;
+            });
+            
+            return tramitacoesFiltradas[0];
+        }
+
+        // ==================== BUSCA OTIMIZADA ====================
+        
+        function buscarOrdens() {
+            console.log('🔍 Iniciando busca otimizada...');
+            
+            $('#loading').show();
+            $('#tabelaOS').hide();
+            $('#infoBox').hide();
+            $('#statsArea').hide();
+
+            // Coletar filtros
+            const filtros = {
+                numero: $('#filterNumero').val().trim(),
+                razaoSocial: $('#filterRazao').val().trim().toUpperCase(),
+                fiscal: $('#filterFiscal').val(),
+                tipo: $('#filterTipo').val(),
+                atendida: $('#filterAtendido').val(),
+                cancelado: $('#filterCancelado').val()
+            };
+            
+            console.log('🔎 Filtros aplicados:', filtros);
+            
+            // Validar se pelo menos um filtro foi preenchido
+            const temFiltro = Object.values(filtros).some(v => v && v !== '');
+            if (!temFiltro) {
+                mostrarInfo('⚠️ Preencha pelo menos um filtro para buscar.', 'warning');
+                $('#loading').hide();
+                return;
+            }
+            
+            // Determinar quais CSVs carregar baseado nos filtros
+            const csvsNecessarios = [];
+            
+            // Sempre precisa de dados auxiliares se vai mostrar razão social
+            if (!cacheCarregado.regulados) {
+                csvsNecessarios.push({ arquivo: 'data/regulados.csv', cache: 'regulados' });
+            }
+            if (!cacheCarregado.bairros) {
+                csvsNecessarios.push({ arquivo: 'data/bairros.csv', cache: 'bairros' });
+            }
+            if (!cacheCarregado.cnae) {
+                csvsNecessarios.push({ arquivo: 'data/cnae.csv', cache: 'cnae' });
+            }
+            
+            // Carregar tipos de OS baseado no filtro
+            if (!filtros.tipo || filtros.tipo === 'Requerimento') {
+                if (!cacheCarregado.requerimento) {
+                    csvsNecessarios.push({ arquivo: 'data/requerimento.csv', cache: 'requerimento' });
+                }
+            }
+            if (!filtros.tipo || filtros.tipo === 'Ofício') {
+                if (!cacheCarregado.oficio) {
+                    csvsNecessarios.push({ arquivo: 'data/oficio.csv', cache: 'oficio' });
+                }
+            }
+            if (!filtros.tipo || filtros.tipo === 'Denúncia') {
+                if (!cacheCarregado.denuncia) {
+                    csvsNecessarios.push({ arquivo: 'data/denuncia.csv', cache: 'denuncia' });
+                }
+            }
+            if (!filtros.tipo || filtros.tipo === 'Protocolo') {
+                if (!cacheCarregado.protocolo) {
+                    csvsNecessarios.push({ arquivo: 'data/protocolo.csv', cache: 'protocolo' });
+                }
+            }
+            
+            // Tramitação sempre pode ser útil
+            if (!cacheCarregado.tramitacao) {
+                csvsNecessarios.push({ arquivo: 'data/tramitacao.csv', cache: 'tramitacao' });
+            }
+            
+            // Carregar CSVs necessários
+            mostrarInfo(`⏳ Carregando ${csvsNecessarios.length} arquivo(s)...`, 'info');
+            
+            carregarCSVsNecessarios(csvsNecessarios)
+                .then(() => {
+                    console.log('✅ Todos os arquivos necessários carregados');
+                    // Processar e filtrar dados
+                    return processarDados(filtros);
+                })
+                .then(resultados => {
+                    console.log(`📊 ${resultados.length} OS encontradas`);
+                    mostrarResultados(resultados);
+                })
+                .catch(error => {
+                    console.error('❌ Erro durante busca:', error);
+                    mostrarInfo('❌ Erro ao carregar dados: ' + error.message, 'warning');
+                })
+                .finally(() => {
+                    $('#loading').hide();
+                });
+        }
+
+        // Mostrar info box
+        function mostrarInfo(mensagem, tipo = 'info') {
+            const infoBox = $('#infoBox');
+            infoBox.removeClass('info-box warning success');
+            infoBox.addClass(`info-box ${tipo}`);
+            infoBox.html(mensagem);
+            infoBox.show();
+        }
+
+        // Converter data DD.MM.YYYY para YYYY-MM-DD
+        function converterData(dataStr) {
+            if (!dataStr || dataStr.trim() === '') return '';
+            const partes = dataStr.split('.');
+            if (partes.length === 3) {
+                return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+            }
+            return '';
+        }
+
+        // Formatar data para exibição
+        function formatarDataBR(dataISO) {
+            if (!dataISO) return '-';
+            const partes = dataISO.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        // Processar booleano
+        function processarBool(valor) {
+            if (!valor || String(valor).trim() === '') return false;
+            const v = String(valor).toUpperCase();
+            return v === 'TRUE' || v === 'SIM' || v === 'T' || v === 'S';
+        }
+        
+        // ==================== PROCESSAMENTO DE DADOS ====================
+        
+        function processarDados(filtros) {
+            return new Promise((resolve) => {
+                console.log('⚙️ Processando dados com filtros...');
+                console.log('📋 Filtros recebidos:', JSON.stringify(filtros, null, 2));
+                
+                // DEBUG: Verificar estrutura dos dados
+                console.log('📊 Verificando dados carregados:');
+                console.log(`  - dadosRequerimento: ${dadosRequerimento ? dadosRequerimento.length : 0} registros`);
+                console.log(`  - dadosOficio: ${dadosOficio ? dadosOficio.length : 0} registros`);
+                console.log(`  - dadosDenuncia: ${dadosDenuncia ? dadosDenuncia.length : 0} registros`);
+                console.log(`  - dadosProtocolo: ${dadosProtocolo ? dadosProtocolo.length : 0} registros`);
+                console.log(`  - dadosRegulados: ${dadosRegulados ? dadosRegulados.length : 0} registros`);
+                
+                // DEBUG: Ver amostra de 1 registro de cada tipo
+                if (dadosRequerimento && dadosRequerimento.length > 0) {
+                    console.log('🔍 AMOSTRA Requerimento:', dadosRequerimento[0]);
+                }
+                if (dadosOficio && dadosOficio.length > 0) {
+                    console.log('🔍 AMOSTRA Ofício:', dadosOficio[0]);
+                }
+                if (dadosDenuncia && dadosDenuncia.length > 0) {
+                    console.log('🔍 AMOSTRA Denúncia:', dadosDenuncia[0]);
+                }
+                if (dadosProtocolo && dadosProtocolo.length > 0) {
+                    console.log('🔍 AMOSTRA Protocolo:', dadosProtocolo[0]);
+                }
+                
+                const todasOS = [];
+                
+                // Processar REQUERIMENTOS
+                if (dadosRequerimento && dadosRequerimento.length > 0 && 
+                    (!filtros.tipo || filtros.tipo === 'Requerimento')) {
+                    
+                    console.log(`📦 Processando ${dadosRequerimento.length} requerimentos...`);
+                    let contadorRequerimentos = 0;
+                    let descartadosSemNumero = 0;
+                    let descartadosFiltroNumero = 0;
+                    let descartadosFiltroFiscal = 0;
+                    let descartadosFiltroAtendida = 0;
+                    let descartadosFiltroCancelado = 0;
+                    let descartadosFiltroRazao = 0;
+                    
+                    dadosRequerimento.forEach((r, index) => {
+                        // CORRIGIDO: Campo é "OS" não "Numero"
+                        if (!r.OS || r.OS.trim() === '') {
+                            descartadosSemNumero++;
+                            return;
+                        }
+                        
+                        // Aplicar filtros
+                        if (filtros.numero && r.OS !== filtros.numero) {
+                            descartadosFiltroNumero++;
+                            return;
+                        }
+                        
+                        // CORRIGIDO: Campo é "Fiscal_Encaminha" não "Fiscalencaminha"
+                        const fiscal = r.Fiscal_Encaminha || '';
+                        if (filtros.fiscal && fiscal !== filtros.fiscal) {
+                            descartadosFiltroFiscal++;
+                            return;
+                        }
+                        
+                        // CORRIGIDO: Campo é "Dt_encaminha" não "Dtencaminha"
+                        const dataEncaminha = converterData(r.Dt_encaminha);
+                        
+                        // CORRIGIDO: Campo é "Atendimento" não "Archive"
+                        const atendida = processarBool(r.Atendimento) ? 'Sim' : 'Não';
+                        if (filtros.atendida && atendida !== filtros.atendida) {
+                            descartadosFiltroAtendida++;
+                            if (index < 5) console.log(`  ⚠️ Descartado por atendida: ${r.OS} (${atendida} !== ${filtros.atendida})`);
+                            return;
+                        }
+                        
+                        // CORRIGIDO: Campo é "Cancelado" (OK)
+                        const cancelado = processarBool(r.Cancelado) ? 'Sim' : 'Não';
+                        if (filtros.cancelado && cancelado !== filtros.cancelado) {
+                            descartadosFiltroCancelado++;
+                            if (index < 5) console.log(`  ⚠️ Descartado por cancelado: ${r.OS} (${cancelado} !== ${filtros.cancelado})`);
+                            return;
+                        }
+                        
+                        // Buscar dados do regulado
+                        const regulado = buscarRegulado(r.Codigo);
+                        const razaoSocial = regulado ? (regulado.RAZAO || '') : '';
+                        
+                        if (filtros.razaoSocial && !razaoSocial.toUpperCase().includes(filtros.razaoSocial)) {
+                            descartadosFiltroRazao++;
+                            return;
+                        }
+                        
+                        const area = regulado ? (regulado.Area || '') : '';
+                        const areaDesc = area ? buscarCnae(area) : '';
+                        const logradouro = regulado ? (regulado.Logradouro || '') : '';
+                        const cnpj = regulado ? (regulado.CNPJ || '') : '';
+                        const cpf = regulado ? (regulado.CPF || '') : '';
+                        const cdbai = r.Cdbai || '';
+                        const bairro = cdbai ? buscarBairro(cdbai) : '';
+                        
+                        todasOS.push({
+                            numero: r.OS,                    // CORRIGIDO
+                            tipo: 'Requerimento',
+                            fiscal: fiscal,
+                            razao_social: razaoSocial,
+                            fantasia: regulado ? (regulado.FANTASIA || '') : '',
+                            complexidade: r.Complexidade || '',
+                            data_req: converterData(r.Dt_Req),  // CORRIGIDO
+                            data_encaminha: dataEncaminha,
+                            motivo: r.Motivo || '',
+                            atendida: atendida,
+                            cancelado: cancelado,
+                            area: area,
+                            area_desc: areaDesc,
+                            logradouro: logradouro,
+                            cnpj: cnpj,
+                            cpf: cpf,
+                            observacao: r.Obs_Req || '',
+                            cdbai: cdbai,
+                            bairro: bairro
+                        });
+                        contadorRequerimentos++;
+                        
+                        // Log dos primeiros 3 incluídos
+                        if (contadorRequerimentos <= 3) {
+                            console.log(`  ✅ Incluído #${contadorRequerimentos}: ${r.OS} - Fiscal: ${fiscal} - Razão: ${razaoSocial.substring(0, 30)}`);
+                        }
+                    });
+                    
+                    console.log(`✅ Requerimentos incluídos: ${contadorRequerimentos}`);
+                    console.log(`📊 Estatísticas de descarte:`);
+                    console.log(`  - Sem número: ${descartadosSemNumero}`);
+                    console.log(`  - Filtro número: ${descartadosFiltroNumero}`);
+                    console.log(`  - Filtro fiscal: ${descartadosFiltroFiscal}`);
+                    console.log(`  - Filtro atendida: ${descartadosFiltroAtendida}`);
+                    console.log(`  - Filtro cancelado: ${descartadosFiltroCancelado}`);
+                    console.log(`  - Filtro razão social: ${descartadosFiltroRazao}`);
+                }
+                
+                // Processar OFÍCIOS
+                if (dadosOficio && dadosOficio.length > 0 &&
+                    (!filtros.tipo || filtros.tipo === 'Ofício')) {
+                    
+                    console.log(`📦 Processando ${dadosOficio.length} ofícios...`);
+                    let contadorOficios = 0;
+                    
+                    dadosOficio.forEach(o => {
+                        if (!o.Oficio || o.Oficio.trim() === '') return;
+                        
+                        if (filtros.numero && o.Oficio !== filtros.numero) return;
+                        
+                        const fiscal = o.Fiscalencaminha || '';
+                        if (filtros.fiscal && fiscal !== filtros.fiscal) return;
+                        // REMOVIDO: if (fiscal && fiscal.trim() !== '' && !fiscalValido(fiscal)) return;
+                        
+                        const dataEncaminha = converterData(o.Dtencaminha);
+                        
+                        const atendida = processarBool(o.Archive) ? 'Sim' : 'Não';
+                        if (filtros.atendida && atendida !== filtros.atendida) return;
+                        
+                        const cancelado = processarBool(o.Cancela) ? 'Sim' : 'Não';
+                        if (filtros.cancelado && cancelado !== filtros.cancelado) return;
+                        
+                        const razaoSocial = o.Regulado || '';
+                        if (filtros.razaoSocial && !razaoSocial.toUpperCase().includes(filtros.razaoSocial)) return;
+                        
+                        const cdbai = o.Cdbai || '';
+                        const bairro = cdbai ? buscarBairro(cdbai) : '';
+                        
+                        todasOS.push({
+                            numero: o.Oficio,
+                            tipo: 'Ofício',
+                            fiscal: fiscal,
+                            razao_social: razaoSocial,
+                            fantasia: o.Fantasia || '',
+                            complexidade: '',
+                            data_req: converterData(o.Data),
+                            data_encaminha: dataEncaminha,
+                            motivo: o.Motivo || '',
+                            atendida: atendida,
+                            cancelado: cancelado,
+                            area: '',
+                            area_desc: '',
+                            logradouro: o.Logradouro || '',
+                            cnpj: o.Cnpj || '',
+                            cpf: o.Cpf || '',
+                            observacao: o.Ordem || '',
+                            cdbai: cdbai,
+                            bairro: bairro
+                        });
+                        contadorOficios++;
+                    });
+                    
+                    console.log(`✅ Ofícios incluídos: ${contadorOficios}`);
+                }
+                
+                // Processar DENÚNCIAS
+                if (dadosDenuncia && dadosDenuncia.length > 0 &&
+                    (!filtros.tipo || filtros.tipo === 'Denúncia')) {
+                    
+                    console.log(`📦 Processando ${dadosDenuncia.length} denúncias...`);
+                    let contadorDenuncias = 0;
+                    
+                    dadosDenuncia.forEach((d, index) => {
+                        if (!d.Denuncia || d.Denuncia.trim() === '') return;
+                        
+                        if (filtros.numero && d.Denuncia !== filtros.numero) return;
+                        
+                        // CORRIGIDO: Campo é "FiscalEncaminha" (sem underscore)
+                        const fiscal = d.FiscalEncaminha || '';
+                        if (filtros.fiscal && fiscal !== filtros.fiscal) return;
+                        
+                        // CORRIGIDO: Campo é "DtEncaminha" (sem underscore)
+                        const dataEncaminha = converterData(d.DtEncaminha);
+                        
+                        const atendida = processarBool(d.Archive) ? 'Sim' : 'Não';
+                        if (filtros.atendida && atendida !== filtros.atendida) return;
+                        
+                        // Denúncia não tem campo Cancelado - sempre "Não"
+                        const cancelado = 'Não';
+                        if (filtros.cancelado && cancelado !== filtros.cancelado) return;
+                        
+                        // CORRIGIDO: Campo é "Reclamado" não "Regulado"
+                        const razaoSocial = d.Reclamado || '';
+                        if (filtros.razaoSocial && !razaoSocial.toUpperCase().includes(filtros.razaoSocial)) return;
+                        
+                        const cdbai = d.Cdbai || '';
+                        const bairro = cdbai ? buscarBairro(cdbai) : '';
+                        
+                        const osCompleta = {
+                            numero: d.Denuncia,
+                            tipo: 'Denúncia',
+                            fiscal: fiscal,
+                            razao_social: razaoSocial,
+                            fantasia: '',  // Denúncia não tem fantasia
+                            complexidade: '',
+                            data_req: converterData(d.Data),
+                            data_encaminha: dataEncaminha,
+                            motivo: d.Objeto1 || '',  // CORRIGIDO: Campo é "Objeto1"
+                            atendida: atendida,
+                            cancelado: cancelado,
+                            area: d.Area || '',
+                            area_desc: '',
+                            logradouro: d.Logradouro || '',
+                            cnpj: d.Cnpj || '',
+                            cpf: d.Cpf || '',
+                            observacao: d.Descricao || '',  // CORRIGIDO: Campo é "Descricao"
+                            cdbai: cdbai,
+                            bairro: bairro
+                        };
+                        
+                        todasOS.push(osCompleta);
+                        contadorDenuncias++;
+                        
+                        // Log detalhado dos primeiros 3
+                        if (contadorDenuncias <= 3) {
+                            console.log(`  ✅ Denúncia #${contadorDenuncias}:`, {
+                                numero: osCompleta.numero,
+                                fiscal: osCompleta.fiscal,
+                                razao_social: osCompleta.razao_social?.substring(0, 30),
+                                fantasia: osCompleta.fantasia?.substring(0, 30),
+                                data_encaminha: osCompleta.data_encaminha,
+                                motivo: osCompleta.motivo?.substring(0, 30)
+                            });
+                        }
+                    });
+                    
+                    console.log(`✅ Denúncias incluídas: ${contadorDenuncias}`);
+                }
+                
+                // Processar PROTOCOLOS
+                if (dadosProtocolo && dadosProtocolo.length > 0 &&
+                    (!filtros.tipo || filtros.tipo === 'Protocolo')) {
+                    
+                    console.log(`📦 Processando ${dadosProtocolo.length} protocolos...`);
+                    let contadorProtocolos = 0;
+                    
+                    dadosProtocolo.forEach(p => {
+                        if (!p.Protocolo || p.Protocolo.trim() === '') return;
+                        
+                        if (filtros.numero && p.Protocolo !== filtros.numero) return;
+                        
+                        // CORRIGIDO: Fiscal vem do campo "Carga"
+                        const fiscal = p.Carga || '';
+                        if (filtros.fiscal && fiscal !== filtros.fiscal) return;
+                        
+                        // CORRIGIDO: Buscar última tramitação onde Destino = Carga
+                        let dataEncaminha = '';
+                        if (p.Carga) {
+                            const tramitacao = buscarUltimaTramitacao(p.Protocolo, p.Carga);
+                            if (tramitacao) {
+                                dataEncaminha = converterData(tramitacao.Data);
+                            }
+                        }
+                        // Se não encontrou tramitação válida, não inclui o protocolo
+                        if (!dataEncaminha) {
+                            return;
+                        }
+                        
+                        // Protocolo não tem Archive/Atendido - sempre "Não"
+                        const atendida = 'Não';
+                        if (filtros.atendida && atendida !== filtros.atendida) return;
+                        
+                        // Protocolo não tem Cancelado - sempre "Não"
+                        const cancelado = 'Não';
+                        if (filtros.cancelado && cancelado !== filtros.cancelado) return;
+                        
+                        // CORRIGIDO: Buscar razão social em regulados via Codigo
+                        const regulado = buscarRegulado(p.Codigo);
+                        const razaoSocial = regulado ? (regulado.RAZAO || '') : '';
+                        const fantasia = regulado ? (regulado.FANTASIA || '') : '';
+                        
+                        if (filtros.razaoSocial && !razaoSocial.toUpperCase().includes(filtros.razaoSocial)) return;
+                        
+                        todasOS.push({
+                            numero: p.Protocolo,
+                            tipo: 'Protocolo',
+                            fiscal: fiscal,
+                            razao_social: razaoSocial,
+                            fantasia: fantasia,
+                            complexidade: '',
+                            data_req: converterData(p.Data),
+                            data_encaminha: dataEncaminha,
+                            motivo: p.Assunto || '',
+                            atendida: atendida,
+                            cancelado: cancelado,
+                            area: '',
+                            area_desc: '',
+                            logradouro: regulado ? (regulado.Logradouro || '') : '',
+                            cnpj: regulado ? (regulado.CNPJ || '') : '',
+                            cpf: regulado ? (regulado.CPF || '') : '',
+                            observacao: p.Complemento || '',
+                            cdbai: '',
+                            bairro: ''
+                        });
+                        contadorProtocolos++;
+                    });
+                    
+                    console.log(`✅ Protocolos incluídos: ${contadorProtocolos}`);
+                }
+                
+                console.log(`✅ Processamento concluído: ${todasOS.length} registros`);
+                
+                // DEBUG: Mostrar amostra do que será exibido
+                if (todasOS.length > 0) {
+                    console.log('🔍 AMOSTRA de registros que serão exibidos:');
+                    todasOS.slice(0, 3).forEach((os, i) => {
+                        console.log(`  [${i+1}] ${os.tipo} ${os.numero}:`, {
+                            fiscal: os.fiscal || 'VAZIO',
+                            razao_social: os.razao_social?.substring(0, 30) || 'VAZIO',
+                            fantasia: os.fantasia?.substring(0, 30) || 'VAZIO',
+                            data_encaminha: os.data_encaminha || 'VAZIO',
+                            motivo: os.motivo?.substring(0, 30) || 'VAZIO'
+                        });
+                    });
+                }
+                
+                resolve(todasOS);
+            });
+        }
+        
+        // ==================== EXIBIÇÃO DE RESULTADOS ====================
+        
+        function mostrarResultados(resultados) {
+            if (resultados.length === 0) {
+                mostrarInfo('ℹ️ Nenhuma ordem de serviço encontrada com os filtros selecionados.', 'warning');
+                $('#statsArea').hide();
+                $('#tabelaOS').hide();
+                return;
+            }
+            
+            // Calcular estatísticas
+            const atendidas = resultados.filter(os => os.atendida === 'Sim').length;
+            const pendentes = resultados.filter(os => os.atendida !== 'Sim' && os.cancelado !== 'Sim').length;
+            const canceladas = resultados.filter(os => os.cancelado === 'Sim').length;
+            
+            $('#totalOS').text(resultados.length);
+            $('#totalAtendidas').text(atendidas);
+            $('#totalPendentes').text(pendentes);
+            $('#totalCanceladas').text(canceladas);
+            $('#statsArea').show();
+            
+            mostrarInfo(`✅ Encontradas <strong>${resultados.length}</strong> Ordens de Serviço.`, 'success');
+            
+            // Destruir DataTable anterior
+            if (dataTable) {
+                dataTable.destroy();
+            }
+            
+            // Renderizar tabela usando DocumentFragment (otimizado)
+            const tbody = document.getElementById('tabelaOS').querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            const fragment = document.createDocumentFragment();
+            
+            resultados.forEach((os, index) => {
+                const tr = criarLinhaTabela(os, index);
+                fragment.appendChild(tr);
+            });
+            
+            tbody.appendChild(fragment);
+            
+            // Inicializar DataTable
+            $('#tabelaOS').show();
+            dataTable = $('#tabelaOS').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'
+                },
+                order: [[0, 'desc']],
+                pageLength: 25
+            });
+            
+            // Armazenar resultados filtrados para o modal
+            window.resultadosFiltrados = resultados;
+        }
+        
+        function criarLinhaTabela(os, index) {
+            const tr = document.createElement('tr');
+            tr.onclick = () => mostrarDetalhes(index);
+            tr.style.cursor = 'pointer';
+            
+            const badgeTipo = `badge-${os.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`;
+            
+            let badgeComplexidade = '-';
+            if (os.complexidade && os.tipo === 'Requerimento') {
+                const comp = os.complexidade.toLowerCase();
+                let classe = 'baixa';
+                if (comp.includes('alta') || comp.includes('alto')) classe = 'alta';
+                else if (comp.includes('média') || comp.includes('medio')) classe = 'media';
+                badgeComplexidade = `<span class="badge badge-complexidade-${classe}">${os.complexidade}</span>`;
+            }
+            
+            const iconAtendido = os.atendida === 'Sim' ? 
+                '<span class="icon icon-atendido-sim">✅</span>' : 
+                '<span class="icon icon-atendido-nao">⏳</span>';
+            
+            const iconCancelado = os.cancelado === 'Sim' ? 
+                '<span class="icon icon-cancelado">❌</span>' : '';
+            
+            tr.innerHTML = `
+                <td>${os.numero}</td>
+                <td><span class="badge ${badgeTipo}">${os.tipo}</span></td>
+                <td>${os.fiscal || '-'}</td>
+                <td>${os.razao_social || '-'}</td>
+                <td>${os.fantasia || '-'}</td>
+                <td>${badgeComplexidade}</td>
+                <td>${formatarDataBR(os.data_encaminha)}</td>
+                <td>${os.motivo || '-'}</td>
+                <td>${iconAtendido}</td>
+                <td>${iconCancelado}</td>
+            `;
+            
+            return tr;
+        }
+
+        // ==================== MODAL DE DETALHES ====================
+        
+        // Mostrar detalhes no modal
+        function mostrarDetalhes(index) {
+            const os = window.resultadosFiltrados[index];
+
+            $('#modalTitle').text(`Ordem de Serviço: ${os.numero} - ${os.tipo}`);
+
+            let html = `
+                <div class="detail-section">
+                    <h3>📋 Informações Temporais</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Data de Requerimento:</div>
+                        <div class="detail-value">${formatarDataBR(os.data_req)}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Data de Encaminhamento:</div>
+                        <div class="detail-value">${formatarDataBR(os.data_encaminha)}</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>👤 Responsável</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Fiscal Encarregado:</div>
+                        <div class="detail-value">${os.fiscal || '-'}</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>🏢 Dados do Estabelecimento</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Razão Social:</div>
+                        <div class="detail-value">${os.razao_social || '-'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Nome de Fantasia:</div>
+                        <div class="detail-value">${os.fantasia || '-'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">CNPJ:</div>
+                        <div class="detail-value">${os.cnpj || '-'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">CPF:</div>
+                        <div class="detail-value">${os.cpf || '-'}</div>
+                    </div>`;
+
+            if (os.area) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">CNAE:</div>
+                        <div class="detail-value">${os.area}</div>
+                    </div>`;
+                
+                if (os.area_desc) {
+                    html += `
+                    <div class="detail-row">
+                        <div class="detail-label"></div>
+                        <div class="detail-value" style="font-style: italic; color: #64748b; font-size: 0.95em;">${os.area_desc}</div>
+                    </div>`;
+                }
+            }
+
+            if (os.complexidade && os.tipo === 'Requerimento') {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Complexidade:</div>
+                        <div class="detail-value">${os.complexidade}</div>
+                    </div>`;
+            }
+
+            html += `
+                </div>
+
+                <div class="detail-section">
+                    <h3>📍 Localização</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Endereço:</div>
+                        <div class="detail-value">${os.logradouro || '-'}</div>
+                    </div>`;
+
+            if (os.bairro) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Bairro:</div>
+                        <div class="detail-value">${os.bairro}</div>
+                    </div>`;
+            }
+
+            html += `
+                </div>
+
+                <div class="detail-section">
+                    <h3>📝 Observações</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Motivo/Assunto:</div>
+                        <div class="detail-value">${os.motivo || '-'}</div>
+                    </div>`;
+
+            if (os.observacao) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Observação:</div>
+                        <div class="detail-value">${os.observacao}</div>
+                    </div>`;
+            }
+
+            html += `
+                </div>
+
+                <div class="detail-section">
+                    <h3>✅ Status</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Atendida:</div>
+                        <div class="detail-value">
+                            <span class="badge ${os.atendida === 'Sim' ? 'badge-oficio' : 'badge-denuncia'}">
+                                ${os.atendida === 'Sim' ? '✓ Sim' : '⏳ Não'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Cancelada:</div>
+                        <div class="detail-value">
+                            <span class="badge ${os.cancelado === 'Sim' ? 'badge-denuncia' : 'badge-oficio'}">
+                                ${os.cancelado === 'Sim' ? '❌ Sim' : '✓ Não'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $('#modalBody').html(html);
+            $('#detailModal').show();
+        }
+
+        // Fechar modal
+        function fecharModal() {
+            $('#detailModal').hide();
+        }
+
+        // Fechar modal ao clicar fora
+        $(window).on('click', function(event) {
+            if (event.target.id === 'detailModal') {
+                fecharModal();
+            }
+        });
+
+        // Atalho ESC para fechar modal
+        $(document).on('keydown', function(event) {
+            if (event.key === 'Escape') {
+                fecharModal();
+            }
+        });
+
+        // ==================== FUNÇÃO DE TESTE DEBUG ====================
+        
+        async function testeDebug() {
+            console.clear();
+            console.log('🐛 ========== TESTE DEBUG INICIADO ==========');
+            console.log('');
+            
+            // 1. Verificar valores dos selects
+            console.log('1️⃣ VALORES DOS SELECTS:');
+            console.log('  filterTipo:', $('#filterTipo').val());
+            console.log('  filterFiscal:', $('#filterFiscal').val());
+            console.log('  filterAtendido:', $('#filterAtendido').val());
+            console.log('  filterCancelado:', $('#filterCancelado').val());
+            console.log('');
+            
+            // 2. Carregar TODOS os CSVs se ainda não carregados
+            console.log('2️⃣ CARREGANDO DADOS (se necessário):');
+            const csvsParaCarregar = [];
+            
+            if (!cacheCarregado.requerimento) {
+                csvsParaCarregar.push({ arquivo: 'data/requerimento.csv', cache: 'requerimento' });
+            }
+            if (!cacheCarregado.oficio) {
+                csvsParaCarregar.push({ arquivo: 'data/oficio.csv', cache: 'oficio' });
+            }
+            if (!cacheCarregado.denuncia) {
+                csvsParaCarregar.push({ arquivo: 'data/denuncia.csv', cache: 'denuncia' });
+            }
+            if (!cacheCarregado.protocolo) {
+                csvsParaCarregar.push({ arquivo: 'data/protocolo.csv', cache: 'protocolo' });
+            }
+            if (!cacheCarregado.regulados) {
+                csvsParaCarregar.push({ arquivo: 'data/regulados.csv', cache: 'regulados' });
+            }
+            if (!cacheCarregado.bairros) {
+                csvsParaCarregar.push({ arquivo: 'data/bairros.csv', cache: 'bairros' });
+            }
+            if (!cacheCarregado.cnae) {
+                csvsParaCarregar.push({ arquivo: 'data/cnae.csv', cache: 'cnae' });
+            }
+            
+            if (csvsParaCarregar.length > 0) {
+                console.log(`  Carregando ${csvsParaCarregar.length} arquivo(s)...`);
+                try {
+                    await carregarCSVsNecessarios(csvsParaCarregar);
+                    console.log('  ✅ Dados carregados com sucesso!');
+                } catch (error) {
+                    console.error('  ❌ Erro ao carregar:', error);
+                    return;
+                }
+            } else {
+                console.log('  ✅ Dados já estavam em cache');
+            }
+            console.log('');
+            
+            // 3. Verificar dados carregados
+            console.log('3️⃣ DADOS CARREGADOS:');
+            console.log('  dadosRequerimento:', dadosRequerimento.length, 'registros');
+            console.log('  dadosOficio:', dadosOficio.length, 'registros');
+            console.log('  dadosDenuncia:', dadosDenuncia.length, 'registros');
+            console.log('  dadosProtocolo:', dadosProtocolo.length, 'registros');
+            console.log('  dadosRegulados:', dadosRegulados.length, 'registros');
+            console.log('');
+            
+            // Mostrar amostra de 1 registro de cada
+            if (dadosRequerimento.length > 0) {
+                console.log('  📄 PRIMEIROS 3 REQUERIMENTOS - ANÁLISE DE CAMPOS:');
+                dadosRequerimento.slice(0, 3).forEach((r, i) => {
+                    console.log(`    [${i}] Buscando campo com número...`);
+                    
+                    // Tentar encontrar o campo do número
+                    const possiveisCampos = ['Numero', 'numero', 'NUMERO', 'Nº', 'No', 'NUM', 'Number', 'Requerimento', 'REQUERIMENTO'];
+                    let campoEncontrado = null;
+                    
+                    for (const campo of possiveisCampos) {
+                        if (r[campo] && String(r[campo]).trim() !== '') {
+                            campoEncontrado = campo;
+                            console.log(`      ✅ ENCONTRADO: "${campo}" = "${r[campo]}"`);
+                            break;
+                        }
+                    }
+                    
+                    if (!campoEncontrado) {
+                        console.log('      ❌ Nenhum campo comum encontrado. TODOS OS CAMPOS:');
+                        Object.keys(r).forEach(key => {
+                            const valor = String(r[key] || '').substring(0, 30);
+                            console.log(`        - ${key}: "${valor}"`);
+                        });
+                    }
+                });
+                console.log('');
+            }
+            
+            if (dadosDenuncia.length > 0) {
+                console.log('  📄 AMOSTRA DENÚNCIA - CAMPOS COMPLETOS:');
+                const d = dadosDenuncia[0];
+                console.log('    TODOS OS CAMPOS:');
+                Object.keys(d).forEach(key => {
+                    const valor = String(d[key] || '').substring(0, 50);
+                    console.log(`      - ${key}: "${valor}"`);
+                });
+                console.log('');
+            }
+            
+            if (dadosProtocolo.length > 0) {
+                console.log('  📄 AMOSTRA PROTOCOLO - CAMPOS COMPLETOS:');
+                const p = dadosProtocolo[0];
+                console.log('    TODOS OS CAMPOS:');
+                Object.keys(p).forEach(key => {
+                    const valor = String(p[key] || '').substring(0, 50);
+                    console.log(`      - ${key}: "${valor}"`);
+                });
+                console.log('');
+            }
+            
+            // 4. Forçar busca SEM FILTROS
+            console.log('4️⃣ FORÇANDO BUSCA SEM FILTROS:');
+            const filtrosVazios = {
+                numero: '',
+                razaoSocial: '',
+                fiscal: '',
+                tipo: '',
+                atendida: '',
+                cancelado: ''
+            };
+            console.log('  Filtros:', filtrosVazios);
+            console.log('');
+            
+            // 5. Processar diretamente
+            console.log('5️⃣ PROCESSANDO DADOS:');
+            const resultados = await processarDados(filtrosVazios);
+            
+            console.log('');
+            console.log('6️⃣ RESULTADO:');
+            console.log('  Total de OS encontradas:', resultados.length);
+            console.log('');
+            
+            if (resultados.length > 0) {
+                console.log('7️⃣ PRIMEIRAS 5 OS:');
+                resultados.slice(0, 5).forEach((os, i) => {
+                    console.log(`  [${i+1}] ${os.tipo} ${os.numero}`);
+                    console.log('      Fiscal:', os.fiscal || 'VAZIO');
+                    console.log('      Razão Social:', (os.razao_social || 'VAZIO').substring(0, 40));
+                    console.log('      Fantasia:', (os.fantasia || 'VAZIO').substring(0, 40));
+                    console.log('      Data Encam.:', os.data_encaminha || 'VAZIO');
+                    console.log('      Motivo:', (os.motivo || 'VAZIO').substring(0, 40));
+                    console.log('');
+                });
+                
+                // Estatísticas por tipo
+                console.log('8️⃣ ESTATÍSTICAS POR TIPO:');
+                const porTipo = {};
+                resultados.forEach(os => {
+                    porTipo[os.tipo] = (porTipo[os.tipo] || 0) + 1;
+                });
+                Object.entries(porTipo).forEach(([tipo, count]) => {
+                    console.log(`  ${tipo}: ${count} registros`);
+                });
+            } else {
+                console.log('❌ NENHUMA OS ENCONTRADA!');
+                console.log('');
+                console.log('🔍 Verifique as estatísticas de descarte acima');
+            }
+            
+            console.log('');
+            console.log('🐛 ========== TESTE DEBUG CONCLUÍDO ==========');
+        }
+
+        // ==================== INICIALIZAÇÃO ====================
+        
+        $(document).ready(function() {
+            console.log('🚀 VISA Anápolis - OS.html OTIMIZADO');
+            console.log('✅ Lazy Loading ativado');
+            console.log('✅ Índices de busca rápida habilitados');
+            console.log('✅ Cache-busting automático habilitado');
+            
+            // Popular select de fiscais (leve)
+            popularFiscais();
+            
+            // Atualizar status do cache
+            atualizarStatusCache();
+            
+            // Mostrar mensagem de boas-vindas
+            mostrarInfo('✨ Sistema pronto! Use os filtros e clique em <strong>Buscar</strong> para consultar ordens de serviço.', 'success');
+            
+            // Event listener para botão de busca
+            $('.btn-search').on('click', function(e) {
+                e.preventDefault();
+                buscarOrdens();
+            });
+            
+            // Permitir busca com Enter nos campos de input
+            $('.filter-group input').on('keypress', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    buscarOrdens();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
