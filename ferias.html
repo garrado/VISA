@@ -1,113 +1,249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escala de Férias - VISA Anápolis</title>
+
+  <!-- Design System -->
   <link rel="stylesheet" href="./css/design-tokens.css">
-  <meta charset="utf-8" />
-  <title>Escala de Férias — Janeiro/2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <link rel="stylesheet" href="./css/regulados.css" />
+
+  <!-- jQuery e DataTables -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
   <style>
-    /* Botão Voltar - iOS e Android Nativos */
-    .topbar .btn {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text, #1a202c) !important;
-      padding: 6px 12px !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
+    body{
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin:0;
     }
-    .topbar .btn::before {
-      content: "←";
-      margin-right: 4px;
-      font-size: 20px;
+
+    header{
+      background:#1a3a6b;
+      color:#fff;
+      padding:28px 20px 26px;
+      text-align:center;
+      position:sticky;
+      top:0;
+      z-index:100;
     }
-    /* iOS: Setinha fina azul */
-    @supports (-webkit-touch-callout: none) {
-      .topbar .btn {
-        color: #007AFF !important;
-        font-weight: 400 !important;
-      }
-      .topbar .btn::before {
-        content: "‹";
-        font-size: 32px;
-        font-weight: 300;
-        margin-right: 0px;
-        vertical-align: middle;
-      }
+
+    header h1{
+      margin:0;
+      font-size:clamp(1.4rem,2.4vw,2.3rem);
+      font-weight:900;
     }
-    /* Ocultar topbar no desktop */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
+
+    header h2{
+      margin-top:8px;
+      font-size:clamp(1rem,1.5vw,1.15rem);
+      font-weight:500;
+      opacity:.95;
+    }
+
+    .btn-ok-header{
+      position:absolute;
+      right:16px;
+      top:50%;
+      transform:translateY(-50%);
+      background:none;
+      border:none;
+      color:#34C759;
+      font-size:17px;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:22px auto 40px;
+      padding:0 16px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      padding:24px;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow2);
+      margin-bottom:20px;
+    }
+
+    .card h3{
+      color:var(--brand1);
+      margin-bottom:16px;
+      border-bottom:2px solid var(--brand1);
+      padding-bottom:8px;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    label{
+      font-weight:600;
+      margin-bottom:6px;
+      display:block;
+    }
+
+    input, select{
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:1px solid var(--input-border);
+      background:var(--input-bg);
+      color:var(--input-text);
+    }
+
+    .btn-search{
+      margin-top:22px;
+      padding:12px 24px;
+      border-radius:12px;
+      border:none;
+      background:linear-gradient(135deg,var(--brand1),var(--brand2));
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    table.dataTable thead th{
+      background:var(--brand1);
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .small-muted{
+      font-size:0.85em;
+      color:var(--muted);
+      text-align:center;
+      margin-top:20px;
+    }
+
+    @media(max-width:768px){
+      header{padding-right:70px;}
     }
   </style>
 </head>
 <body>
-  <!-- Topbar - Apenas Mobile -->
-  <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__title">VISA Anápolis</div>
-        <div class="brand__subtitle">Vigilância Sanitária</div>
+
+<header>
+  <a href="index.html" class="btn-ok-header">OK</a>
+  <h1>Vigilância Sanitária</h1>
+  <h2>Escala de Férias</h2>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>🔍 Filtros</h3>
+    <div class="filters">
+      <div>
+        <label for="fFiscal">Fiscal</label>
+        <input type="text" id="fFiscal" placeholder="Nome do fiscal">
       </div>
-      <div class="actions">
-        <a class="btn btn--ghost btn--back" href="./index.html">Voltar</a>
+      <div>
+        <label for="fMes">Mês</label>
+        <select id="fMes"></select>
+      </div>
+      <div>
+        <label for="fAno">Ano</label>
+        <select id="fAno"></select>
+      </div>
+      <div>
+        <button class="btn-search" onclick="aplicarFiltros()">Buscar</button>
       </div>
     </div>
-  </header>
+  </div>
 
-  <main class="wrap">
-    <section class="card panel">
-      <h1 class="card__title">ESCALA DE FÉRIAS</h1>
-      <p class="small muted">Atualizado em 22/12/2025 11:08 (Horário de Brasília – UTC−3)</p>
-    </section>
+  <div class="card">
+    <table id="tabelaFerias" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Fiscal</th>
+          <th>Início</th>
+          <th>Fim</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-    <section class="card panel">
-      <div class="tableWrap">
-        <table class="table">
-<tr><th>Funcionário</th><th>Início</th><th>Final</th></tr>
-<tr><td style='text-align:left'>Adriana Chr(istina) de Rezende Carneiro</td><td>02/01/2026</td><td>13/01/2026</td></tr>
-<tr><td style='text-align:left'>Adriane Pereira Guimaraes</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Aline Castro Damásio de Lima</td><td>05/01/2026</td><td>22/01/2026</td></tr>
-<tr><td style='text-align:left'>Ana Paula Rodrigues Correa Guimaraes</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Arianne Ferreira Vieira</td><td>12/01/2026</td><td>31/01/2026</td></tr>
-<tr><td style='text-align:left'>Clóvis Rafael Borges Ferreira</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Daniela de Almeida Castro</td><td>05/01/2026</td><td>14/01/2026</td></tr>
-<tr><td style='text-align:left'>Edson Arantes Faria Filho</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Eduardo Lucas Magalhães Castro</td><td>18/02/2026</td><td>07/03/2026</td></tr>          
-<tr><td style='text-align:left'>Fabíola Pedrosa Peixoto Marques</td><td>07/01/2026</td><td>16/01/2026</td></tr>
-<tr><td style='text-align:left'>Gleiciane Maria José da Silva</td><td>18/02/2026</td><td>04/03/2026</td></tr>          
-<tr><td style='text-align:left'>Geraldo Edson Rosa</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Gúbio Dias Pereira</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>José Luiz Ribeiro</td><td>02/01/2026</td><td>16/01/2026</td></tr>
-<tr><td style='text-align:left'>Juliana Ferreira Viturino</td><td>05/01/2026</td><td>23/01/2026</td></tr>
-<tr><td style='text-align:left'>Kamilla Chrystine Rolim dos Santos</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Lidiane Simoes Aires Campos</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Lívia Brito Ribeiro</td><td>12/01/2026</td><td>31/01/2026</td></tr>
-<tr><td style='text-align:left'>Luciana Consolação dos Santos</td><td>05/01/2026</td><td>19/01/2026</td></tr>
-<tr><td style='text-align:left'>Luciana Santana da Rocha</td><td>12/01/2026</td><td>26/01/2026</td></tr>
-<tr><td style='text-align:left'>Luciene de Souza Barbosa Gomes Silva</td><td>05/01/2026</td><td>24/01/2026</td></tr>
-<tr><td style='text-align:left'>Márcio Henrique Gomes Rodovalho</td><td>12/01/2026</td><td>31/01/2026</td></tr>
-<tr><td style='text-align:left'>Maria Edwiges Pinheiro de Souza Chaves</td><td>26/01/2026</td><td>04/02/2026</td></tr>
-<tr><td style='text-align:left'>Marina Perillo Navarrete Lavers</td><td>05/01/2026</td><td>16/01/2026</td></tr>
-<tr><td style='text-align:left'>Patrícia Cordeiro de Morais e Souza</td><td>05/01/2026</td><td>24/01/2026</td></tr>
-<tr><td style='text-align:left'>Pedro Henrique Aires Ribeiro</td><td>02/01/2026</td><td>16/01/2026</td></tr>
-<tr><td style='text-align:left'>Rúbia Mara de Freitas/td><td>20/01/2026</td><td>06/02/2026</td></tr>          
-<tr><td style='text-align:left'>Silvia Marques Naves da Mota Souza</td><td>05/01/2026</td><td>24/01/2026</td></tr>
-<tr><td style='text-align:left'>Simone Duarte Grossi (Licença-prêmio)</td><td>18/12/2025</td><td>16/01/2026</td></tr>
-<tr><td style='text-align:left'>Viviane Manoel da Silva Borges</td><td>16/12/2025</td><td>04/01/2026</td></tr>
-<tr><td style='text-align:left'>Wanessa de Brito Jorge</td><td>29/12/2025</td><td>12/01/2026</td></tr>
-        </table>
-      </div>
-    </section>
+  <div class="small-muted">Atualizado automaticamente — (Horário de Brasília – UTC−3)</div>
+</div>
 
-    <p class="small muted" style="text-align:center; padding-bottom: 24px;">
-      Atualizado em 22/12/2025 11:08 — (Horário de Brasília – UTC−3)
-    </p>
-  </main>
+<script>
+  const dadosFerias = [
+    {nome:"Adriana Christina de Rezende Carneiro",inicio:"2026-01-02",fim:"2026-01-13"},
+    {nome:"Adriane Pereira Guimarães",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Aline Castro Damásio",inicio:"2026-01-05",fim:"2026-01-22"}
+  ];
 
-  <!-- Platform Detector -->
-  <script src="./js/platform-detector.js"></script>
+  let tabela;
+
+  function initMesAno(){
+    const mesSel = document.getElementById('fMes');
+    const anoSel = document.getElementById('fAno');
+    const hoje = new Date();
+
+    for(let m=0;m<12;m++){
+      const opt=document.createElement('option');
+      opt.value=m+1;
+      opt.text=new Date(2000,m,1).toLocaleString('pt-BR',{month:'long'});
+      if(m===hoje.getMonth()) opt.selected=true;
+      mesSel.appendChild(opt);
+    }
+
+    for(let a=2024;a<=2030;a++){
+      const opt=document.createElement('option');
+      opt.value=a;
+      opt.text=a;
+      if(a===hoje.getFullYear()) opt.selected=true;
+      anoSel.appendChild(opt);
+    }
+  }
+
+  function carregarTabela(){
+    tabela=$('#tabelaFerias').DataTable({
+      language:{url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'},
+      data:[],
+      columns:[
+        {data:'nome'},
+        {data:'inicio',render:d=>new Date(d).toLocaleDateString('pt-BR')},
+        {data:'fim',render:d=>new Date(d).toLocaleDateString('pt-BR')}
+      ]
+    });
+  }
+
+  function aplicarFiltros(){
+    const nome=document.getElementById('fFiscal').value.toUpperCase();
+    const mes=parseInt(document.getElementById('fMes').value);
+    const ano=parseInt(document.getElementById('fAno').value);
+
+    const filtrado=dadosFerias.filter(f=>{
+      const dIni=new Date(f.inicio);
+      return (
+        (!nome || f.nome.toUpperCase().includes(nome)) &&
+        dIni.getMonth()+1===mes && dIni.getFullYear()===ano
+      );
+    });
+
+    tabela.clear();
+    tabela.rows.add(filtrado).draw();
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    initMesAno();
+    carregarTabela();
+    aplicarFiltros();
+  });
+</script>
+
 </body>
 </html>
