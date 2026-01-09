@@ -1,133 +1,474 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escala de Uso de Veículos - VISA Anápolis</title>
+
+  <!-- Design System -->
   <link rel="stylesheet" href="./css/design-tokens.css">
-  <meta charset="utf-8" />
-  <title>Escala de Uso de Veículos — Janeiro/2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <link rel="stylesheet" href="./css/regulados.css" />
+
+  <!-- jQuery e DataTables -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
   <style>
-    /* Botão Voltar - iOS e Android Nativos */
-    .topbar .btn {
-      background: transparent !important;
-      border: none !important;
-      color: var(--text, #1a202c) !important;
-      padding: 6px 12px !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
+    body{
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin:0;
     }
-    .topbar .btn::before {
-      content: "←";
-      margin-right: 4px;
-      font-size: 20px;
+
+    header{
+      background:#1a3a6b;
+      color:#fff;
+      padding:28px 20px 26px;
+      text-align:center;
+      position:sticky;
+      top:0;
+      z-index:100;
     }
-    /* iOS: Setinha fina azul */
-    @supports (-webkit-touch-callout: none) {
-      .topbar .btn {
-        color: #007AFF !important;
-        font-weight: 400 !important;
-      }
-      .topbar .btn::before {
-        content: "‹";
-        font-size: 32px;
-        font-weight: 300;
-        margin-right: 0px;
-        vertical-align: middle;
-      }
+
+    header h1{margin:0;font-size:clamp(1.4rem,2.4vw,2.3rem);font-weight:900;}
+    header h2{margin-top:8px;font-size:clamp(1rem,1.5vw,1.15rem);font-weight:500;opacity:.95;}
+
+    .btn-ok-header{
+      position:absolute;
+      right:16px;
+      top:50%;
+      transform:translateY(-50%);
+      background:none;
+      border:none;
+      color:#34C759;
+      font-size:17px;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
     }
-    /* Ocultar topbar no desktop */
-    @media (min-width: 769px) {
-      .topbar--mobile-only {
-        display: none !important;
-      }
+
+    .container{max-width:1400px;margin:22px auto 40px;padding:0 16px;}
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      padding:24px;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow2);
+      margin-bottom:20px;
     }
+
+    .card h3{
+      color:var(--brand1);
+      margin-bottom:16px;
+      border-bottom:2px solid var(--brand1);
+      padding-bottom:8px;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:16px;
+      align-items:end;
+      width:100%;
+    }
+
+    .filter-group{display:flex;flex-direction:column;min-width:0;justify-content:flex-end;}
+
+    label{font-weight:600;margin-bottom:6px;display:block;}
+
+    input, select{
+      box-sizing:border-box;
+      display:block;
+      width:100%;
+      min-width:0;
+      padding:12px;
+      border-radius:8px;
+      border:1px solid var(--input-border);
+      background:var(--input-bg);
+      color:var(--input-text);
+    }
+
+    .btn-search{
+      margin-top:0;
+      width:100%;
+      padding:12px 24px;
+      border-radius:12px;
+      border:none;
+      background:linear-gradient(135deg,var(--brand1),var(--brand2));
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    table.dataTable thead th{background:var(--brand1);color:#fff;white-space:nowrap;}
+
+    .small-muted{font-size:0.85em;color:var(--muted);text-align:center;margin-top:20px;}
+
+    @media(max-width:768px){header{padding-right:70px;}}
+
+    /* Destaque visual opcional */
+    .tag-weekend{opacity:.7}
+    .tag-vago{font-weight:800}
   </style>
 </head>
 <body>
-  <!-- Topbar - Apenas Mobile -->
-  <header class="topbar topbar--mobile-only">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__title">VISA Anápolis</div>
-        <div class="brand__subtitle">Vigilância Sanitária</div>
+
+<header>
+  <a href="index.html" class="btn-ok-header">OK</a>
+  <h1>Vigilância Sanitária</h1>
+  <h2>Escala de Uso de Veículos</h2>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>🔍 Filtros</h3>
+    <div class="filters">
+      <div class="filter-group">
+        <label for="fFiscal">Fiscal</label>
+        <input type="text" id="fFiscal" placeholder="Nome do fiscal (ex: Lívia)">
       </div>
-      <div class="actions">
-        <a class="btn btn--ghost btn--back" href="./index.html">Voltar</a>
+      <div class="filter-group">
+        <label for="fData">Data (opcional)</label>
+        <input type="date" id="fData">
+      </div>
+      <div class="filter-group">
+        <label for="fTurno">Turno</label>
+        <select id="fTurno">
+          <option value="">(Todos)</option>
+          <option value="Matutino">Matutino</option>
+          <option value="Vespertino">Vespertino</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="fMes">Mês</label>
+        <select id="fMes"></select>
+      </div>
+      <div class="filter-group">
+        <label for="fAno">Ano</label>
+        <select id="fAno"></select>
+      </div>
+      <div class="filter-group">
+        <label>&nbsp;</label>
+        <button class="btn-search" onclick="aplicarFiltros()">Buscar</button>
       </div>
     </div>
-  </header>
+  </div>
 
-  <main class="wrap">
-    <section class="card panel">
-      <h1 class="card__title">ESCALA DE USO DE VEÍCULO</h1>
-      <p class="small muted">Atualizado em 22/12/2025 11:08 (Horário de Brasília – UTC−3)</p>
-    </section>
+  <div class="card">
+    <table id="tabelaVeiculos" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Dia</th>
+          <th>Turno</th>
+          <th>Carro 1</th>
+          <th>Carro 2</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-    <section class="card panel">
-      <div class="tableWrap">
-        <table class="table">
-<tr><th>Dia</th><th>Carro 1</th><th>Carro 2</th></tr>
-<tr class='weekend'><td>01 (Qui — Feriado Confraternização Universal)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>01 (Sex — Ponto Facultativo)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>03 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>04 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class=''><td>05 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
-<tr class=''><td>05 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
-<tr class=''><td>06 (Ter — Matutino)</td><td>Fabíola</td><td>VAGO</td></tr>
-<tr class=''><td>06 (Ter — Vespertino)</td><td>VAGO</td><td>Viviane Miyada</td></tr>
-<tr class=''><td>07 (Qua — Matutino)</td><td>Ariane</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>07 (Qua — Vespertino)</td><td>VAGO</td><td>Juliana Kênia & Tathiane</td></tr>
-<tr class=''><td>08 (Qui — Matutino)</td><td>VAGO</td><td>Lívia Brito</td></tr>
-<tr class=''><td>08 (Qui — Vespertino)</td><td>VAGO</td><td>VAGO</td></tr>
-<tr class=''><td>09 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>09 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
-<tr class='weekend'><td>10 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>11 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class=''><td>12 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
-<tr class=''><td>12 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
-<tr class=''><td>13 (Ter — Matutino)</td><td>VAGO</td><td>VAGO</td></tr>
-<tr class=''><td>13 (Ter — Vespertino)</td><td>VAGO</td><td>Viviane Miyada</td></tr>
-<tr class=''><td>14 (Qua — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>14 (Qua — Vespertino)</td><td>VAGO</td><td>Juliana Kênia & Tathiane</td></tr>
-<tr class=''><td>15 (Qui — Matutino)</td><td>Adriana</td><td>VAGO</td></tr>
-<tr class=''><td>15 (Qui — Vespertino)</td><td>VAGO</td><td>VAGO</td></tr>
-<tr class=''><td>16 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>16 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
-<tr class='weekend'><td>17 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>18 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class=''><td>19 (Seg — Matutino)</td><td>Júlio</td><td>VAGO</td></tr>
-<tr class=''><td>19 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
-<tr class=''><td>20 (Ter — Matutino)</td><td>Fabíola & Lidiane</td><td>Luciana Consolação & Adriana</td></tr>
-<tr class=''><td>20 (Ter — Vespertino)</td><td>Adriane</td><td>Clóvis & Viviane Miyada</td></tr>
-<tr class=''><td>21 (Qua — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>21 (Qua — Vespertino)</td><td>José Luiz</td><td>Juliana Kênia & Tathiane</td></tr>
-<tr class=''><td>22 (Qui — Matutino)</td><td>Adriana & Luciana Consolação</td><td>Pedro</td></tr>
-<tr class=''><td>22 (Qui — Vespertino)</td><td>Adriane</td><td>José Luiz</td></tr>
-<tr class=''><td>23 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>23 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
-<tr class='weekend'><td>24 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class='weekend'><td>25 (Dom — Fim de Semana)</td><td>—</td><td>—</td></tr>
-<tr class=''><td>26 (Seg — Matutino)</td><td>Júlio</td><td>Luciene</td></tr>
-<tr class=''><td>26 (Seg — Vespertino)</td><td>Juliana Kênia & Tathiane</td><td>Rodrigo</td></tr>
-<tr class=''><td>27 (Ter — Matutino)</td><td>Fabíola & Lidiane</td><td>Luciana Consolação & Adriana</td></tr>
-<tr class=''><td>27 (Ter — Vespertino)</td><td>Adriane & Patrícia</td><td>Clóvis & Viviane Miyada</td></tr>
-<tr class=''><td>28 (Qua — Matutino)</td><td>Aline</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>28 (Qua — Vespertino)</td><td>José Luiz</td><td>Juliana Kênia & Tathiane</td></tr>
-<tr class=''><td>29 (Qui — Matutino)</td><td>Adriana & Luciana Consolação</td><td>Pedro</td></tr>
-<tr class=''><td>29 (Qui — Vespertino)</td><td>Adriane & Patrícia</td><td>José Luiz</td></tr>
-<tr class=''><td>30 (Sex — Matutino)</td><td>VAGO</td><td>Vanessa Santana</td></tr>
-<tr class=''><td>30 (Sex — Vespertino)</td><td>VAGO</td><td>Rodrigo</td></tr>
-<tr class='weekend'><td>31 (Sáb — Fim de Semana)</td><td>—</td><td>—</td></tr>
-        </table>
-      </div>
-    </section>
+  <div class="small-muted">Atualizado automaticamente — (Horário de Brasília – UTC−3)</div>
+</div>
 
-    <p class="small muted" style="text-align:center; padding-bottom: 24px;">
-      Atualizado em 22/12/2025 11:08 — versão PRELIMINAR (Horário de Brasília – UTC−3)
-    </p>
-  </main>
+<script>
+  // =========================================================
+  // REGRAS INTERNAS (Base semanal fixa) + exceções por férias
+  // Fonte: “Escala Base de Uso de Veículos (fixa por dia da semana)”.
+  // - Quando fiscal sozinho estiver afastado => VAGO.
+  // - Dupla: se um afastar, o outro segue sozinho; só VAGO se ambos afastados.
+  // =========================================================
+  // (Anexo: regras veiculo.txt) 
+  // =========================================================
 
-  <!-- Platform Detector -->
-  <script src="./js/platform-detector.js"></script>
+  // Base semanal (fixa por dia da semana)
+  // Obs.: Os “carros” aqui representam as 2 linhas da tabela: Carro 1 e Carro 2.
+  // Onde existe dupla, usamos "Nome1 & Nome2" (mesma apresentação do seu HTML de janeiro).
+  const escalaBaseSemanal = {
+    // Segunda
+    'SEG:Matutino':  {carro1:['Júlio'], carro2:['Luciene']},
+    'SEG:Vespertino':{carro1:['Juliana Kênia','Tathiane'], carro2:['Rodrigo']},
+
+    // Terça
+    'TER:Matutino':  {carro1:['Fabíola','Lidiane'], carro2:['Luciana Consolação','Adriana']},
+    'TER:Vespertino':{carro1:['Adriane','Patrícia'], carro2:['Clóvis','Viviane Miyada']},
+
+    // Quarta
+    'QUA:Matutino':  {carro1:['Aline','Ariane'], carro2:['Vanessa Santana']},
+    'QUA:Vespertino':{carro1:['José Luiz'], carro2:['Juliana Kênia','Tathiane']},
+
+    // Quinta
+    'QUI:Matutino':  {carro1:['Adriana','Luciana Consolação'], carro2:['Lívia Brito','Pedro']},
+    'QUI:Vespertino':{carro1:['Adriane','Patrícia'], carro2:['José Luiz']},
+
+    // Sexta
+    'SEX:Matutino':  {carro1:['João Batista'], carro2:['Vanessa Santana']},
+    'SEX:Vespertino':{carro1:['João Batista'], carro2:['Rodrigo']},
+  };
+
+  // Férias
+  // ✅ Fonte única: ferias.html (mesma pasta). Assim você atualiza em um lugar só.
+  // Lê a tabela <tr><td>Funcionário</td><td>Início</td><td>Final</td></tr> e converte para ISO.
+  // (Se ferias.html não carregar, a escala roda sem aplicar férias.)
+  let ferias = [];
+
+  function ddmmyyyyToISO(s){
+    if(!s) return '';
+    const p = s.trim().split('/');
+    if(p.length !== 3) return '';
+    const dd = p[0].padStart(2,'0');
+    const mm = p[1].padStart(2,'0');
+    const yy = p[2];
+    return `${yy}-${mm}-${dd}`;
+  }
+
+  async function carregarFeriasDeHTML(){
+    try{
+      const bust = Date.now();
+      const resp = await fetch(`./ferias.html?v=${bust}`, { cache: 'no-store' });
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      const html = await resp.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      // O ferias.html atual tem uma tabela com 3 colunas: Funcionário, Início, Final
+      const table = doc.querySelector('table');
+      if(!table) throw new Error('Tabela não encontrada em ferias.html');
+
+      const rows = Array.from(table.querySelectorAll('tr')).slice(1); // pula cabeçalho
+      const lista = [];
+
+      rows.forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        if(tds.length < 3) return;
+        const nome = (tds[0].textContent || '').trim();
+        const iniBR = (tds[1].textContent || '').trim();
+        const fimBR = (tds[2].textContent || '').trim();
+        const ini = ddmmyyyyToISO(iniBR);
+        const fim = ddmmyyyyToISO(fimBR);
+        if(nome && ini && fim){
+          lista.push({ nome, inicio: ini, fim: fim });
+        }
+      });
+
+      ferias = lista;
+      console.log(`✅ Férias carregadas de ferias.html: ${ferias.length} registros`);
+    }catch(err){
+      console.warn('⚠️ Não foi possível carregar ferias.html. Escala seguirá sem aplicar férias.', err);
+      ferias = [];
+    }
+  }
+
+  // =========================================================
+  // Utilitários
+  // =========================================================
+  const diasPt = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const mapDiaKey = { 'Seg':'SEG', 'Ter':'TER', 'Qua':'QUA', 'Qui':'QUI', 'Sex':'SEX' };
+
+  function norm(s){
+    return (s||'')
+      .toString()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .toLowerCase()
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  // Tentativa segura de casar "apelido" da escala com nome completo das férias.
+  // Ex.: "Luciene" casa com "Luciene de Souza Barbosa...".
+  function nomeCasaComFerias(nomeEscala, nomeFerias){
+    const a = norm(nomeEscala);
+    const b = norm(nomeFerias);
+    if (!a || !b) return false;
+
+    // Se um contém o outro, já resolve (ex.: "luciene" dentro do nome completo)
+    if (b.includes(a) || a.includes(b)) return true;
+
+    // Token match: todos os tokens de a devem aparecer em b
+    const toks = a.split(' ').filter(t => t.length >= 3);
+    if (!toks.length) return false;
+    return toks.every(t => b.includes(t));
+  }
+
+  function estaDeFerias(nomeEscala, dateISO){
+    const d = new Date(dateISO + 'T00:00:00');
+    return ferias.some(f => {
+      if (!nomeCasaComFerias(nomeEscala, f.nome)) return false;
+      const ini = new Date(f.inicio + 'T00:00:00');
+      const fim = new Date(f.fim + 'T23:59:59');
+      return d >= ini && d <= fim;
+    });
+  }
+
+  function formatarDuplaOuSolo(pessoas){
+    if (!pessoas || !pessoas.length) return 'VAGO';
+
+    // remove quem está de férias (regra: se dupla e 1 afastado, o outro segue)
+    const ativos = pessoas.filter(n => !window.__dataParaChecagem || !estaDeFerias(n, window.__dataParaChecagem));
+
+    if (!ativos.length) return 'VAGO';
+    if (ativos.length === 1) return ativos[0];
+    return ativos.join(' & ');
+  }
+
+  // =========================================================
+  // Geração da escala mensal (mesmo dia da semana, muda o calendário)
+  // =========================================================
+  function gerarEscalaMes(ano, mes){
+    // mes: 1-12
+    const diasNoMes = new Date(ano, mes, 0).getDate();
+    const linhas = [];
+
+    for (let dia = 1; dia <= diasNoMes; dia++) {
+      const dt = new Date(ano, mes - 1, dia);
+      const dow = diasPt[dt.getDay()];
+      const iso = dt.toISOString().split('T')[0];
+
+      // Fim de semana
+      if (dow === 'Sáb' || dow === 'Dom') {
+        linhas.push({
+          dataISO: iso,
+          dataBR: String(dia).padStart(2,'0') + '/' + String(mes).padStart(2,'0') + '/' + ano,
+          diaSemana: dow,
+          turno: '—',
+          carro1: '—',
+          carro2: '—',
+          isWeekend: true
+        });
+        continue;
+      }
+
+      // Dias úteis: Matutino e Vespertino
+      const keyDia = mapDiaKey[dow];
+      ['Matutino','Vespertino'].forEach(turno => {
+        const baseKey = keyDia + ':' + turno;
+        const cfg = escalaBaseSemanal[baseKey];
+
+        // Guardar data global para checagem de férias dentro do formatter
+        window.__dataParaChecagem = iso;
+
+        const carro1 = cfg ? formatarDuplaOuSolo(cfg.carro1) : '—';
+        const carro2 = cfg ? formatarDuplaOuSolo(cfg.carro2) : '—';
+
+        linhas.push({
+          dataISO: iso,
+          dataBR: String(dia).padStart(2,'0') + '/' + String(mes).padStart(2,'0') + '/' + ano,
+          diaSemana: dow,
+          turno,
+          carro1,
+          carro2,
+          isWeekend: false
+        });
+      });
+    }
+
+    // Limpa variável auxiliar
+    window.__dataParaChecagem = null;
+    return linhas;
+  }
+
+  // =========================================================
+  // UI / DataTable
+  // =========================================================
+  let tabela;
+  let dadosMes = [];
+
+  function initMesAno(){
+    const mesSel = document.getElementById('fMes');
+    const anoSel = document.getElementById('fAno');
+    const hoje = new Date();
+
+    for (let m = 0; m < 12; m++) {
+      const opt = document.createElement('option');
+      opt.value = m + 1;
+      opt.text = new Date(2000, m, 1).toLocaleString('pt-BR', { month: 'long' });
+      if (m === hoje.getMonth()) opt.selected = true;
+      mesSel.appendChild(opt);
+    }
+
+    for (let a = 2024; a <= 2030; a++) {
+      const opt = document.createElement('option');
+      opt.value = a;
+      opt.text = a;
+      if (a === hoje.getFullYear()) opt.selected = true;
+      anoSel.appendChild(opt);
+    }
+  }
+
+  function carregarTabela(){
+    tabela = $('#tabelaVeiculos').DataTable({
+      language: { url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json' },
+      pageLength: 50,
+      lengthMenu: [25, 50, 100, -1],
+      order: [[0, 'asc'], [2, 'asc']],
+      data: [],
+      columns: [
+        { data: 'dataISO' },
+        { data: 'diaSemana' },
+        { data: 'turno' },
+        { data: 'carro1' },
+        { data: 'carro2' }
+      ],
+      createdRow: function(row, data){
+        if (data.isWeekend) $(row).addClass('tag-weekend');
+        if (data.carro1 === 'VAGO' || data.carro2 === 'VAGO') $(row).addClass('tag-vago');
+      }
+    });
+  }
+
+  function aplicarFiltros(){
+    const nome = norm(document.getElementById('fFiscal').value);
+    const dataStr = document.getElementById('fData').value; // YYYY-MM-DD
+    const turno = document.getElementById('fTurno').value;
+    const mes = parseInt(document.getElementById('fMes').value);
+    const ano = parseInt(document.getElementById('fAno').value);
+
+    // Sempre (re)gera a escala do mês selecionado
+    dadosMes = gerarEscalaMes(ano, mes);
+
+    let filtrado = dadosMes;
+
+    // Data específica
+    if (dataStr) {
+      filtrado = filtrado.filter(l => l.dataISO === dataStr);
+    }
+
+    // Turno
+    if (turno) {
+      filtrado = filtrado.filter(l => l.turno === turno);
+    }
+
+    // Fiscal (procura em Carro1/Carro2)
+    if (nome) {
+      filtrado = filtrado.filter(l => {
+        return norm(l.carro1).includes(nome) || norm(l.carro2).includes(nome);
+      });
+    }
+
+    // Ordenação do DataSet (acento pt-BR) por data + turno
+    filtrado.sort((a,b) => {
+      if (a.dataISO !== b.dataISO) return a.dataISO.localeCompare(b.dataISO);
+      return a.turno.localeCompare(b.turno, 'pt-BR', { sensitivity: 'variant' });
+    });
+
+    tabela.clear();
+    tabela.rows.add(filtrado).draw();
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    initMesAno();
+    carregarTabela();
+
+    // Carrega férias a partir do ferias.html (fonte única)
+    await carregarFeriasDeHTML();
+
+    // Padrão: mostra o mês corrente
+    aplicarFiltros();
+  });
+</script>
+
 </body>
 </html>
