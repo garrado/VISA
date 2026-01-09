@@ -198,7 +198,7 @@
 
 <script>
   const dadosFerias = [
-    {nome:"Adriana Chr(istina) de Rezende Carneiro",inicio:"2026-01-02",fim:"2026-01-13"},
+    {nome:"Adriana Christina de Rezende Carneiro",inicio:"2026-01-02",fim:"2026-01-13"},
     {nome:"Adriane Pereira Guimaraes",inicio:"2026-01-05",fim:"2026-01-19"},
     {nome:"Aline Castro Damásio de Lima",inicio:"2026-01-05",fim:"2026-01-22"},
     {nome:"Ana Paula Rodrigues Correa Guimaraes",inicio:"2026-01-05",fim:"2026-01-19"},
@@ -256,13 +256,25 @@
   }
 
   function carregarTabela(){
-    tabela=$('#tabelaFerias').DataTable({
-      language:{url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json'},
-      data:[],
-      columns:[
-        {data:'nome'},
-        {data:'inicio',render:d=>new Date(d).toLocaleDateString('pt-BR')},
-        {data:'fim',render:d=>new Date(d).toLocaleDateString('pt-BR')}
+    tabela = $('#tabelaFerias').DataTable({
+      language: { url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json' },
+      pageLength: 50,                 // padrão: 50 registros
+      lengthMenu: [25, 50, 100, -1],  // opções visíveis
+      order: [[0, 'asc']],            // ordenação inicial pelo nome
+      columnDefs: [
+        {
+          targets: 0,
+          type: 'string',
+          render: function (data) {
+            return data;
+          }
+        }
+      ],
+      data: [],
+      columns: [
+        { data: 'nome' },
+        { data: 'inicio', render: d => new Date(d).toLocaleDateString('pt-BR') },
+        { data: 'fim', render: d => new Date(d).toLocaleDateString('pt-BR') }
       ]
     });
   }
@@ -299,6 +311,9 @@
       const intersectaMes = (dIni <= fimMes && dFim >= inicioMes);
       return passaNome && intersectaMes;
     });
+
+    // ordena alfabeticamente respeitando acentos (pt-BR)
+    filtrado.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'variant' }));
 
     tabela.clear();
     tabela.rows.add(filtrado).draw();
