@@ -81,10 +81,18 @@
     }
 
     .filters{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:16px;
-      margin-bottom:16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      align-items: end; /* deixa tudo na mesma linha de base */
+      width: 100%;
+    }
+
+    .filter-group{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      justify-content:flex-end;
     }
 
     label{
@@ -94,6 +102,10 @@
     }
 
     input, select{
+      box-sizing: border-box;
+      display:block;
+      min-width:0;
+
       width:100%;
       padding:12px;
       border-radius:8px;
@@ -103,14 +115,15 @@
     }
 
     .btn-search{
-      margin-top:22px;
-      padding:12px 24px;
-      border-radius:12px;
-      border:none;
-      background:linear-gradient(135deg,var(--brand1),var(--brand2));
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
+      margin-top: 0;
+      width: 100%;
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     table.dataTable thead th{
@@ -144,23 +157,24 @@
   <div class="card">
     <h3>🔍 Filtros</h3>
     <div class="filters">
-      <div>
+      <div class="filter-group">
         <label for="fFiscal">Fiscal</label>
         <input type="text" id="fFiscal" placeholder="Nome do fiscal">
       </div>
-      <div>
+      <div class="filter-group">
         <label for="fData">Data (opcional)</label>
         <input type="date" id="fData">
       </div>
-      <div>
+      <div class="filter-group">
         <label for="fMes">Mês</label>
         <select id="fMes"></select>
       </div>
-      <div>
+      <div class="filter-group">
         <label for="fAno">Ano</label>
         <select id="fAno"></select>
       </div>
-      <div>
+      <div class="filter-group">
+        <label>&nbsp;</label>
         <button class="btn-search" onclick="aplicarFiltros()">Buscar</button>
       </div>
     </div>
