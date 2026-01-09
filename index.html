@@ -464,6 +464,15 @@ header h2 {
       text-justify: inter-word;
     }
   </style>
+
+/* Ajuste de espaçamento do aviso de sincronização no mobile */
+@media (max-width: 640px) {
+  #sync-cvs-info {
+    font-size: 0.9em;      /* já aplicado */
+    margin-bottom: 16px;   /* equivale visualmente a um <br> */
+  }
+}
+  
 </head>
 
 <body>
@@ -1127,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', function () {
       el.innerHTML = '🔄 Sincronização CVS: <strong>' + exibicao + '</strong>';
     })
     .catch(function () {
-      el.innerHTML = '⚠️ Sincronização com o CVS: não foi possível verificar';
+      el.innerHTML = '⚠️ Sincronização CVS: não foi possível verificar';
     });
 });
 </script>
