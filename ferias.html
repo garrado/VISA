@@ -149,6 +149,10 @@
         <input type="text" id="fFiscal" placeholder="Nome do fiscal">
       </div>
       <div>
+        <label for="fData">Data (opcional)</label>
+        <input type="date" id="fData">
+      </div>
+      <div>
         <label for="fMes">Mês</label>
         <select id="fMes"></select>
       </div>
@@ -180,9 +184,37 @@
 
 <script>
   const dadosFerias = [
-    {nome:"Adriana Christina de Rezende Carneiro",inicio:"2026-01-02",fim:"2026-01-13"},
-    {nome:"Adriane Pereira Guimarães",inicio:"2026-01-05",fim:"2026-01-19"},
-    {nome:"Aline Castro Damásio",inicio:"2026-01-05",fim:"2026-01-22"}
+    {nome:"Adriana Chr(istina) de Rezende Carneiro",inicio:"2026-01-02",fim:"2026-01-13"},
+    {nome:"Adriane Pereira Guimaraes",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Aline Castro Damásio de Lima",inicio:"2026-01-05",fim:"2026-01-22"},
+    {nome:"Ana Paula Rodrigues Correa Guimaraes",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Arianne Ferreira Vieira",inicio:"2026-01-12",fim:"2026-01-31"},
+    {nome:"Clóvis Rafael Borges Ferreira",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Daniela de Almeida Castro",inicio:"2026-01-05",fim:"2026-01-14"},
+    {nome:"Edson Arantes Faria Filho",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Eduardo Lucas Magalhães Castro",inicio:"2026-02-18",fim:"2026-03-07"},
+    {nome:"Fabíola Pedrosa Peixoto Marques",inicio:"2026-01-07",fim:"2026-01-16"},
+    {nome:"Gleiciane Maria José da Silva",inicio:"2026-02-18",fim:"2026-03-04"},
+    {nome:"Geraldo Edson Rosa",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Gúbio Dias Pereira",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"José Luiz Ribeiro",inicio:"2026-01-02",fim:"2026-01-16"},
+    {nome:"Juliana Ferreira Viturino",inicio:"2026-01-05",fim:"2026-01-23"},
+    {nome:"Kamilla Chrystine Rolim dos Santos",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Lidiane Simoes Aires Campos",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Lívia Brito Ribeiro",inicio:"2026-01-12",fim:"2026-01-31"},
+    {nome:"Luciana Consolação dos Santos",inicio:"2026-01-05",fim:"2026-01-19"},
+    {nome:"Luciana Santana da Rocha",inicio:"2026-01-12",fim:"2026-01-26"},
+    {nome:"Luciene de Souza Barbosa Gomes Silva",inicio:"2026-01-05",fim:"2026-01-24"},
+    {nome:"Márcio Henrique Gomes Rodovalho",inicio:"2026-01-12",fim:"2026-01-31"},
+    {nome:"Maria Edwiges Pinheiro de Souza Chaves",inicio:"2026-01-26",fim:"2026-02-04"},
+    {nome:"Marina Perillo Navarrete Lavers",inicio:"2026-01-05",fim:"2026-01-16"},
+    {nome:"Patrícia Cordeiro de Morais e Souza",inicio:"2026-01-05",fim:"2026-01-24"},
+    {nome:"Pedro Henrique Aires Ribeiro",inicio:"2026-01-02",fim:"2026-01-16"},
+    {nome:"Rúbia Mara de Freitas",inicio:"2026-01-20",fim:"2026-02-06"},
+    {nome:"Silvia Marques Naves da Mota Souza",inicio:"2026-01-05",fim:"2026-01-24"},
+    {nome:"Simone Duarte Grossi (Licença-prêmio)",inicio:"2025-12-18",fim:"2026-01-16"},
+    {nome:"Viviane Manoel da Silva Borges",inicio:"2025-12-16",fim:"2026-01-04"},
+    {nome:"Wanessa de Brito Jorge",inicio:"2025-12-29",fim:"2026-01-12"}
   ];
 
   let tabela;
@@ -222,16 +254,36 @@
   }
 
   function aplicarFiltros(){
-    const nome=document.getElementById('fFiscal').value.toUpperCase();
-    const mes=parseInt(document.getElementById('fMes').value);
-    const ano=parseInt(document.getElementById('fAno').value);
+    const nome = document.getElementById('fFiscal').value.toUpperCase().trim();
+    const dataStr = document.getElementById('fData').value; // YYYY-MM-DD
+    const mes = parseInt(document.getElementById('fMes').value);
+    const ano = parseInt(document.getElementById('fAno').value);
 
-    const filtrado=dadosFerias.filter(f=>{
-      const dIni=new Date(f.inicio);
-      return (
-        (!nome || f.nome.toUpperCase().includes(nome)) &&
-        dIni.getMonth()+1===mes && dIni.getFullYear()===ano
-      );
+    // Intervalo do mês selecionado
+    const inicioMes = new Date(ano, mes - 1, 1);
+    const fimMes = new Date(ano, mes, 0); // último dia do mês
+    fimMes.setHours(23,59,59,999);
+
+    // Se informou uma data específica, filtra por "quem está de férias nessa data"
+    let dataFiltro = null;
+    if (dataStr) {
+      dataFiltro = new Date(dataStr + 'T00:00:00');
+    }
+
+    const filtrado = dadosFerias.filter(f => {
+      const dIni = new Date(f.inicio + 'T00:00:00');
+      const dFim = new Date(f.fim + 'T23:59:59');
+
+      const passaNome = (!nome || f.nome.toUpperCase().includes(nome));
+
+      if (dataFiltro) {
+        const passaData = (dataFiltro >= dIni && dataFiltro <= dFim);
+        return passaNome && passaData;
+      }
+
+      // Sem data específica: mostra registros que INTERSECTAM o mês selecionado
+      const intersectaMes = (dIni <= fimMes && dFim >= inicioMes);
+      return passaNome && intersectaMes;
     });
 
     tabela.clear();
