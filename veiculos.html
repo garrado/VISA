@@ -106,6 +106,22 @@
     @media(max-width:768px){header{padding-right:70px;}}
     .tag-weekend{opacity:.65}
     .tag-vago{font-weight:800}
+  
+    /* Agrupamento visual por data (DataTables) */
+    tr.group-row td{
+      background: rgba(26, 58, 107, 0.10);
+      font-weight: 800;
+      letter-spacing: .2px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px !important;
+    }
+    tr.group-row td .g-sub{
+      font-weight: 600;
+      opacity: .9;
+      margin-left: 8px;
+    }
+
   </style>
 </head>
 <body>
@@ -526,6 +542,34 @@ const pontosFacultativos = [
         { data: "veiculo" },
         { data: "fiscal" }
       ],
+      drawCallback: function(settings){
+        // Agrupa visualmente por data no display atual (página corrente)
+        const api = this.api();
+        const rows = api.rows({ page: 'current' }).nodes();
+        const data = api.rows({ page: 'current' }).data();
+
+        let lastDate = null;
+        data.each(function(d, i){
+          const date = d.dataISO;
+          const node = rows[i];
+
+          if(date !== lastDate){
+            const header = `${isoToBR(date)}`;
+            const dia = d.diaSemana ? ` <span class="g-sub">— ${d.diaSemana}</span>` : '';
+            $(node).before(
+              `<tr class="group-row"><td colspan="5">📅 ${header}${dia}</td></tr>`
+            );
+            lastDate = date;
+          } else {
+            const tds = $(node).find('td');
+            if(tds.length >= 2){
+              $(tds[0]).text('');
+              $(tds[1]).text('');
+            }
+          }
+        });
+      },
+
       createdRow: function(row, data){
         if(data.isWeekend) $(row).addClass("tag-weekend");
         if(data.fiscal === "VAGO") $(row).addClass("tag-vago");
