@@ -75,7 +75,6 @@
     }
 
     .filter-group{display:flex;flex-direction:column;min-width:0;justify-content:flex-end;}
-
     label{font-weight:600;margin-bottom:6px;display:block;}
 
     input, select{
@@ -103,13 +102,9 @@
     }
 
     table.dataTable thead th{background:var(--brand1);color:#fff;white-space:nowrap;}
-
     .small-muted{font-size:0.85em;color:var(--muted);text-align:center;margin-top:20px;}
-
     @media(max-width:768px){header{padding-right:70px;}}
-
-    /* Destaque visual opcional */
-    .tag-weekend{opacity:.7}
+    .tag-weekend{opacity:.65}
     .tag-vago{font-weight:800}
   </style>
 </head>
@@ -128,12 +123,14 @@
     <div class="filters">
       <div class="filter-group">
         <label for="fFiscal">Fiscal</label>
-        <input type="text" id="fFiscal" placeholder="Nome do fiscal (ex: Lívia)">
+        <input type="text" id="fFiscal" placeholder="Nome do fiscal (ex: LIVIA)">
       </div>
+
       <div class="filter-group">
         <label for="fData">Data (opcional)</label>
         <input type="date" id="fData">
       </div>
+
       <div class="filter-group">
         <label for="fTurno">Turno</label>
         <select id="fTurno">
@@ -142,14 +139,26 @@
           <option value="Vespertino">Vespertino</option>
         </select>
       </div>
+
+      <div class="filter-group">
+        <label for="fVeiculo">Veículo</label>
+        <select id="fVeiculo">
+          <option value="">(Todos)</option>
+          <option value="Veículo 1">Veículo 1</option>
+          <option value="Veículo 2">Veículo 2</option>
+        </select>
+      </div>
+
       <div class="filter-group">
         <label for="fMes">Mês</label>
         <select id="fMes"></select>
       </div>
+
       <div class="filter-group">
         <label for="fAno">Ano</label>
         <select id="fAno"></select>
       </div>
+
       <div class="filter-group">
         <label>&nbsp;</label>
         <button class="btn-search" onclick="aplicarFiltros()">Buscar</button>
@@ -164,8 +173,8 @@
           <th>Data</th>
           <th>Dia</th>
           <th>Turno</th>
-          <th>Carro 1</th>
-          <th>Carro 2</th>
+          <th>Veículo</th>
+          <th>Fiscal</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -177,51 +186,77 @@
 
 <script>
   // =========================================================
-  // REGRAS INTERNAS (Base semanal fixa) + exceções por férias
-  // Fonte: “Escala Base de Uso de Veículos (fixa por dia da semana)”.
-  // - Quando fiscal sozinho estiver afastado => VAGO.
-  // - Dupla: se um afastar, o outro segue sozinho; só VAGO se ambos afastados.
-  // =========================================================
-  // (Anexo: regras veiculo.txt) 
+  // REGRAS INTERNAS
+  // Base fixa por dia da semana e turno (ver regras veiculo.txt).
+  // - Se fiscal listado sozinho estiver afastado => VAGO.
+  // - Dupla: se um afastar, o outro permanece; só VAGO se ambos afastados.
+  // - A escala mensal respeita esta base; muda apenas o calendário e férias.
   // =========================================================
 
-  // Base semanal (fixa por dia da semana)
-  // Obs.: Os “carros” aqui representam as 2 linhas da tabela: Carro 1 e Carro 2.
-  // Onde existe dupla, usamos "Nome1 & Nome2" (mesma apresentação do seu HTML de janeiro).
+  // Base semanal com NOMES COMPLETOS (padrão do OS)
   const escalaBaseSemanal = {
-    // Segunda
-    'SEG:Matutino':  {carro1:['Júlio'], carro2:['Luciene']},
-    'SEG:Vespertino':{carro1:['Juliana Kênia','Tathiane'], carro2:['Rodrigo']},
+    // SEG
+    "SEG:Matutino": {
+      veiculo1: ["JULIO CÉSAR TELES SPINDOLA"],
+      veiculo2: ["LUCIENE DE SOUZA BARBOSA GOMES SILVA"]
+    },
+    "SEG:Vespertino": {
+      veiculo1: ["JULIANA KÊNIA MARTINS DA SILVA", "TATHIANE PESSOA DE SOUZA"],
+      veiculo2: ["RODRIGO ALESSANDRO TÔGO SANTOS"]
+    },
 
-    // Terça
-    'TER:Matutino':  {carro1:['Fabíola','Lidiane'], carro2:['Luciana Consolação','Adriana']},
-    'TER:Vespertino':{carro1:['Adriane','Patrícia'], carro2:['Clóvis','Viviane Miyada']},
+    // TER
+    "TER:Matutino": {
+      veiculo1: ["FABÍOLA PEDROSA PEIXOTO MARQUES", "LIDIANE SIMÕES"],
+      veiculo2: ["LUCIANA CONSOLAÇÃO DOS SANTOS", "ADRIANA CRHISTINA DE REZENDE CARNEIRO"]
+    },
+    "TER:Vespertino": {
+      veiculo1: ["ADRIANE PEREIRA GUIMARÃES", "PATRÍCIA CORDEIRO DE MORAES E SOUZA"],
+      veiculo2: ["CLÓVIS RAFAEL BORGES FERREIRA", "VIVIANE MIYADA"]
+    },
 
-    // Quarta
-    'QUA:Matutino':  {carro1:['Aline','Ariane'], carro2:['Vanessa Santana']},
-    'QUA:Vespertino':{carro1:['José Luiz'], carro2:['Juliana Kênia','Tathiane']},
+    // QUA
+    "QUA:Matutino": {
+      veiculo1: ["ALINE CASTRO DAMASIO", "ARIANNE FERREIRA VIEIRA"],
+      veiculo2: ["VANESSA SANTANA"]
+    },
+    "QUA:Vespertino": {
+      veiculo1: ["JOSE LUIZ RIBEIRO"],
+      veiculo2: ["JULIANA KÊNIA MARTINS DA SILVA", "TATHIANE PESSOA DE SOUZA"]
+    },
 
-    // Quinta
-    'QUI:Matutino':  {carro1:['Adriana','Luciana Consolação'], carro2:['Lívia Brito','Pedro']},
-    'QUI:Vespertino':{carro1:['Adriane','Patrícia'], carro2:['José Luiz']},
+    // QUI
+    "QUI:Matutino": {
+      veiculo1: ["ADRIANA CRHISTINA DE REZENDE CARNEIRO", "LUCIANA CONSOLAÇÃO DOS SANTOS"],
+      veiculo2: ["LIVIA BRITO", "PEDRO HENRIQUE AIRES RIBEIRO"]
+    },
+    "QUI:Vespertino": {
+      veiculo1: ["ADRIANE PEREIRA GUIMARÃES", "PATRÍCIA CORDEIRO DE MORAES E SOUZA"],
+      veiculo2: ["JOSE LUIZ RIBEIRO"]
+    },
 
-    // Sexta
-    'SEX:Matutino':  {carro1:['João Batista'], carro2:['Vanessa Santana']},
-    'SEX:Vespertino':{carro1:['João Batista'], carro2:['Rodrigo']},
+    // SEX
+    "SEX:Matutino": {
+      veiculo1: ["JOÃO BATISTA LUCAS DA SILVA REIS"],
+      veiculo2: ["VANESSA SANTANA"]
+    },
+    "SEX:Vespertino": {
+      veiculo1: ["JOÃO BATISTA LUCAS DA SILVA REIS"],
+      veiculo2: ["RODRIGO ALESSANDRO TÔGO SANTOS"]
+    }
   };
 
-  // Férias
-  // ✅ Fonte única: ferias.html (mesma pasta). Assim você atualiza em um lugar só.
+  // ✅ Fonte única de férias: ferias.html (mesma pasta)
   // Lê a tabela <tr><td>Funcionário</td><td>Início</td><td>Final</td></tr> e converte para ISO.
-  // (Se ferias.html não carregar, a escala roda sem aplicar férias.)
+  // Se ferias.html não carregar, a escala roda sem aplicar férias.
   let ferias = [];
 
   function ddmmyyyyToISO(s){
-    if(!s) return '';
-    const p = s.trim().split('/');
-    if(p.length !== 3) return '';
-    const dd = p[0].padStart(2,'0');
-    const mm = p[1].padStart(2,'0');
+    if(!s) return "";
+    const p = s.trim().split("/");
+    if(p.length !== 3) return "";
+    const dd = p[0].padStart(2,"0");
+    const mm = p[1].padStart(2,"0");
     const yy = p[2];
     return `${yy}-${mm}-${dd}`;
   }
@@ -229,26 +264,27 @@
   async function carregarFeriasDeHTML(){
     try{
       const bust = Date.now();
-      const resp = await fetch(`./ferias.html?v=${bust}`, { cache: 'no-store' });
-      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      const resp = await fetch(`./ferias.html?v=${bust}`, { cache: "no-store" });
+      if(!resp.ok) throw new Error("HTTP " + resp.status);
       const html = await resp.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const doc = new DOMParser().parseFromString(html, "text/html");
 
-      // O ferias.html atual tem uma tabela com 3 colunas: Funcionário, Início, Final
-      const table = doc.querySelector('table');
-      if(!table) throw new Error('Tabela não encontrada em ferias.html');
+      const table = doc.querySelector("table");
+      if(!table) throw new Error("Tabela não encontrada em ferias.html");
 
-      const rows = Array.from(table.querySelectorAll('tr')).slice(1); // pula cabeçalho
+      const rows = Array.from(table.querySelectorAll("tr")).slice(1); // pula cabeçalho
       const lista = [];
 
       rows.forEach(tr => {
-        const tds = tr.querySelectorAll('td');
+        const tds = tr.querySelectorAll("td");
         if(tds.length < 3) return;
-        const nome = (tds[0].textContent || '').trim();
-        const iniBR = (tds[1].textContent || '').trim();
-        const fimBR = (tds[2].textContent || '').trim();
+        const nome = (tds[0].textContent || "").trim().replace(/\s+/g," ");
+        const iniBR = (tds[1].textContent || "").trim();
+        const fimBR = (tds[2].textContent || "").trim();
+
         const ini = ddmmyyyyToISO(iniBR);
         const fim = ddmmyyyyToISO(fimBR);
+
         if(nome && ini && fim){
           lista.push({ nome, inicio: ini, fim: fim });
         }
@@ -257,116 +293,115 @@
       ferias = lista;
       console.log(`✅ Férias carregadas de ferias.html: ${ferias.length} registros`);
     }catch(err){
-      console.warn('⚠️ Não foi possível carregar ferias.html. Escala seguirá sem aplicar férias.', err);
+      console.warn("⚠️ Não foi possível carregar ferias.html. Escala seguirá sem aplicar férias.", err);
       ferias = [];
     }
   }
 
   // =========================================================
-  // Utilitários
+  // Utilitários (normalização para casar nomes com segurança)
   // =========================================================
-  const diasPt = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const mapDiaKey = { 'Seg':'SEG', 'Ter':'TER', 'Qua':'QUA', 'Qui':'QUI', 'Sex':'SEX' };
+  const diasPt = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const mapDiaKey = { "Seg":"SEG", "Ter":"TER", "Qua":"QUA", "Qui":"QUI", "Sex":"SEX" };
 
   function norm(s){
-    return (s||'')
+    return (s||"")
       .toString()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .toLowerCase()
-      .replace(/\s+/g,' ')
+      .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .toUpperCase()
+      .replace(/\s+/g," ")
       .trim();
   }
 
-  // Tentativa segura de casar "apelido" da escala com nome completo das férias.
-  // Ex.: "Luciene" casa com "Luciene de Souza Barbosa...".
+  // Casa por igualdade normalizada; se falhar, tenta "contém" (para variações como LIDIANE SIMÕES vs LIDIANE SIMOES AIRES CAMPOS)
   function nomeCasaComFerias(nomeEscala, nomeFerias){
     const a = norm(nomeEscala);
     const b = norm(nomeFerias);
-    if (!a || !b) return false;
-
-    // Se um contém o outro, já resolve (ex.: "luciene" dentro do nome completo)
-    if (b.includes(a) || a.includes(b)) return true;
-
-    // Token match: todos os tokens de a devem aparecer em b
-    const toks = a.split(' ').filter(t => t.length >= 3);
-    if (!toks.length) return false;
-    return toks.every(t => b.includes(t));
+    if(!a || !b) return false;
+    if(a === b) return true;
+    return b.includes(a) || a.includes(b);
   }
 
   function estaDeFerias(nomeEscala, dateISO){
-    const d = new Date(dateISO + 'T00:00:00');
+    const d = new Date(dateISO + "T00:00:00");
     return ferias.some(f => {
-      if (!nomeCasaComFerias(nomeEscala, f.nome)) return false;
-      const ini = new Date(f.inicio + 'T00:00:00');
-      const fim = new Date(f.fim + 'T23:59:59');
+      if(!nomeCasaComFerias(nomeEscala, f.nome)) return false;
+      const ini = new Date(f.inicio + "T00:00:00");
+      const fim = new Date(f.fim + "T23:59:59");
       return d >= ini && d <= fim;
     });
   }
 
-  function formatarDuplaOuSolo(pessoas){
-    if (!pessoas || !pessoas.length) return 'VAGO';
-
-    // remove quem está de férias (regra: se dupla e 1 afastado, o outro segue)
-    const ativos = pessoas.filter(n => !window.__dataParaChecagem || !estaDeFerias(n, window.__dataParaChecagem));
-
-    if (!ativos.length) return 'VAGO';
-    if (ativos.length === 1) return ativos[0];
-    return ativos.join(' & ');
+  function isoToBR(iso){
+    // iso YYYY-MM-DD
+    const p = (iso||"").split("-");
+    if(p.length !== 3) return iso || "";
+    return `${p[2]}/${p[1]}/${p[0]}`;
   }
 
   // =========================================================
-  // Geração da escala mensal (mesmo dia da semana, muda o calendário)
+  // Geração mensal (linhas normalizadas: 1 fiscal por linha)
   // =========================================================
   function gerarEscalaMes(ano, mes){
-    // mes: 1-12
     const diasNoMes = new Date(ano, mes, 0).getDate();
     const linhas = [];
 
-    for (let dia = 1; dia <= diasNoMes; dia++) {
-      const dt = new Date(ano, mes - 1, dia);
+    for(let dia=1; dia<=diasNoMes; dia++){
+      const dt = new Date(ano, mes-1, dia);
       const dow = diasPt[dt.getDay()];
-      const iso = dt.toISOString().split('T')[0];
+      const iso = dt.toISOString().split("T")[0];
 
-      // Fim de semana
-      if (dow === 'Sáb' || dow === 'Dom') {
+      // Fim de semana (linhas apenas para referência visual)
+      if(dow === "Sáb" || dow === "Dom"){
         linhas.push({
           dataISO: iso,
-          dataBR: String(dia).padStart(2,'0') + '/' + String(mes).padStart(2,'0') + '/' + ano,
+          dataBR: isoToBR(iso),
           diaSemana: dow,
-          turno: '—',
-          carro1: '—',
-          carro2: '—',
+          turno: "—",
+          veiculo: "—",
+          fiscal: "—",
           isWeekend: true
         });
         continue;
       }
 
-      // Dias úteis: Matutino e Vespertino
       const keyDia = mapDiaKey[dow];
-      ['Matutino','Vespertino'].forEach(turno => {
-        const baseKey = keyDia + ':' + turno;
+      ["Matutino","Vespertino"].forEach(turno => {
+        const baseKey = keyDia + ":" + turno;
         const cfg = escalaBaseSemanal[baseKey];
 
-        // Guardar data global para checagem de férias dentro do formatter
-        window.__dataParaChecagem = iso;
+        ["Veículo 1","Veículo 2"].forEach(v => {
+          const lista = cfg ? (v === "Veículo 1" ? cfg.veiculo1 : cfg.veiculo2) : [];
+          const ativos = (lista || []).filter(n => !estaDeFerias(n, iso));
 
-        const carro1 = cfg ? formatarDuplaOuSolo(cfg.carro1) : '—';
-        const carro2 = cfg ? formatarDuplaOuSolo(cfg.carro2) : '—';
-
-        linhas.push({
-          dataISO: iso,
-          dataBR: String(dia).padStart(2,'0') + '/' + String(mes).padStart(2,'0') + '/' + ano,
-          diaSemana: dow,
-          turno,
-          carro1,
-          carro2,
-          isWeekend: false
+          if(!ativos.length){
+            linhas.push({
+              dataISO: iso,
+              dataBR: isoToBR(iso),
+              diaSemana: dow,
+              turno,
+              veiculo: v,
+              fiscal: "VAGO",
+              isWeekend: false
+            });
+          }else{
+            // ✅ 1 fiscal por linha
+            ativos.forEach(nomeCompleto => {
+              linhas.push({
+                dataISO: iso,
+                dataBR: isoToBR(iso),
+                diaSemana: dow,
+                turno,
+                veiculo: v,
+                fiscal: nomeCompleto,
+                isWeekend: false
+              });
+            });
+          }
         });
       });
     }
 
-    // Limpa variável auxiliar
-    window.__dataParaChecagem = null;
     return linhas;
   }
 
@@ -377,96 +412,91 @@
   let dadosMes = [];
 
   function initMesAno(){
-    const mesSel = document.getElementById('fMes');
-    const anoSel = document.getElementById('fAno');
+    const mesSel = document.getElementById("fMes");
+    const anoSel = document.getElementById("fAno");
     const hoje = new Date();
 
-    for (let m = 0; m < 12; m++) {
-      const opt = document.createElement('option');
-      opt.value = m + 1;
-      opt.text = new Date(2000, m, 1).toLocaleString('pt-BR', { month: 'long' });
-      if (m === hoje.getMonth()) opt.selected = true;
+    for(let m=0; m<12; m++){
+      const opt = document.createElement("option");
+      opt.value = m+1;
+      opt.text = new Date(2000, m, 1).toLocaleString("pt-BR", { month: "long" });
+      if(m === hoje.getMonth()) opt.selected = true;
       mesSel.appendChild(opt);
     }
 
-    for (let a = 2024; a <= 2030; a++) {
-      const opt = document.createElement('option');
+    for(let a=2024; a<=2030; a++){
+      const opt = document.createElement("option");
       opt.value = a;
       opt.text = a;
-      if (a === hoje.getFullYear()) opt.selected = true;
+      if(a === hoje.getFullYear()) opt.selected = true;
       anoSel.appendChild(opt);
     }
   }
 
   function carregarTabela(){
-    tabela = $('#tabelaVeiculos').DataTable({
-      language: { url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json' },
+    tabela = $("#tabelaVeiculos").DataTable({
+      language: { url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json" },
       pageLength: 50,
       lengthMenu: [25, 50, 100, -1],
-      order: [[0, 'asc'], [2, 'asc']],
+      order: [[0, "asc"], [2, "asc"], [3, "asc"], [4, "asc"]],
       data: [],
       columns: [
-        { data: 'dataISO' },
-        { data: 'diaSemana' },
-        { data: 'turno' },
-        { data: 'carro1' },
-        { data: 'carro2' }
+        { data: "dataISO", render: d => isoToBR(d) }, // ✅ dd/mm/aaaa
+        { data: "diaSemana" },
+        { data: "turno" },
+        { data: "veiculo" },
+        { data: "fiscal" }
       ],
       createdRow: function(row, data){
-        if (data.isWeekend) $(row).addClass('tag-weekend');
-        if (data.carro1 === 'VAGO' || data.carro2 === 'VAGO') $(row).addClass('tag-vago');
+        if(data.isWeekend) $(row).addClass("tag-weekend");
+        if(data.fiscal === "VAGO") $(row).addClass("tag-vago");
       }
     });
   }
 
   function aplicarFiltros(){
-    const nome = norm(document.getElementById('fFiscal').value);
-    const dataStr = document.getElementById('fData').value; // YYYY-MM-DD
-    const turno = document.getElementById('fTurno').value;
-    const mes = parseInt(document.getElementById('fMes').value);
-    const ano = parseInt(document.getElementById('fAno').value);
+    const nome = norm(document.getElementById("fFiscal").value);
+    const dataStr = document.getElementById("fData").value; // YYYY-MM-DD
+    const turno = document.getElementById("fTurno").value;
+    const veiculo = document.getElementById("fVeiculo").value;
+    const mes = parseInt(document.getElementById("fMes").value);
+    const ano = parseInt(document.getElementById("fAno").value);
 
-    // Sempre (re)gera a escala do mês selecionado
     dadosMes = gerarEscalaMes(ano, mes);
-
     let filtrado = dadosMes;
 
-    // Data específica
-    if (dataStr) {
+    if(dataStr){
       filtrado = filtrado.filter(l => l.dataISO === dataStr);
     }
 
-    // Turno
-    if (turno) {
+    if(turno){
       filtrado = filtrado.filter(l => l.turno === turno);
     }
 
-    // Fiscal (procura em Carro1/Carro2)
-    if (nome) {
-      filtrado = filtrado.filter(l => {
-        return norm(l.carro1).includes(nome) || norm(l.carro2).includes(nome);
-      });
+    if(veiculo){
+      filtrado = filtrado.filter(l => l.veiculo === veiculo);
     }
 
-    // Ordenação do DataSet (acento pt-BR) por data + turno
+    if(nome){
+      filtrado = filtrado.filter(l => norm(l.fiscal).includes(nome));
+    }
+
     filtrado.sort((a,b) => {
-      if (a.dataISO !== b.dataISO) return a.dataISO.localeCompare(b.dataISO);
-      return a.turno.localeCompare(b.turno, 'pt-BR', { sensitivity: 'variant' });
+      if(a.dataISO !== b.dataISO) return a.dataISO.localeCompare(b.dataISO);
+      if(a.turno !== b.turno) return a.turno.localeCompare(b.turno, "pt-BR", { sensitivity:"variant" });
+      if(a.veiculo !== b.veiculo) return a.veiculo.localeCompare(b.veiculo, "pt-BR", { sensitivity:"variant" });
+      return a.fiscal.localeCompare(b.fiscal, "pt-BR", { sensitivity:"variant" });
     });
 
     tabela.clear();
     tabela.rows.add(filtrado).draw();
   }
 
-  document.addEventListener('DOMContentLoaded', async () => {
+  document.addEventListener("DOMContentLoaded", async () => {
     initMesAno();
     carregarTabela();
-
-    // Carrega férias a partir do ferias.html (fonte única)
-    await carregarFeriasDeHTML();
-
-    // Padrão: mostra o mês corrente
-    aplicarFiltros();
+    await carregarFeriasDeHTML();   // ✅ fonte única
+    aplicarFiltros();               // mês corrente
   });
 </script>
 
