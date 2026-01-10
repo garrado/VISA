@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Plantão - VISA Anápolis</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="./css/design-tokens.css">
+
+    <!-- DataTables CSS e JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <!-- PapaParse para ler CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+        <style>
+        /* RESET */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: #1a3a6b;
+            color: #ffffff;
+            padding: 28px 20px 26px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(1.4rem, 2.4vw, 2.3rem);
+            font-weight: 900;
+            letter-spacing: .2px;
+            color: #ffffff;
+        }
+
+        header h2 {
+            margin: 8px 0 0;
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            font-weight: 500;
+            opacity: .92;
+            color: #ffffff;
+        }
+
+        /* Botão OK - voltar */
+.btn-ok-header {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #34C759;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 12px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-ok-header:hover {
+    opacity: 0.7;
+}
+
+
+        /* CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 22px auto 30px;
+            padding: 0 16px;
+        }
+
+        /* CARD DE FILTROS */
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow2);
+        }
+
+        .card h3 {
+            color: var(--brand1);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--brand1);
+            padding-bottom: 10px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .filter-row:last-child {
+            margin-bottom: 32px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            justify-content: flex-end;  ← ADICIONAR ESSA LINHA
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 0.95em;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background: var(--input-bg);
+            color: var(--input-text);
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.15);
+        }
+
+        .btn-search {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .15s transform, .15s box-shadow;
+            margin-top: 10px;
+        }
+
+        .btn-search:hover {
+            box-shadow: var(--shadow2);
+            transform: translateY(-1px);
+        }
+
+        .btn-search:active {
+            transform: translateY(0);
+        }
+
+        /* ÁREA DE RESULTADOS */
+        .results-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow2);
+            margin-top: 24px;
+        }
+
+        .info-box {
+            background: rgba(44, 90, 160, 0.08);
+            border-left: 4px solid var(--brand1);
+            padding: 15px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        .info-box.warning {
+            background: #fff7dd;
+            border-left-color: #d1a000;
+        }
+
+        .info-box.success {
+            background: rgba(52, 199, 89, 0.1);
+            border-left-color: #34C759;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 32px 0 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+            box-shadow: var(--shadow2);
+        }
+
+        .stat-card h3 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            border: none;
+            padding: 0;
+        }
+
+        .stat-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: var(--muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ccd6e0;
+            border-top: 4px solid var(--brand1);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* DATATABLES */
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse;
+            margin-top: 32px !important;
+        }
+
+/* Espaçamento dos controles do DataTables */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 20px !important;
+}
+
+        
+        table.dataTable thead th {
+            background: var(--brand1);
+            color: white;
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        table.dataTable tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--line);
+            color: var(--text);
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: rgba(44, 90, 160, 0.05);
+            cursor: pointer;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-requerimento { background: #007bff; color: white; }
+        .badge-oficio { background: #28a745; color: white; }
+        .badge-denuncia { background: #dc3545; color: white; }
+        .badge-protocolo { background: #6f42c1; color: white; }
+
+        .badge-complexidade-alta { background: #dc3545; color: white; }
+        .badge-complexidade-media { background: #ffc107; color: #333; }
+        .badge-complexidade-baixa { background: #28a745; color: white; }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .icon-atendido-sim { color: #28a745; }
+        .icon-atendido-nao { color: #ffc107; }
+        .icon-cancelado { color: #dc3545; }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.6em;
+            border: none;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close:hover {
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: calc(85vh - 180px);
+            overflow-y: auto;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            color: var(--brand1);
+            border-bottom: 2px solid var(--brand1);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .modal-footer {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* RESPONSIVO */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            #tabelaOS {
+                min-width: 900px;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                font-size: 16px;
+            }
+
+            .btn-search {
+                width: 100%;
+                padding: 14px;
+            }
+
+            header {
+                padding: 28px 70px 26px 20px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+            }
+
+            .detail-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            .card, .btn, .modal-footer {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="btn-ok-header">OK</a>
+        <h1>Vigilância Sanitária</h1>
+        <h2>Escala de Plantão</h2>
+    </header>
+
+    <div class="container">
+
+        <!-- Card de Filtros -->
+        <div class="card">
+            <h3>🔍 Filtros de Busca</h3>
+
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="mesRef">Mês/Ano:</label>
+                    <input id="mesRef" type="month" />
+                </div>
+
+                <div class="filter-group">
+                    <label for="fiscalRef">Fiscal:</label>
+                    <select id="fiscalRef">
+                        <option value="">Todos os fiscais</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="dataRef">Data:</label>
+                    <input id="dataRef" type="date" />
+                </div>
+
+                <div class="filter-group" style="align-self: end;">
+                    <button class="btn-search" id="btnBuscar">🔎 Buscar</button>
+                </div>
+            </div>
+
+            <div class="note-box">
+                ✨ Selecione um mês e clique em <b>Buscar</b> para exibir a escala e a totalização do mês.
+            </div>
+        </div>
+
+        <!-- Card Tabela -->
+        <div class="card" id="cardTabela" style="display:none;">
+            <h3>📅 Escala do mês: <span id="mesTitulo"></span></h3>
+
+            <div class="table-container">
+                <table id="tabelaPlantao" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Dia</th>
+                            <th>Matutino (30h)</th>
+                            <th>Vespertino (30h)</th>
+                            <th>Dia Todo (40h)</th>
+                            <th>Obs.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Card Totalização -->
+        <div class="card" id="cardTotal" style="display:none;">
+            <h3 id="totalTitulo">📊 Totalização de plantões por fiscal</h3>
+            <div class="table-container">
+                <table id="tabelaTotal" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fiscal</th>
+                            <th>Total</th>
+                            <th>Datas</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="note-box" style="margin-top: 14px;">
+                📌 Regra anual: os fiscais que fizerem <b>mais de 1 plantão</b> no mês devem ser <b>revezados</b> no mês subsequente,
+                evitando que sejam sempre os mesmos ao longo do ano.
+            </div>
+        </div>
+
+        <!-- Card Regras -->
+        <div class="card">
+            <h3>📜 Regras (base executável)</h3>
+
+            <details>
+                <summary style="cursor:pointer; font-weight:700;">Ver regras</summary>
+                <div style="margin-top:12px;">
+                    <ol style="line-height:1.6;">
+                        <li><b>Escopo:</b> Plantão somente de segunda a sexta; excluir feriados e pontos facultativos.</li>
+                        <li><b>Configuração:</b> adicionar feriados municipais e pontos facultativos extras via variáveis internas do HTML.</li>
+                        <li><b>Elegibilidade:</b> todos os fiscais aptos devem fazer pelo menos 1 plantão no mês, exceto quem tiver <b>mais de 20 dias de férias</b> no mês.</li>
+                        <li><b>30h:</b> fazem <b>apenas 1 plantão</b> no mês (sem repetição). Matutino: Arianne, Júlio, Kamilla, Sílvia. Vespertino: Edson, Geraldo, José Luiz, Márcio, Rodrigo, Tathiane.</li>
+                        <li><b>Composição dominante:</b> na maioria dos dias, <b>2 fiscais 40h</b> (Dia Todo).</li>
+                        <li><b>Economia de 40h:</b> quando necessário e possível, usar <b>1 (30h Mat) + 1 (30h Vesp)</b> no mesmo dia para reduzir a necessidade de um 40h.</li>
+                        <li><b>Intervalo:</b> se algum fiscal fizer 2 plantões no mês, manter <b>mínimo de 15 dias</b> entre eles.</li>
+                        <li><b>Áreas:</b> qualquer combinação é válida, desde que <b>não repita a mesma área no mesmo dia</b>.</li>
+                        <li><b>Sem conflito com veículos:</b> não escalar fiscal em dia em que ele esteja escalado na escala de veículos.</li>
+                        <li><b>Revezamento anual:</b> quem fizer mais de 1 plantão no mês deve ser revezado no mês seguinte (evitar sempre os mesmos).</li>
+                    </ol>
+
+                    <div class="note-box">
+                        <b>Variáveis internas:</b> edite abaixo no código: <code>feriadosMunicipais</code> e <code>pontosFacultativosExtras</code>.
+                    </div>
+                </div>
+            </details>
+        </div>
+
+    </div>
+
+<script>
+/* =========================
+   Dados / Configurações
+========================= */
+
+// Formato ISO: YYYY-MM-DD
+const feriadosMunicipais = [];
+const pontosFacultativosExtras = [];
+
+// Pontos facultativos padronizados (ajuste conforme decreto quando necessário)
+const pontosFacultativosPadrao = [
+  "2026-01-02", // PF já usado em Janeiro/2026
+  "2026-02-16", // Carnaval
+  "2026-02-17"  // Carnaval
+];
+
+// Mapa de nomes curtos para nomes completos (para exibição consistente)
+const shortToFull = {"Acádia": "Acádia de Souza Vieira Silva", "Adriana": "Adriana Christina de Rezende Carneiro", "Adriane": "Adriane Pereira Guimaraes", "Aline": "Aline Castro Damásio de Lima", "Ana Paula": "Ana Paula Rodrigues Correa Guimaraes", "Angela": "Angela Ribeiro Neves", "Arianne": "Arianne Ferreira Vieira", "Clóvis": "Clóvis Rafael Borges Ferreira", "Daniela": "Daniela de Almeida Castro", "Edson": "Edson Arantes Faria Filho", "Eduardo": "Eduardo Lucas Magalhães Castro", "Fabíola": "Fabíola Pedrosa Peixoto Marques", "Geraldo": "Geraldo Edson Rosa", "Gleiciane": "Gleiciane Maria José da Silva", "Gúbio": "Gúbio Dias Pereira", "José Luiz": "José Luiz Ribeiro", "João Batista": "João Batista Lucas da Silva Reis", "Juliana Kênia": "Juliana Kênia Martins da Silva", "Juliana Viturino": "Juliana Ferreira Viturino", "Júlio": "Júlio César Teles Spindola", "Kamilla": "Kamilla Chrystine Rolim dos Santos", "Lidiane": "Lidiane Simoes Aires Campos", "Lívia Brito": "Lívia Brito Ribeiro", "Luciana Consolação": "Luciana Consolação dos Santos", "Luciana Santana": "Luciana Santana da Rocha", "Luciene": "Luciene de Souza Barbosa Gomes Silva", "Maria Edwiges": "Maria Edwiges Pinheiro de Souza Chaves", "Marina": "Marina Perillo Navarrete Lavers", "Márcio": "Márcio Henrique Gomes Rodovalho", "Patrícia": "Patrícia Cordeiro de Morais e Souza", "Pedro": "Pedro Henrique Aires Ribeiro", "Rodrigo": "Rodrigo Alessandro Tôgo Santos", "Rúbia": "Rúbia Mara de Freitas", "Simone": "Simone Duarte Grossi", "Silvia": "Silvia Marques Naves da Mota Souza", "Tathiane": "Tathiane Pessoa de Souza", "Thiago": "Thiago", "Vanessa Santana": "Vanessa Santana", "Viviane Manoel": "Viviane Manoel da Silva Borges", "Viviane Miyada": "Viviane Miyada", "Wanessa Brito": "Wanessa de Brito Jorge"};
+
+// Lista de fiscais (sempre exibir todos na totalização)
+const fiscaisOrdem = ["Acádia de Souza Vieira Silva", "Adriana Christina de Rezende Carneiro", "Adriane Pereira Guimaraes", "Aline Castro Damásio de Lima", "Ana Paula Rodrigues Correa Guimaraes", "Angela Ribeiro Neves", "Arianne Ferreira Vieira", "Clóvis Rafael Borges Ferreira", "Daniela de Almeida Castro", "Edson Arantes Faria Filho", "Eduardo Lucas Magalhães Castro", "Fabíola Pedrosa Peixoto Marques", "Geraldo Edson Rosa", "Gleiciane Maria José da Silva", "Gúbio Dias Pereira", "José Luiz Ribeiro", "João Batista Lucas da Silva Reis", "Juliana Kênia Martins da Silva", "Juliana Ferreira Viturino", "Júlio César Teles Spindola", "Kamilla Chrystine Rolim dos Santos", "Lidiane Simoes Aires Campos", "Lívia Brito Ribeiro", "Luciana Consolação dos Santos", "Luciana Santana da Rocha", "Luciene de Souza Barbosa Gomes Silva", "Maria Edwiges Pinheiro de Souza Chaves", "Marina Perillo Navarrete Lavers", "Márcio Henrique Gomes Rodovalho", "Patrícia Cordeiro de Morais e Souza", "Pedro Henrique Aires Ribeiro", "Rodrigo Alessandro Tôgo Santos", "Rúbia Mara de Freitas", "Simone Duarte Grossi", "Silvia Marques Naves da Mota Souza", "Tathiane Pessoa de Souza", "Thiago", "Vanessa Santana", "Viviane Manoel da Silva Borges", "Viviane Miyada", "Wanessa de Brito Jorge"];
+
+// Escalas por mês
+const escalaPorMes = {"2026-01": [{"date": "2026-01-01", "dow": "Qui", "mat30": "", "vesp30": "", "f40": [], "note": "Confraternização Universal"}, {"date": "2026-01-02", "dow": "Sex", "mat30": "", "vesp30": "", "f40": [], "note": "Ponto Facultativo"}, {"date": "2026-01-03", "dow": "Sáb", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-04", "dow": "Dom", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-05", "dow": "Seg", "mat30": "Arianne", "vesp30": "Márcio", "f40": ["Vanessa Santana"], "note": ""}, {"date": "2026-01-06", "dow": "Ter", "mat30": "Júlio", "vesp30": "", "f40": ["Rúbia", "Viviane Miyada"], "note": ""}, {"date": "2026-01-07", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["Eduardo", "Lívia Brito"], "note": ""}, {"date": "2026-01-08", "dow": "Qui", "mat30": "", "vesp30": "", "f40": ["Acádia", "Viviane Manoel"], "note": ""}, {"date": "2026-01-09", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Angela", "Luciana Santana"], "note": ""}, {"date": "2026-01-10", "dow": "Sáb", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-11", "dow": "Dom", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-12", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["Gleiciane", "Viviane Miyada"], "note": ""}, {"date": "2026-01-13", "dow": "Ter", "mat30": "", "vesp30": "", "f40": ["Eduardo", "Wanessa Brito"], "note": ""}, {"date": "2026-01-14", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["João Batista", "Juliana Kênia"], "note": ""}, {"date": "2026-01-15", "dow": "Qui", "mat30": "", "vesp30": "", "f40": ["Daniela", "Viviane Manoel"], "note": ""}, {"date": "2026-01-16", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Adriana", "Maria Edwiges"], "note": ""}, {"date": "2026-01-17", "dow": "Sáb", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-18", "dow": "Dom", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-19", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["Pedro", "Thiago"], "note": ""}, {"date": "2026-01-20", "dow": "Ter", "mat30": "Kamilla", "vesp30": "Edson", "f40": ["Gúbio"], "note": ""}, {"date": "2026-01-21", "dow": "Qua", "mat30": "", "vesp30": "Geraldo", "f40": ["Acádia", "Lidiane"], "note": ""}, {"date": "2026-01-22", "dow": "Qui", "mat30": "", "vesp30": "Rodrigo", "f40": ["Ana Paula", "Simone"], "note": ""}, {"date": "2026-01-23", "dow": "Sex", "mat30": "", "vesp30": "Tathiane", "f40": ["Angela", "Clóvis"], "note": ""}, {"date": "2026-01-24", "dow": "Sáb", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-25", "dow": "Dom", "mat30": "", "vesp30": "", "f40": [], "note": ""}, {"date": "2026-01-26", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["João Batista", "Juliana Viturino"], "note": ""}, {"date": "2026-01-27", "dow": "Ter", "mat30": "Sílvia", "vesp30": "", "f40": ["Aline", "Luciene"], "note": ""}, {"date": "2026-01-28", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["Adriane", "Luciana Consolação"], "note": ""}, {"date": "2026-01-29", "dow": "Qui", "mat30": "", "vesp30": "", "f40": ["Fabíola", "Marina"], "note": ""}, {"date": "2026-01-30", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Gúbio", "Patrícia"], "note": ""}, {"date": "2026-01-31", "dow": "Sáb", "mat30": "", "vesp30": "", "f40": [], "note": ""}], "2026-02": [{"date": "2026-02-02", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["Daniela", "Marina"], "note": ""}, {"date": "2026-02-03", "dow": "Ter", "mat30": "Kamilla", "vesp30": "Edson", "f40": ["Pedro"], "note": ""}, {"date": "2026-02-04", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["Acádia", "Gúbio"], "note": ""}, {"date": "2026-02-05", "dow": "Qui", "mat30": "Sílvia", "vesp30": "Márcio", "f40": ["Gleiciane"], "note": ""}, {"date": "2026-02-06", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Viviane Manoel", "Luciana Santana"], "note": ""}, {"date": "2026-02-09", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["Eduardo", "Ana Paula"], "note": ""}, {"date": "2026-02-10", "dow": "Ter", "mat30": "", "vesp30": "Rodrigo", "f40": ["Angela", "Simone"], "note": ""}, {"date": "2026-02-11", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["João Batista", "Luciene"], "note": ""}, {"date": "2026-02-12", "dow": "Qui", "mat30": "", "vesp30": "Tathiane", "f40": ["Maria Edwiges", "Patrícia"], "note": ""}, {"date": "2026-02-13", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Adriana", "Viviane Miyada"], "note": ""}, {"date": "2026-02-16", "dow": "Seg", "mat30": "", "vesp30": "", "f40": [], "note": "Ponto Facultativo (Carnaval)"}, {"date": "2026-02-17", "dow": "Ter", "mat30": "", "vesp30": "", "f40": [], "note": "Ponto Facultativo (Carnaval)"}, {"date": "2026-02-18", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["Juliana Viturino", "Luciana Consolação"], "note": ""}, {"date": "2026-02-19", "dow": "Qui", "mat30": "", "vesp30": "", "f40": ["Fabíola", "Vanessa Santana"], "note": ""}, {"date": "2026-02-20", "dow": "Sex", "mat30": "Arianne", "vesp30": "José Luiz", "f40": ["Gúbio"], "note": ""}, {"date": "2026-02-23", "dow": "Seg", "mat30": "", "vesp30": "", "f40": ["Acádia", "Wanessa Brito"], "note": ""}, {"date": "2026-02-24", "dow": "Ter", "mat30": "Júlio", "vesp30": "Geraldo", "f40": ["Rúbia"], "note": ""}, {"date": "2026-02-25", "dow": "Qua", "mat30": "", "vesp30": "", "f40": ["Lívia Brito", "Clóvis"], "note": ""}, {"date": "2026-02-26", "dow": "Qui", "mat30": "", "vesp30": "", "f40": ["Daniela", "Juliana Kênia"], "note": ""}, {"date": "2026-02-27", "dow": "Sex", "mat30": "", "vesp30": "", "f40": ["Aline", "Adriane"], "note": ""}]};
+
+/* =========================
+   Utilitários de data
+========================= */
+
+function isoToBR(iso) {
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+function dowPT(dateObj){
+  const d = dateObj.getDay();
+  // 0 dom, 1 seg...
+  return ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d];
+}
+
+function mesTituloPT(mesKey){
+  if(!mesKey || mesKey.length !== 7) return mesKey || "";
+  const y = Number(mesKey.slice(0,4));
+  const m = Number(mesKey.slice(5,7));
+  const nomes = ["","Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  return `${nomes[m]}/${y}`;
+}
+
+function safeName(shortOrFull){
+  return shortToFull[shortOrFull] || shortOrFull || "";
+}
+
+function localeSortPT(a,b){
+  return a.localeCompare(b, "pt-BR", { sensitivity:"base" });
+}
+
+/* =========================
+   Feriados nacionais + Paixão de Cristo
+========================= */
+function feriadosNacionaisFixos(ano){
+  return [
+    `${ano}-01-01`,
+    `${ano}-04-21`,
+    `${ano}-05-01`,
+    `${ano}-09-07`,
+    `${ano}-10-12`,
+    `${ano}-11-02`,
+    `${ano}-11-15`,
+    `${ano}-12-25`
+  ];
+}
+
+// Cálculo da Páscoa (Meeus/Jones/Butcher)
+function easterDate(ano){
+  const a = ano % 19;
+  const b = Math.floor(ano / 100);
+  const c = ano % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(ano, month - 1, day);
+}
+
+function dateToISO(d){
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function paixaoDeCristoISO(ano){
+  const pascoa = easterDate(ano);
+  const sexta = new Date(pascoa);
+  sexta.setDate(pascoa.getDate() - 2);
+  return dateToISO(sexta);
+}
+
+function isDiaSemPlantao(iso, noteText){
+  const ano = Number(iso.slice(0,4));
+  const set = new Set([
+    ...feriadosNacionaisFixos(ano),
+    paixaoDeCristoISO(ano),
+    ...feriadosMunicipais,
+    ...pontosFacultativosPadrao,
+    ...pontosFacultativosExtras
+  ]);
+
+  if(set.has(iso)) return true;
+
+  const note = (noteText || "").toLowerCase();
+  if(note.includes("ponto facultativo")) return true;
+  if(note.includes("feriado")) return true;
+
+  // fim de semana sempre sem plantão (exibir linha como sábado/domingo)
+  const dt = new Date(iso + "T00:00:00");
+  const dow = dt.getDay();
+  if(dow === 0 || dow === 6) return true;
+
+  return false;
+}
+
+/* =========================
+   Montagem do mês (gera todas as linhas)
+========================= */
+function buildMonthRows(mesKey){
+  if(!mesKey || mesKey.length !== 7) return [];
+
+  const y = Number(mesKey.slice(0,4));
+  const m = Number(mesKey.slice(5,7));
+  const lastDay = new Date(y, m, 0).getDate(); // m aqui é 1-12
+
+  const monthEntries = (escalaPorMes[mesKey] || []);
+  const mapByDate = new Map();
+  monthEntries.forEach(e => {
+    mapByDate.set(e.date, e);
+  });
+
+  const rows = [];
+  for(let d=1; d<=lastDay; d++) {
+    const iso = `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const dt = new Date(iso + "T00:00:00");
+    const dow = (mapByDate.get(iso)?.dow) || dowPT(dt);
+
+    const entry = mapByDate.get(iso) || { date: iso, dow, mat30:"", vesp30:"", f40:[], note:"" };
+
+    // normaliza
+    const mat = entry.mat30 ? `${safeName(entry.mat30)} (Mat)` : "";
+    const vesp = entry.vesp30 ? `${safeName(entry.vesp30)} (Vesp)` : "";
+    const f40 = (entry.f40 || []).map(safeName);
+
+    const noPlantao = isDiaSemPlantao(iso, entry.note);
+
+    rows.push({
+      iso,
+      dataBR: isoToBR(iso),
+      dow,
+      mat30: noPlantao ? "" : mat,
+      vesp30: noPlantao ? "" : vesp,
+      f40: noPlantao ? [] : f40,
+      note: entry.note || (noPlantao ? "" : ""),
+      noPlantao
+    });
+  }
+
+  return rows;
+}
+
+/* =========================
+   DataTables
+========================= */
+let dtPlantao = null;
+let dtTotal = null;
+
+function destroyDT(dt) {
+  try { if(dt) dt.destroy(); } catch(e){}
+}
+
+function fillFiscalSelect(){
+  const sel = document.getElementById("fiscalRef");
+  fiscaisOrdem.slice().sort(localeSortPT).forEach(n => {
+    const opt = document.createElement("option");
+    opt.value = n;
+    opt.textContent = n;
+    sel.appendChild(opt);
+  });
+}
+
+function renderPlantao(rows){
+  const tbody = document.querySelector("#tabelaPlantao tbody");
+  tbody.innerHTML = "";
+
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    if(r.noPlantao) tr.style.background = "#f3f3f3";
+
+    const f40txt = r.f40.length ? r.f40.join(", ") : "—";
+
+    tr.innerHTML = `
+      <td>${r.dataBR}</td>
+      <td>${r.dow}</td>
+      <td>${r.mat30 || "—"}</td>
+      <td>${r.vesp30 || "—"}</td>
+      <td>${f40txt}</td>
+      <td>${r.note || (r.noPlantao ? "—" : "")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  destroyDT(dtPlantao);
+  dtPlantao = $("#tabelaPlantao").DataTable({
+    pageLength: 50,
+    lengthMenu: [25, 50, 100, -1],
+    order: [[0, "asc"]],
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json"
+    },
+    scrollX: true
+  });
+}
+
+function renderTotal(rows, mesKey){
+  // totaliza somente dias com plantão
+  const totals = new Map();
+  fiscaisOrdem.forEach(f => totals.set(f, {count:0, dates:[]}));
+
+  rows.forEach(r => {
+    if(r.noPlantao) return;
+
+    const dateBR = r.dataBR;
+
+    const add = (name) => {
+      if(!name) return;
+      const base = name.replace(/\s*\(Mat\)|\s*\(Vesp\)/g, "").trim();
+      if(!totals.has(base)) totals.set(base, {count:0, dates:[]});
+
+      const obj = totals.get(base);
+      obj.count += 1;
+      obj.dates.push(dateBR);
+    };
+
+    add(r.mat30);
+    add(r.vesp30);
+    (r.f40 || []).forEach(add);
+  });
+
+  // título contextual
+  document.getElementById("totalTitulo").textContent =
+    `📊 Totalização de plantões por fiscal — ${mesTituloPT(mesKey)}`;
+
+  const body = document.querySelector("#tabelaTotal tbody");
+  body.innerHTML = "";
+
+  const ordered = Array.from(totals.entries())
+    .map(([name, obj]) => ({name, count: obj.count, dates: obj.dates}))
+    .sort((a,b)=> localeSortPT(a.name,b.name));
+
+  ordered.forEach(it => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${it.name}</td>
+      <td style="text-align:center; font-weight:700;">${it.count}</td>
+      <td>${it.dates.join(", ")}</td>
+    `;
+    body.appendChild(tr);
+  });
+
+  destroyDT(dtTotal);
+  dtTotal = $("#tabelaTotal").DataTable({
+    pageLength: 50,
+    lengthMenu: [25, 50, 100, -1],
+    order: [[0, "asc"]],
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json"
+    },
+    scrollX: true
+  });
+}
+
+function applyFilters(rows){
+  const fiscal = document.getElementById("fiscalRef").value;
+  const data = document.getElementById("dataRef").value;
+
+  return rows.filter(r => {
+    if(data && r.iso !== data) return false;
+    if(fiscal){
+      const list = [];
+      if(r.mat30) list.push(r.mat30.replace(/\s*\(Mat\)|\s*\(Vesp\)/g,"").trim());
+      if(r.vesp30) list.push(r.vesp30.replace(/\s*\(Mat\)|\s*\(Vesp\)/g,"").trim());
+      (r.f40||[]).forEach(n => list.push(n));
+      if(!list.includes(fiscal)) return false;
+    }
+    return true;
+  });
+}
+
+/* =========================
+   Ação Buscar
+========================= */
+function doBuscar(){
+  const mesKey = document.getElementById("mesRef").value;
+  if(!mesKey){
+    alert("Selecione o mês/ano.");
+    return;
+  }
+
+  const allRows = buildMonthRows(mesKey);
+
+  // Atualiza título do mês
+  document.getElementById("mesTitulo").textContent = mesTituloPT(mesKey);
+
+  // aplica filtros de fiscal/data em cima do mês gerado
+  const filteredRows = applyFilters(allRows);
+
+  // exibe cards
+  document.getElementById("cardTabela").style.display = "block";
+  document.getElementById("cardTotal").style.display = "block";
+
+  renderPlantao(filteredRows);
+  renderTotal(allRows, mesKey); // totalização sempre do mês inteiro selecionado
+}
+
+(function init(){
+  fillFiscalSelect();
+
+  // default: mês atual se existir; senão o último disponível do array
+  const keys = Object.keys(escalaPorMes).sort();
+  let defaultMes = "";
+  const now = new Date();
+  const nowKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+  if(escalaPorMes[nowKey]) {
+    defaultMes = nowKey;
+  } else {
+    defaultMes = keys[keys.length - 1] || "";
+  }
+  document.getElementById("mesRef").value = defaultMes;
+
+  document.getElementById("btnBuscar").addEventListener("click", doBuscar);
+})();
+</script>
+
+</body>
+
+</html>
